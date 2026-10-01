@@ -1,0 +1,21 @@
+# Environment
+.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Data (large files)
+data/raw/*
+!data/raw/.gitkeep
+data/models/*
+!data/models/.gitkeep
+
+# Notebooks
+*.nbconvert.ipynb
+
+# OS
+.DS_Store
