@@ -19,3 +19,16 @@ data/models/*
 
 # OS
 .DS_Store
+
+# Model outputs and cached data (regenerable, large)
+*.pkl
+*.pickle
+*.pt
+*.safetensors
+*.bin
+data/processed/*.pkl
+data/processed/*.pt
+data/processed/*.safetensors
+
+# Keep small JSON outputs (validation results)
+!data/processed/*.json

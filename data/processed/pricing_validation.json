@@ -1,0 +1,11 @@
+{
+  "n_orders_simulated": 5000,
+  "low_tier_loading_pct": 0.1,
+  "total_premium_pool_usd": 14921.869999999999,
+  "total_order_value_usd": 12430457.6,
+  "premium_as_pct_of_orders": 0.12004280518200713,
+  "extrapolated_global_pool_usd": 14921869.999999998,
+  "global_orders_per_year_assumption": 5000000,
+  "lmic_labs_funded_per_year": 29,
+  "outbreak_responses_funded_per_year": 2
+}
