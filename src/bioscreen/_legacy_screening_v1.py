@@ -1,4 +1,11 @@
 """
+LEGACY — screening.py v1 (mean-pooled contrastive).
+NOT IMPORTED. Kept for historical reference only.
+The shipped engine is screening_v2.py.
+This module is broken against the current reference pickle format
+(it expects embeddings as a 2D array, but the pickle stores dicts).
+"""
+"""
 BioScreen — Functional screening with contrastive scoring.
 
 Mean-pooled embeddings don't distinguish toxins from safe proteins.

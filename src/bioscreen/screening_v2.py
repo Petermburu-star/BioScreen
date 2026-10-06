@@ -45,7 +45,8 @@ class BioScreenV2:
     Alignment-based screening using per-residue ESM-C embeddings.
     """
     def __init__(self, model, tokenizer, per_residue_path,
-                 hazard_threshold=0.05, top_k=50):
+                 hazard_threshold=0.05, top_k=50,
+                 toxin_similarity_floor=0.90):
         self.model = model
         self.tokenizer = tokenizer
         self.top_k = top_k
@@ -60,6 +61,7 @@ class BioScreenV2:
         self.safe_embeddings = data["safes"]["embeddings"]
 
         self.hazard_threshold = hazard_threshold
+        self.toxin_similarity_floor = toxin_similarity_floor
 
     def embed_per_residue(self, sequence):
         inputs = self.tokenizer([sequence.upper().strip()],
@@ -92,7 +94,8 @@ class BioScreenV2:
         best_safe_score = float(safe_scores[best_safe_idx])
 
         hazard_delta = best_toxin_score - best_safe_score
-        flagged = hazard_delta >= self.hazard_threshold
+        flagged = (hazard_delta >= self.hazard_threshold
+                   and best_toxin_score >= self.toxin_similarity_floor)
 
         return {
             "best_toxin_score": round(best_toxin_score, 4),
