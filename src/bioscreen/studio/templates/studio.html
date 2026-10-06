@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioScreen Studio</title>
+<link rel="stylesheet" href="/static/studio.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark"></span>
+    <span class="name">BioScreen</span>
+    <span class="sub">Studio</span>
+  </div>
+  <div class="status" id="status">
+    <span class="pip" id="status-pip"></span>
+    <span id="status-text">initialising engine...</span>
+  </div>
+</header>
+
+<main class="stage">
+
+  <section class="panel input-panel">
+    <div class="panel-head">
+      <span class="panel-num">01</span>
+      <span class="panel-title">Query</span>
+      <span class="panel-hint">paste a protein sequence, or load a live example from UniProt</span>
+    </div>
+
+    <div class="seq-input-wrap">
+      <textarea id="seq-input" spellcheck="false" autocomplete="off"
+        placeholder="MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQ..."></textarea>
+      <div class="seq-meta">
+        <span id="seq-len">0 aa</span>
+        <span id="seq-comp">-</span>
+      </div>
+    </div>
+
+    <div class="examples">
+      <span class="examples-label">Load from UniProt:</span>
+      <button class="chip" data-ex="ricin">Ricin</button>
+      <button class="chip" data-ex="botulinum_a">Botulinum A</button>
+      <button class="chip" data-ex="diphtheria">Diphtheria</button>
+      <button class="chip" data-ex="gfp">GFP</button>
+      <button class="chip" data-ex="insulin">Insulin</button>
+      <button class="chip" data-ex="lysozyme">Lysozyme</button>
+    </div>
+
+    <button class="btn-primary" id="btn-screen" disabled>
+      <span class="btn-icon">&#9656;</span> Screen
+    </button>
+  </section>
+
+  <section class="panel instrument-panel hidden" id="instrument">
+    <div class="panel-head">
+      <span class="panel-num">02</span>
+      <span class="panel-title">Residue alignment map</span>
+      <span class="panel-hint">per-position match strength against the winning reference</span>
+    </div>
+
+    <div class="ribbon-block">
+      <div class="ribbon-head">
+        <span class="ribbon-label toxin">Best toxin match</span>
+        <span class="ribbon-ref" id="toxin-ref">-</span>
+        <span class="ribbon-score" id="toxin-score">-</span>
+      </div>
+      <canvas id="toxin-ribbon" class="ribbon" height="64"></canvas>
+    </div>
+
+    <div class="ribbon-block divergence-block">
+      <div class="ribbon-head">
+        <span class="ribbon-label">Divergence &middot; toxin &minus; safe</span>
+        <span class="ribbon-hint">above centre = toxin wins &middot; below = safe wins</span>
+      </div>
+      <canvas id="diverge-ribbon" class="ribbon ribbon-diverge" height="48"></canvas>
+    </div>
+
+    <div class="ribbon-block">
+      <div class="ribbon-head">
+        <span class="ribbon-label safe">Best safe match</span>
+        <span class="ribbon-ref" id="safe-ref">-</span>
+        <span class="ribbon-score" id="safe-score">-</span>
+      </div>
+      <canvas id="safe-ribbon" class="ribbon" height="64"></canvas>
+    </div>
+  </section>
+
+  <section class="panel verdict-panel hidden" id="verdict-panel">
+    <div class="verdict-hero" id="verdict-hero">
+      <div class="verdict-glyph" id="verdict-glyph">-</div>
+      <div class="verdict-copy">
+        <div class="verdict-word" id="verdict-word">-</div>
+        <div class="verdict-line" id="verdict-line">-</div>
+      </div>
+    </div>
+
+    <div class="gates">
+      <div class="gate" id="gate-delta">
+        <span class="gate-dot"></span>
+        <span class="gate-name">&Delta; &ge; <em id="thr-delta">0.05</em></span>
+        <span class="gate-val" id="gate-delta-val">-</span>
+      </div>
+      <div class="gate" id="gate-floor">
+        <span class="gate-dot"></span>
+        <span class="gate-name">toxin &ge; <em id="thr-floor">0.90</em></span>
+        <span class="gate-val" id="gate-floor-val">-</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel pricing-panel hidden" id="pricing-panel">
+    <div class="panel-head">
+      <span class="panel-num">03</span>
+      <span class="panel-title">Actuarial pricing</span>
+      <span class="panel-hint">the same signal, converted into a risk-priced premium</span>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="context">
+        <label class="field">
+          <span class="field-label">Verified customer</span>
+          <input type="checkbox" id="in-verified" class="toggle">
+        </label>
+        <label class="field">
+          <span class="field-label">History <em id="in-history-val">0.50</em></span>
+          <input type="range" id="in-history" min="0" max="1" step="0.05" value="0.5">
+        </label>
+        <label class="field">
+          <span class="field-label">Organism</span>
+          <select id="in-organism">
+            <option value="human">Human</option>
+            <option value="synthetic">Synthetic</option>
+            <option value="animal">Animal</option>
+            <option value="plant">Plant</option>
+            <option value="environmental">Environmental</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="field-label">Order size (bp)</span>
+          <input type="number" id="in-size" value="2000" min="1">
+        </label>
+        <label class="field">
+          <span class="field-label">Order cost (USD)</span>
+          <input type="number" id="in-cost" value="2000" min="1">
+        </label>
+      </div>
+
+      <div class="readout">
+        <div class="readout-tier" id="out-tier">-</div>
+        <div class="readout-premium" id="out-premium">-</div>
+        <div class="readout-meta">
+          <span>risk <em id="out-risk">-</em></span>
+          <span>loading <em id="out-loading">-</em></span>
+        </div>
+        <div class="readout-action" id="out-action">-</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/studio.js"></script>
+</body>
+</html>
