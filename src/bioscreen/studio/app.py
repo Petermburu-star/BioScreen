@@ -54,7 +54,7 @@ def _load_engine():
                 model=model,
                 tokenizer=tokenizer,
                 per_residue_path=ref_path,
-                hazard_threshold=0.05,
+                hazard_threshold=0.02,
                 top_k=50,
                 toxin_similarity_floor=0.90,
             )

@@ -1,6 +1,7 @@
 const $ = (id) => document.getElementById(id);
 let lastResult = null;
 
+/* ---------- status ---------- */
 async function pollStatus() {
   try {
     const r = await fetch("/api/status");
@@ -28,6 +29,7 @@ async function warmup() {
   pollStatus();
 }
 
+/* ---------- sequence input ---------- */
 function updateSeqMeta() {
   const s = $("seq-input").value.replace(/\s/g, "").toUpperCase();
   $("seq-len").textContent = s.length + " aa";
@@ -65,6 +67,7 @@ document.querySelectorAll(".chip").forEach((btn) => {
   });
 });
 
+/* ---------- color helpers ---------- */
 function lerpColor(a, b, t) {
   return [
     Math.round(a[0] + (b[0] - a[0]) * t),
@@ -73,6 +76,7 @@ function lerpColor(a, b, t) {
   ];
 }
 
+/* ---------- ribbon renderer with adaptive normalization ---------- */
 function renderRibbon(canvasId, values, mode) {
   const c = $(canvasId);
   if (!c) return;
@@ -88,6 +92,18 @@ function renderRibbon(canvasId, values, mode) {
   const L = values.length;
   if (L === 0) return;
 
+  // ---- adaptive normalization: fit to this profile's own range ----
+  let vmin = Infinity, vmax = -Infinity;
+  for (const v of values) {
+    if (v < vmin) vmin = v;
+    if (v > vmax) vmax = v;
+  }
+  const span = Math.max(vmax - vmin, 1e-6);
+  // pad the range slightly so darkest/brightest pixels are visible
+  const lo = vmin - span * 0.05;
+  const hi = vmax + span * 0.05;
+  const range = hi - lo;
+
   ctx.fillStyle = "#070b14";
   ctx.fillRect(0, 0, W, H);
 
@@ -98,28 +114,39 @@ function renderRibbon(canvasId, values, mode) {
     for (let i = i0; i < i1 && i < L; i++) {
       if (values[i] > v) v = values[i];
     }
-    let t = (v - 0.60) / 0.40;
+    let t = (v - lo) / range;
     t = Math.max(0, Math.min(1, t));
 
     let color;
-    if (mode === "toxin") color = lerpColor([13, 21, 38], [245, 158, 11], t);
-    else color = lerpColor([13, 21, 38], [34, 211, 238], t);
-
+    if (mode === "toxin") {
+      // dark blue -> amber (bright)
+      color = lerpColor([16, 24, 40], [245, 158, 11], t);
+    } else {
+      // dark blue -> cyan
+      color = lerpColor([16, 24, 40], [34, 211, 238], t);
+    }
     ctx.fillStyle = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
     ctx.fillRect(x, 0, 1, H);
   }
 
-  ctx.strokeStyle = "rgba(255,255,255,.05)";
+  // ---- residue ruler: ticks every 100 residues ----
+  ctx.strokeStyle = "rgba(148,163,184,.20)";
   ctx.lineWidth = 1;
+  ctx.fillStyle = "rgba(148,163,184,.55)";
+  ctx.font = "9px monospace";
   for (let i = 100; i < L; i += 100) {
     const x = Math.round((i / L) * W);
     ctx.beginPath();
-    ctx.moveTo(x, 0);
+    ctx.moveTo(x, H - 6);
     ctx.lineTo(x, H);
     ctx.stroke();
+    if (i % 500 === 0) {
+      ctx.fillText(String(i), x + 2, H - 8);
+    }
   }
 }
 
+/* ---------- divergence renderer with mean baseline ---------- */
 function renderDivergence(canvasId, toxin, safeValues) {
   const c = $(canvasId);
   if (!c) return;
@@ -136,34 +163,84 @@ function renderDivergence(canvasId, toxin, safeValues) {
   if (L === 0) return;
   const mid = H / 2;
 
+  // compute per-residue divergence and its mean
+  const diffs = new Array(L);
+  let sum = 0, absMax = 0;
+  for (let i = 0; i < L; i++) {
+    const d = toxin[i] - safeValues[i];
+    diffs[i] = d;
+    sum += d;
+    if (Math.abs(d) > absMax) absMax = Math.abs(d);
+  }
+  const mean = sum / L;
+  // scale so the largest deviation from the mean maps to the canvas half-height
+  const scale = Math.max(absMax, 0.005);
+
   ctx.fillStyle = "#070b14";
   ctx.fillRect(0, 0, W, H);
 
-  ctx.strokeStyle = "rgba(148,163,184,.25)";
+  // ---- centre reference line (zero) ----
+  ctx.strokeStyle = "rgba(148,163,184,.15)";
   ctx.beginPath();
   ctx.moveTo(0, mid);
   ctx.lineTo(W, mid);
   ctx.stroke();
 
+  // ---- mean baseline ----
+  const meanY = mid - (mean / scale) * (mid - 4);
+  ctx.strokeStyle = "rgba(148,163,184,.55)";
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(0, meanY);
+  ctx.lineTo(W, meanY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // ---- columns ----
   for (let x = 0; x < W; x++) {
     const i0 = Math.floor((x / W) * L);
     const i1 = Math.max(i0 + 1, Math.floor(((x + 1) / W) * L));
-    let d = 0;
+    // pick the value with largest |deviation from mean| in this pixel column
+    let bestDev = 0, bestD = 0;
     for (let i = i0; i < i1 && i < L; i++) {
-      const v = toxin[i] - safeValues[i];
-      if (Math.abs(v) > Math.abs(d)) d = v;
+      const dev = diffs[i] - mean;
+      if (Math.abs(dev) > Math.abs(bestDev)) {
+        bestDev = dev;
+        bestD = diffs[i];
+      }
     }
-    const bh = Math.min(mid, Math.abs((d / 0.10) * mid));
-    if (d >= 0) {
-      ctx.fillStyle = "rgb(245,158,11)";
-      ctx.fillRect(x, mid - bh, 1, bh);
+    const y = mid - (bestDev / scale) * (mid - 4);
+    const top = Math.min(y, meanY);
+    const bot = Math.max(y, meanY);
+    if (bestD - mean >= 0) {
+      ctx.fillStyle = "rgba(245,158,11,.85)";
     } else {
-      ctx.fillStyle = "rgb(34,211,238)";
-      ctx.fillRect(x, mid, 1, bh);
+      ctx.fillStyle = "rgba(34,211,238,.85)";
     }
+    ctx.fillRect(x, top, 1, Math.max(1, bot - top));
   }
 }
 
+/* ---------- gate bar updater ---------- */
+function updateGate(containerId, value, threshold, format) {
+  const el = $(containerId);
+  if (!el) return;
+  const passed = value >= threshold;
+  el.classList.toggle("pass", passed);
+  el.classList.toggle("fail", !passed);
+
+  const fill = el.querySelector(".gate-fill");
+  const thr = el.querySelector(".gate-threshold");
+  const val = el.querySelector(".gate-val");
+
+  // Scale the bar so [0 .. max(threshold*2, value*1.1)] fills the width
+  const max = Math.max(threshold * 2, value * 1.1, 0.01);
+  fill.style.width = Math.min(100, (value / max) * 100) + "%";
+  thr.style.left = Math.min(100, (threshold / max) * 100) + "%";
+  val.textContent = format(value);
+}
+
+/* ---------- screen ---------- */
 $("btn-screen").addEventListener("click", async () => {
   const seq = $("seq-input").value.replace(/\s/g, "").toUpperCase();
   if (seq.length < 20) return;
@@ -217,12 +294,15 @@ function renderResult(j) {
 
   $("thr-delta").textContent = j.threshold_delta.toFixed(2);
   $("thr-floor").textContent = j.threshold_floor.toFixed(2);
-  $("gate-delta-val").textContent = j.hazard_delta.toFixed(4);
-  $("gate-floor-val").textContent = j.best_toxin_score.toFixed(4);
-  $("gate-delta").classList.toggle("open", j.gate_delta);
-  $("gate-floor").classList.toggle("open", j.gate_floor);
+
+  // gate bars
+  updateGate("gate-delta", j.hazard_delta, j.threshold_delta,
+             v => v.toFixed(4));
+  updateGate("gate-floor", j.best_toxin_score, j.threshold_floor,
+             v => v.toFixed(4));
 }
 
+/* ---------- pricing ---------- */
 async function renderPricing() {
   if (!lastResult) return;
   const body = {
@@ -249,8 +329,18 @@ async function renderPricing() {
   $("out-risk").textContent = j.risk_score.toFixed(4);
   $("out-loading").textContent = j.premium_pct_of_order.toFixed(3) + "%";
   $("out-action").textContent = j.action;
+
+  // provenance line
+  const orderCost = parseFloat($("in-cost").value) || 1000;
+  const prov = $("out-provenance");
+  if (prov) {
+    prov.textContent = "$" + orderCost.toFixed(0)
+      + "  x  " + j.premium_pct_of_order.toFixed(3) + "%"
+      + "  =  $" + j.premium_usd.toFixed(2);
+  }
 }
 
+/* ---------- bind controls ---------- */
 ["in-verified", "in-organism", "in-size", "in-cost"].forEach((id) => {
   $(id).addEventListener("input", renderPricing);
 });
@@ -259,6 +349,24 @@ $("in-history").addEventListener("input", () => {
   renderPricing();
 });
 
+/* ---------- copy json ---------- */
+const copyBtn = $("btn-copy");
+if (copyBtn) {
+  copyBtn.addEventListener("click", async () => {
+    if (!lastResult) return;
+    const text = JSON.stringify(lastResult, null, 2);
+    try {
+      await navigator.clipboard.writeText(text);
+      const orig = copyBtn.textContent;
+      copyBtn.textContent = "Copied";
+      setTimeout(() => (copyBtn.textContent = orig), 1400);
+    } catch (e) {
+      alert("Clipboard unavailable");
+    }
+  });
+}
+
+/* ---------- resize ---------- */
 let resizeTimer;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
@@ -266,7 +374,9 @@ window.addEventListener("resize", () => {
     if (lastResult) {
       renderRibbon("toxin-ribbon", lastResult.toxin_profile, "toxin");
       renderRibbon("safe-ribbon", lastResult.safe_profile, "safe");
-      renderDivergence("diverge-ribbon", lastResult.toxin_profile, lastResult.safe_profile);
+      renderDivergence("diverge-ribbon",
+                        lastResult.toxin_profile,
+                        lastResult.safe_profile);
     }
   }, 150);
 });

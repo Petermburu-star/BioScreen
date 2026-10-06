@@ -45,7 +45,7 @@ class BioScreenV2:
     Alignment-based screening using per-residue ESM-C embeddings.
     """
     def __init__(self, model, tokenizer, per_residue_path,
-                 hazard_threshold=0.05, top_k=50,
+                 hazard_threshold=0.02, top_k=50,
                  toxin_similarity_floor=0.90):
         self.model = model
         self.tokenizer = tokenizer

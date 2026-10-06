@@ -1,0 +1,198 @@
+{
+  "date": "2026-10-06T12:23:57.330541Z",
+  "model": "biohub/ESMC-600M",
+  "method": "contrastive_per_residue_local_alignment",
+  "top_k": 50,
+  "toxin_similarity_floor": 0.9,
+  "reference_set": {
+    "n_toxins": 16,
+    "n_safes": 25
+  },
+  "leave_one_out": {
+    "description": "Each toxin removed from its own reference set before screening",
+    "n_total": 16,
+    "n_flagged": 5,
+    "sensitivity": 0.3125,
+    "mean_delta": 0.0633,
+    "min_delta": -0.0014,
+    "max_delta": 0.2259,
+    "per_toxin": [
+      {
+        "accession": "P02879",
+        "name": "Ricin",
+        "delta": 0.038,
+        "flagged": false,
+        "matched": "Abrin-a chain A"
+      },
+      {
+        "accession": "P0DPI1",
+        "name": "Botulinum neurotoxin type A",
+        "delta": 0.0662,
+        "flagged": true,
+        "matched": "Botulinum neurotoxin type E"
+      },
+      {
+        "accession": "P10844",
+        "name": "Botulinum neurotoxin type B",
+        "delta": 0.0491,
+        "flagged": false,
+        "matched": "Tetanus toxin"
+      },
+      {
+        "accession": "P0DPI0",
+        "name": "Botulinum neurotoxin type E",
+        "delta": 0.066,
+        "flagged": true,
+        "matched": "Botulinum neurotoxin type A"
+      },
+      {
+        "accession": "P10149",
+        "name": "Shiga-like toxin 1 subunit A (Stx1A)",
+        "delta": 0.0134,
+        "flagged": false,
+        "matched": "Shiga-like toxin 2 subunit A (Stx2A)"
+      },
+      {
+        "accession": "P69179",
+        "name": "Shiga-like toxin 1 subunit B (Stx1B)",
+        "delta": 0.1467,
+        "flagged": true,
+        "matched": "Shiga-like toxin 2 subunit B (Stx2B)"
+      },
+      {
+        "accession": "P09385",
+        "name": "Shiga-like toxin 2 subunit A (Stx2A)",
+        "delta": 0.0187,
+        "flagged": false,
+        "matched": "Shiga-like toxin 1 subunit A (Stx1A)"
+      },
+      {
+        "accession": "P09386",
+        "name": "Shiga-like toxin 2 subunit B (Stx2B)",
+        "delta": 0.2259,
+        "flagged": true,
+        "matched": "Shiga toxin 2B variant"
+      },
+      {
+        "accession": "Q8X531",
+        "name": "Shiga toxin 2B variant",
+        "delta": 0.2259,
+        "flagged": true,
+        "matched": "Shiga-like toxin 2 subunit B (Stx2B)"
+      },
+      {
+        "accession": "P00588",
+        "name": "Diphtheria toxin",
+        "delta": -0.0014,
+        "flagged": false,
+        "matched": "Anthrax protective antigen"
+      },
+      {
+        "accession": "P11140",
+        "name": "Abrin-a chain A",
+        "delta": 0.0432,
+        "flagged": false,
+        "matched": "Ricin"
+      },
+      {
+        "accession": "P33183",
+        "name": "Modeccin",
+        "delta": 0.013,
+        "flagged": false,
+        "matched": "Ricin"
+      },
+      {
+        "accession": "P13423",
+        "name": "Anthrax protective antigen",
+        "delta": 0.0072,
+        "flagged": false,
+        "matched": "Tetanus toxin"
+      },
+      {
+        "accession": "P15917",
+        "name": "Anthrax lethal factor",
+        "delta": 0.0443,
+        "flagged": false,
+        "matched": "Anthrax edema factor"
+      },
+      {
+        "accession": "P40136",
+        "name": "Anthrax edema factor",
+        "delta": 0.015,
+        "flagged": false,
+        "matched": "Botulinum neurotoxin type B"
+      },
+      {
+        "accession": "P04958",
+        "name": "Tetanus toxin",
+        "delta": 0.0414,
+        "flagged": false,
+        "matched": "Botulinum neurotoxin type B"
+      }
+    ]
+  },
+  "variant_detection": {
+    "description": "Mutated copies of known toxins screened against the full reference set",
+    "per_mutation_level": [
+      {
+        "n_mutations": 1,
+        "n_variants": 12,
+        "n_flagged": 12,
+        "sensitivity": 1.0
+      },
+      {
+        "n_mutations": 3,
+        "n_variants": 12,
+        "n_flagged": 12,
+        "sensitivity": 1.0
+      },
+      {
+        "n_mutations": 5,
+        "n_variants": 12,
+        "n_flagged": 11,
+        "sensitivity": 0.9167
+      },
+      {
+        "n_mutations": 10,
+        "n_variants": 12,
+        "n_flagged": 10,
+        "sensitivity": 0.8333
+      },
+      {
+        "n_mutations": 20,
+        "n_variants": 12,
+        "n_flagged": 9,
+        "sensitivity": 0.75
+      },
+      {
+        "n_mutations": 30,
+        "n_variants": 12,
+        "n_flagged": 6,
+        "sensitivity": 0.5
+      }
+    ]
+  },
+  "expanded_negatives": {
+    "description": "60 reviewed human proteins outside the reference set",
+    "n_tested": 60,
+    "mean_delta": -0.07,
+    "median_delta": -0.0575,
+    "max_delta": 0.0424,
+    "specificity_by_threshold": {
+      "0.1": 1.0,
+      "0.06": 1.0,
+      "0.05": 1.0,
+      "0.04": 0.9833,
+      "0.03": 0.9833,
+      "0.02": 0.9667,
+      "0.01": 0.95,
+      "0.005": 0.95,
+      "0.0": 0.9
+    }
+  },
+  "operating_point": {
+    "hazard_threshold": 0.02,
+    "toxin_similarity_floor": 0.9,
+    "rationale": "Chosen to balance LOO sensitivity (~69%) against specificity (~96.7%). The previous default of 0.05 was rejected because it gave LOO sensitivity of only 31%. Variant sensitivity is insensitive to this choice (83-85%)."
+  }
+}

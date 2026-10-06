@@ -72,9 +72,9 @@
     <div class="ribbon-block divergence-block">
       <div class="ribbon-head">
         <span class="ribbon-label">Divergence &middot; toxin &minus; safe</span>
-        <span class="ribbon-hint">above centre = toxin wins &middot; below = safe wins</span>
+        <span class="ribbon-hint">dashed line = mean &middot; above = toxin wins at that residue</span>
       </div>
-      <canvas id="diverge-ribbon" class="ribbon ribbon-diverge" height="48"></canvas>
+      <canvas id="diverge-ribbon" class="ribbon ribbon-diverge" height="56"></canvas>
     </div>
 
     <div class="ribbon-block">
@@ -94,18 +94,29 @@
         <div class="verdict-word" id="verdict-word">-</div>
         <div class="verdict-line" id="verdict-line">-</div>
       </div>
+      <button class="btn-copy" id="btn-copy" title="Copy result JSON">Copy JSON</button>
     </div>
 
     <div class="gates">
       <div class="gate" id="gate-delta">
-        <span class="gate-dot"></span>
-        <span class="gate-name">&Delta; &ge; <em id="thr-delta">0.05</em></span>
-        <span class="gate-val" id="gate-delta-val">-</span>
+        <div class="gate-row">
+          <span class="gate-name">&Delta; &ge; <em id="thr-delta">0.05</em></span>
+          <span class="gate-val">-</span>
+        </div>
+        <div class="gate-bar">
+          <div class="gate-fill"></div>
+          <div class="gate-threshold"></div>
+        </div>
       </div>
       <div class="gate" id="gate-floor">
-        <span class="gate-dot"></span>
-        <span class="gate-name">toxin &ge; <em id="thr-floor">0.90</em></span>
-        <span class="gate-val" id="gate-floor-val">-</span>
+        <div class="gate-row">
+          <span class="gate-name">toxin &ge; <em id="thr-floor">0.90</em></span>
+          <span class="gate-val">-</span>
+        </div>
+        <div class="gate-bar">
+          <div class="gate-fill"></div>
+          <div class="gate-threshold"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -150,6 +161,7 @@
       <div class="readout">
         <div class="readout-tier" id="out-tier">-</div>
         <div class="readout-premium" id="out-premium">-</div>
+        <div class="readout-provenance" id="out-provenance">-</div>
         <div class="readout-meta">
           <span>risk <em id="out-risk">-</em></span>
           <span>loading <em id="out-loading">-</em></span>
