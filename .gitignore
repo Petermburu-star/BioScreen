@@ -6,13 +6,19 @@
 # Python
 __pycache__/
 *.pyc
+.pytest_cache/
 .ipynb_checkpoints/
 
-# Data (large files)
+# External cloned repos (re-clonable, 100+ MB)
+external/
+
+# Data (regenerable, large)
 data/raw/*
 !data/raw/.gitkeep
 data/models/*
 !data/models/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 
 # Notebooks
 *.nbconvert.ipynb
@@ -20,19 +26,6 @@ data/models/*
 # OS
 .DS_Store
 
-# Model outputs and cached data (regenerable, large)
-*.pkl
-*.pickle
-*.pt
-*.safetensors
-*.bin
-data/processed/*.pkl
-data/processed/*.pt
-data/processed/*.safetensors
-
-# Keep small JSON outputs (validation results)
-!data/processed/*.json
-
-# Hugging Face cache artifacts that leak into data/
+# Stray HuggingFace artifacts
 data/*.json
-!data/processed/*.json
+data/*.pdb
