@@ -1,8 +1,8 @@
 """
 BioScreen Studio — Flask backend.
 
-Loads ESM-C and the reference embeddings once, then serves the Studio UI.
-Every result is computed live; nothing is hardcoded.
+Loads ESM-C, the reference embeddings, and the fingerprint pickle once,
+then serves the Studio UI. Every result is computed live.
 """
 import os
 import threading
@@ -20,11 +20,18 @@ except ImportError:
 ROOT = Path(__file__).resolve().parents[3]
 
 from bioscreen.screening_v2 import BioScreenV2, _local_alignment
+from bioscreen.fingerprint import FingerprintEngine
 from bioscreen.pricing import ActuarialPricer, OrderRisk
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
-_engine = {"screener": None, "pricer": None, "status": "idle", "error": None}
+_engine = {
+    "screener": None,
+    "fingerprinter": None,
+    "pricer": None,
+    "status": "idle",
+    "error": None,
+}
 _lock = threading.Lock()
 
 
@@ -43,8 +50,21 @@ def _load_engine():
                 "BIOSCREEN_REF_PATH",
                 ROOT / "data" / "processed" / "per_residue_embeddings.pkl",
             ))
+            fp_path = Path(os.environ.get(
+                "BIOSCREEN_FP_PATH",
+                ROOT / "data" / "processed" / "toxin_fingerprints.pkl",
+            ))
+
             if not ref_path.exists():
-                raise FileNotFoundError(f"Reference pickle not found: {ref_path}")
+                raise FileNotFoundError(
+                    f"Reference pickle missing: {ref_path}\n"
+                    f"Run: python scripts/build_references.py"
+                )
+            if not fp_path.exists():
+                raise FileNotFoundError(
+                    f"Fingerprint pickle missing: {fp_path}\n"
+                    f"Run: python scripts/build_fingerprints.py"
+                )
 
             model = EsmcForMaskedLM.from_pretrained("biohub/ESMC-600M")
             model.eval()
@@ -58,6 +78,11 @@ def _load_engine():
                 top_k=50,
                 toxin_similarity_floor=0.90,
             )
+            _engine["fingerprinter"] = FingerprintEngine(
+                model=model,
+                tokenizer=tokenizer,
+                fingerprint_path=fp_path,
+            )
             _engine["pricer"] = ActuarialPricer()
             _engine["status"] = "ready"
         except Exception as e:
@@ -65,6 +90,10 @@ def _load_engine():
             _engine["error"] = str(e)
             raise
 
+
+# ----------------------------------------------------------------------
+# Routes
+# ----------------------------------------------------------------------
 
 @app.route("/")
 def index():
@@ -74,11 +103,13 @@ def index():
 @app.route("/api/status")
 def api_status():
     s = _engine["screener"]
+    f = _engine["fingerprinter"]
     return jsonify({
         "status": _engine["status"],
         "error": _engine["error"],
         "toxins": len(s.toxin_accessions) if s else 0,
         "safes": len(s.safe_accessions) if s else 0,
+        "fingerprints": len(f.fingerprints) if f else 0,
     })
 
 
@@ -100,6 +131,9 @@ def api_screen():
         sequence = sequence[:2048]
 
     s = _engine["screener"]
+    f = _engine["fingerprinter"]
+
+    # --- Contrastive screening (existing method) ---
     query_emb = s.embed_per_residue(sequence)
 
     toxin_scores = np.array([
@@ -125,14 +159,18 @@ def api_screen():
     gate_floor = best_toxin_score >= s.toxin_similarity_floor
     flagged = bool(gate_delta and gate_floor)
 
-    def profile(q_emb, ref_emb):
-        q = q_emb / (np.linalg.norm(q_emb, axis=1, keepdims=True) + 1e-8)
-        r = ref_emb / (np.linalg.norm(ref_emb, axis=1, keepdims=True) + 1e-8)
-        sim = q @ r.T
-        return sim.max(axis=1).astype(float).tolist()
+    # --- Fingerprint screening (new method) ---
+    fp_result = f.screen(sequence)
+
+    # --- Per-residue profiles for ribbons ---
+    def profile(q, ref):
+        qn = q / (np.linalg.norm(q, axis=1, keepdims=True) + 1e-8)
+        rn = ref / (np.linalg.norm(ref, axis=1, keepdims=True) + 1e-8)
+        return (qn @ rn.T).max(axis=1).astype(float).tolist()
 
     return jsonify({
         "sequence_length": len(sequence),
+        # Contrastive
         "best_toxin_score": round(best_toxin_score, 4),
         "best_toxin_name": best_toxin_name,
         "best_toxin_acc": best_toxin_acc,
@@ -147,6 +185,8 @@ def api_screen():
         "threshold_floor": s.toxin_similarity_floor,
         "toxin_profile": profile(query_emb, s.toxin_embeddings[best_toxin_acc]),
         "safe_profile": profile(query_emb, s.safe_embeddings[best_safe_acc]),
+        # Fingerprint
+        **fp_result,
     })
 
 

@@ -28,7 +28,6 @@
       <span class="panel-title">Query</span>
       <span class="panel-hint">paste a protein sequence, or load a live example from UniProt</span>
     </div>
-
     <div class="seq-input-wrap">
       <textarea id="seq-input" spellcheck="false" autocomplete="off"
         placeholder="MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQ..."></textarea>
@@ -37,7 +36,6 @@
         <span id="seq-comp">-</span>
       </div>
     </div>
-
     <div class="examples">
       <span class="examples-label">Load from UniProt:</span>
       <button class="chip" data-ex="ricin">Ricin</button>
@@ -47,7 +45,6 @@
       <button class="chip" data-ex="insulin">Insulin</button>
       <button class="chip" data-ex="lysozyme">Lysozyme</button>
     </div>
-
     <button class="btn-primary" id="btn-screen" disabled>
       <span class="btn-icon">&#9656;</span> Screen
     </button>
@@ -59,7 +56,6 @@
       <span class="panel-title">Residue alignment map</span>
       <span class="panel-hint">per-position match strength against the winning reference</span>
     </div>
-
     <div class="ribbon-block">
       <div class="ribbon-head">
         <span class="ribbon-label toxin">Best toxin match</span>
@@ -68,15 +64,13 @@
       </div>
       <canvas id="toxin-ribbon" class="ribbon" height="64"></canvas>
     </div>
-
     <div class="ribbon-block divergence-block">
       <div class="ribbon-head">
         <span class="ribbon-label">Divergence &middot; toxin &minus; safe</span>
-        <span class="ribbon-hint">dashed line = mean &middot; above = toxin wins at that residue</span>
+        <span class="ribbon-hint">above centre = toxin wins &middot; below = safe wins</span>
       </div>
       <canvas id="diverge-ribbon" class="ribbon ribbon-diverge" height="56"></canvas>
     </div>
-
     <div class="ribbon-block">
       <div class="ribbon-head">
         <span class="ribbon-label safe">Best safe match</span>
@@ -84,6 +78,36 @@
         <span class="ribbon-score" id="safe-score">-</span>
       </div>
       <canvas id="safe-ribbon" class="ribbon" height="64"></canvas>
+    </div>
+  </section>
+
+  <section class="panel fingerprint-panel hidden" id="fingerprint-panel">
+    <div class="panel-head">
+      <span class="panel-num">03</span>
+      <span class="panel-title">Ordered catalytic fingerprint</span>
+      <span class="panel-hint">detects AI-designed variants that BLAST cannot see</span>
+    </div>
+    <div class="fp-hero" id="fp-hero">
+      <div class="fp-glyph" id="fp-glyph">-</div>
+      <div class="fp-copy">
+        <div class="fp-label">Best fingerprint match</div>
+        <div class="fp-name" id="fp-name">-</div>
+        <div class="fp-score" id="fp-score">-</div>
+      </div>
+      <div class="fp-meters">
+        <div class="fp-meter">
+          <span class="fp-meter-label">top-20 similarity</span>
+          <span class="fp-meter-val" id="fp-top-k">-</span>
+        </div>
+        <div class="fp-meter">
+          <span class="fp-meter-label">order consistency</span>
+          <span class="fp-meter-val" id="fp-order">-</span>
+        </div>
+      </div>
+    </div>
+    <div class="fp-rank">
+      <div class="fp-rank-head">Top fingerprints for this query</div>
+      <div id="fp-ranking"></div>
     </div>
   </section>
 
@@ -96,7 +120,6 @@
       </div>
       <button class="btn-copy" id="btn-copy" title="Copy result JSON">Copy JSON</button>
     </div>
-
     <div class="gates">
       <div class="gate" id="gate-delta">
         <div class="gate-row">
@@ -123,11 +146,10 @@
 
   <section class="panel pricing-panel hidden" id="pricing-panel">
     <div class="panel-head">
-      <span class="panel-num">03</span>
+      <span class="panel-num">04</span>
       <span class="panel-title">Actuarial pricing</span>
       <span class="panel-hint">the same signal, converted into a risk-priced premium</span>
     </div>
-
     <div class="pricing-grid">
       <div class="context">
         <label class="field">
@@ -157,7 +179,6 @@
           <input type="number" id="in-cost" value="2000" min="1">
         </label>
       </div>
-
       <div class="readout">
         <div class="readout-tier" id="out-tier">-</div>
         <div class="readout-premium" id="out-premium">-</div>

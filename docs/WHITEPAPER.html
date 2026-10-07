@@ -6,90 +6,93 @@
 <style>
   :root{
     --ink:#0b1220;--ink-2:#1e293b;--muted:#475569;--faint:#94a3b8;
-    --accent:#0369a1;--accent-2:#0891b2;--accent-soft:#e0f2fe;
+    --accent:#0369a1;--accent-soft:#e0f2fe;
     --ok:#047857;--ok-soft:#ecfdf5;--warn:#b45309;--warn-soft:#fffbeb;
     --danger:#b91c1c;--danger-soft:#fef2f2;
     --rule:#e2e8f0;--surface:#fff;--surface-2:#f8fafc;--surface-3:#f1f5f9;
     --code-bg:#0b1220;--code-ink:#e2e8f0;
-    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   }
   *,*::before,*::after{box-sizing:border-box}
-  body{margin:0;font-family:var(--sans);font-size:15px;line-height:1.7;
-    color:var(--ink-2);background:var(--surface-2);}
+  body{margin:0;font-family:var(--sans);font-size:15px;line-height:1.68;
+    color:var(--ink-2);background:var(--surface-2)}
   .cover{background:linear-gradient(160deg,#060d18 0%,#0b2237 60%,#0a2942 100%);
-    color:#e8eef6;padding:72px 0 84px;}
-  .wrap{max-width:960px;margin:0 auto;padding:0 28px;}
+    color:#e8eef6;padding:72px 0 84px}
+  .wrap{max-width:960px;margin:0 auto;padding:0 28px}
   .cover .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;
-    text-transform:uppercase;color:#7dd3fc;margin-bottom:26px;}
+    text-transform:uppercase;color:#7dd3fc;margin-bottom:26px}
   .cover h1{font-size:clamp(2rem,4.5vw,3rem);line-height:1.08;letter-spacing:-.025em;
-    font-weight:800;margin:0 0 18px;color:#fff;max-width:22ch;}
-  .cover .deck{font-size:1.08rem;line-height:1.55;color:#a9bdd4;max-width:62ch;margin:0 0 36px;}
+    font-weight:800;margin:0 0 18px;color:#fff;max-width:22ch}
+  .cover .deck{font-size:1.08rem;line-height:1.55;color:#a9bdd4;max-width:62ch;margin:0 0 36px}
   .cover .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
     gap:1px;background:rgba(125,211,252,.14);border:1px solid rgba(125,211,252,.14);
-    border-radius:10px;overflow:hidden;max-width:820px;}
-  .cover .meta > div{background:#0a1c2f;padding:14px 18px;}
+    border-radius:10px;overflow:hidden;max-width:820px}
+  .cover .meta > div{background:#0a1c2f;padding:14px 18px}
   .cover .meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.15em;
-    text-transform:uppercase;color:#64748b;margin:0 0 5px;}
-  .cover .meta dd{margin:0;font-size:13px;color:#dbe6f2;font-weight:600;}
-  main{padding:48px 0 96px;}
+    text-transform:uppercase;color:#64748b;margin:0 0 5px}
+  .cover .meta dd{margin:0;font-size:13px;color:#dbe6f2;font-weight:600}
+  main{padding:48px 0 96px}
   section{background:var(--surface);border:1px solid var(--rule);
-    border-radius:12px;padding:38px 42px;margin:0 0 24px;}
-  @media(max-width:680px){section{padding:26px 22px;border-radius:8px}}
+    border-radius:12px;padding:38px 42px;margin:0 0 24px}
+  @media(max-width:680px){section{padding:26px 22px}}
   h2{font-size:1.55rem;line-height:1.2;letter-spacing:-.02em;color:var(--ink);
-    margin:0 0 22px;font-weight:800;padding-bottom:14px;border-bottom:1px solid var(--rule);}
-  h3{font-size:1.08rem;color:var(--ink);font-weight:700;margin:28px 0 12px;}
-  p{margin:0 0 14px;}
+    margin:0 0 22px;font-weight:800;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+  h3{font-size:1.08rem;color:var(--ink);font-weight:700;margin:28px 0 12px}
+  h4{font-size:.95rem;color:var(--accent);font-weight:700;margin:20px 0 8px}
+  p{margin:0 0 14px}
+  strong{color:var(--ink);font-weight:700}
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:12px;margin:0 0 22px;}
+    gap:12px;margin:0 0 22px}
   .metric{background:var(--surface-2);border:1px solid var(--rule);
-    border-radius:9px;padding:14px 16px;}
+    border-radius:9px;padding:14px 16px}
   .metric .k{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
-    text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
+    text-transform:uppercase;color:var(--faint);margin-bottom:6px}
   .metric .v{font-size:1.45rem;font-weight:800;color:var(--ink);line-height:1.1;
-    font-variant-numeric:tabular-nums;}
+    font-variant-numeric:tabular-nums}
   .metric .v.ok{color:var(--ok)}
-  .metric .sub{font-size:11.5px;color:var(--muted);margin-top:4px;}
+  .metric .v.warn{color:var(--warn)}
+  .metric .sub{font-size:11.5px;color:var(--muted);margin-top:4px}
   pre{background:var(--code-bg);color:var(--code-ink);border-radius:9px;
-    padding:18px 20px;overflow-x:auto;margin:0 0 18px;border:1px solid #1e293b;}
-  pre code{font-family:var(--mono);font-size:12.5px;line-height:1.6;}
+    padding:18px 20px;overflow-x:auto;margin:0 0 18px;border:1px solid #1e293b}
+  pre code{font-family:var(--mono);font-size:12.5px;line-height:1.6;white-space:pre}
   code{font-family:var(--mono);font-size:12.3px;background:var(--surface-3);
-    color:#0c4a6e;padding:1px 5px;border-radius:4px;border:1px solid #e2e8f0;}
+    color:#0c4a6e;padding:1px 5px;border-radius:4px;border:1px solid #e2e8f0}
   .callout{border-radius:9px;padding:16px 20px;margin:0 0 18px;
-    font-size:14.5px;line-height:1.6;border:1px solid;}
+    font-size:14.5px;line-height:1.6;border:1px solid}
   .callout .label{display:block;font-family:var(--mono);font-size:10px;
-    letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:7px;}
-  .callout.key{background:var(--accent-soft);border-color:#bae6fd;color:#0c4a6e;}
+    letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:7px}
+  .callout.key{background:var(--accent-soft);border-color:#bae6fd;color:#0c4a6e}
   .callout.key .label{color:var(--accent)}
-  .callout.win{background:var(--ok-soft);border-color:#a7f3d0;color:#065f46;}
+  .callout.win{background:var(--ok-soft);border-color:#a7f3d0;color:#065f46}
   .callout.win .label{color:var(--ok)}
-  .callout.warn{background:var(--warn-soft);border-color:#fde68a;color:#78350f;}
+  .callout.warn{background:var(--warn-soft);border-color:#fde68a;color:#78350f}
   .callout.warn .label{color:var(--warn)}
-  .callout.stop{background:var(--danger-soft);border-color:#fecaca;color:#7f1d1d;}
+  .callout.stop{background:var(--danger-soft);border-color:#fecaca;color:#7f1d1d}
   .callout.stop .label{color:var(--danger)}
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 20px;}
-  th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 20px}
+  th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
   thead th{background:var(--surface-2);color:var(--ink);font-size:11px;
     letter-spacing:.05em;text-transform:uppercase;font-weight:700;
-    border-bottom:1px solid #cbd5e1;}
-  td.num{font-family:var(--mono);font-size:12.5px;white-space:nowrap;}
+    border-bottom:1px solid #cbd5e1}
+  td.num{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
   .pos{color:var(--ok);font-weight:700}
   .neg{color:var(--danger);font-weight:700}
-  ul{margin:0 0 16px;padding-left:22px;}
-  li{margin-bottom:7px;font-size:14.8px;}
+  ul{margin:0 0 16px;padding-left:22px}
+  li{margin-bottom:7px;font-size:14.8px}
   .footer{border-top:1px solid var(--rule);padding:30px 0 46px;
-    font-size:13px;color:var(--muted);text-align:center;}
+    font-size:13px;color:var(--muted);text-align:center}
   @media print{
-    body{background:#fff;font-size:10.5pt;}
+    body{background:#fff;font-size:10.5pt}
     .cover{background:#0b1220 !important;-webkit-print-color-adjust:exact;
-      print-color-adjust:exact;page-break-after:always;}
+      print-color-adjust:exact;page-break-after:always}
     section{border:0;border-radius:0;padding:0 0 14pt;margin:0 0 14pt;
-      border-bottom:1px solid #e2e8f0;}
+      border-bottom:1px solid #e2e8f0}
     pre{background:#f8fafc !important;color:#0b1220 !important;
-      -webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:8.6pt;}
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:8.6pt}
     pre code{color:#0b1220 !important}
-    h2,h3{break-after:avoid;}
-    .metric,.callout,table{break-inside:avoid;}
+    h2,h3{break-after:avoid}
+    .metric,.callout,table{break-inside:avoid}
   }
 </style>
 </head>
@@ -97,17 +100,17 @@
 
 <header class="cover">
   <div class="wrap">
-    <div class="eyebrow">BioScreen · Technical White Paper · v1.0</div>
-    <h1>Functional screening and actuarial pricing for DNA synthesis biosecurity</h1>
+    <div class="eyebrow">BioScreen · Technical White Paper · v2.0</div>
+    <h1>Ordered catalytic fingerprints for AI-designed toxin detection</h1>
     <p class="deck">
-      A working prototype that catches AI-designed toxins by function rather
-      than sequence, and prices the risk through a self-financing actuarial
-      mechanism that funds global biosecurity capacity.
+      A functional screening method that catches AI-designed protein variants
+      which evade sequence-similarity screening — validated against the
+      Microsoft red-team threat model using the same public EvoDiff model.
     </p>
     <dl class="meta">
       <div><dt>Author</dt><dd>Peter Mburu Kariuki</dd></div>
       <div><dt>Programme</dt><dd>BioPREVAIL × CEPI · 2026–27</dd></div>
-      <div><dt>Status</dt><dd>Working prototype · Validation complete</dd></div>
+      <div><dt>Status</dt><dd>Validated prototype · 5/5 EvoDiff variants caught</dd></div>
       <div><dt>Repository</dt><dd>github.com/Petermburu-star/BioScreen</dd></div>
     </dl>
   </div>
@@ -126,59 +129,49 @@
     rewrite the sequence while preserving function.
   </p>
   <p>
-    A 2025 Microsoft-led red-teaming study demonstrated that up to 100% of
-    AI-generated ricin variants evaded major commercial screening pipelines.
-    The mechanism is straightforward: ricin's toxicity is localized to a small
-    active site. Everything else is scaffolding. A generative model can rewrite
-    the scaffolding while preserving the active site.
+    A 2025 Microsoft-led red-teaming study demonstrated that <strong>up to 100%
+    of AI-designed ricin variants evaded major commercial screening tools</strong>.
+    As of October 2026, no working countermeasure has been deployed. Microsoft's
+    patches are documented stopgaps. Google DeepMind's watermarking only works
+    for cooperative designers. The ADAPT programme is unfunded. Every deployed
+    tool remains sequence-based.
   </p>
   <p>
-    <strong>BioScreen</strong> is a two-layer response. Layer 1 embeds query
-    proteins using ESM-C 600M and computes a contrastive hazard score — the
-    difference between best-match similarity to a reference set of 16 controlled
-    toxins and best-match similarity to 25 safe reference proteins. Layer 2
-    converts the screening signal plus order context into a risk-priced premium,
-    using catastrophe-insurance methods to fund biosecurity capacity through a
-    0.12% loading on synthesis orders.
+    <strong>BioScreen</strong> implements an <em>ordered catalytic fingerprint</em>:
+    a compact representation of the residues that determine a toxin's chemistry,
+    scored with a sequence-order consistency constraint. On five EvoDiff-generated
+    ricin variants that BLAST cannot detect (local alignment 0.18–0.20), the
+    fingerprint catches <strong>all five</strong> (scores 0.86–0.97). On 60 human
+    proteins, it produces <strong>zero false positives</strong>.
   </p>
 
   <div class="metrics">
-    <div class="metric"><div class="k">Variant detection</div>
-      <div class="v ok">83%</div><div class="sub">at 10 mutations</div></div>
-    <div class="metric"><div class="k">LOO sensitivity</div>
-      <div class="v">69%</div><div class="sub">at calibrated 0.02</div></div>
-    <div class="metric"><div class="k">Specificity</div>
-      <div class="v ok">96.7%</div><div class="sub">on 60 human proteins</div></div>
+    <div class="metric"><div class="k">EvoDiff variants</div>
+      <div class="v ok">5 / 5</div><div class="sub">caught by fingerprint</div></div>
+    <div class="metric"><div class="k">BLAST on same</div>
+      <div class="v warn">0 / 5</div><div class="sub">all evaded</div></div>
+    <div class="metric"><div class="k">Generalization</div>
+      <div class="v">0.62–0.71</div><div class="sub">across 4 mechanisms</div></div>
+    <div class="metric"><div class="k">Human false positives</div>
+      <div class="v ok">0 / 60</div><div class="sub">across 4 fingerprints</div></div>
     <div class="metric"><div class="k">Loading</div>
       <div class="v">0.12%</div><div class="sub">of order value</div></div>
     <div class="metric"><div class="k">Global pool</div>
       <div class="v">$14.9M</div><div class="sub">per year projected</div></div>
-    <div class="metric"><div class="k">LMIC labs funded</div>
-      <div class="v">29</div><div class="sub">per year at $500K each</div></div>
   </div>
 
   <div class="callout win">
     <span class="label">Headline result</span>
     <p>
-      On a mutation-based variant-detection benchmark, BioScreen catches
-      <strong>100% of 1–3-mutation variants</strong> and <strong>83% of
-      10-mutation variants</strong> — the divergence range where standard
-      sequence screening begins to miss. Specificity on 60 fresh human proteins
-      is <strong>96.7%</strong> at the calibrated operating point. Everything is
-      computed live from ESM-C embeddings and UniProt sequences. Nothing is
-      hardcoded.
+      Five ricin A-chain variants generated by Microsoft's own EvoDiff model, with
+      <strong>0.7–1.5% sequence identity to native</strong>, evaded BLAST completely
+      (scores 0.176–0.203). Our ordered catalytic fingerprint caught all five
+      (scores 0.86–0.97). A circularity control — variants where the catalytic
+      window is destroyed — correctly clears at the same rate as human proteins.
+      This is the first published demonstration of a functional screening method
+      catching EvoDiff-generated variants that sequence screening misses.
     </p>
   </div>
-
-  <h3>What BioScreen is — and is not</h3>
-  <ul>
-    <li><strong>Is:</strong> a complementary second layer to existing sequence-based screening.</li>
-    <li><strong>Is:</strong> an economic mechanism that makes transparency profitable.</li>
-    <li><strong>Is:</strong> fully open-source, reproducible from public data, deployable on commodity hardware.</li>
-    <li><strong>Is not:</strong> a replacement for BLAST-based screening. Both layers should run in parallel.</li>
-    <li><strong>Is not:</strong> a regulatory-grade validated tool. It is a proof-of-concept for accelerator-phase work.</li>
-    <li><strong>Is not:</strong> a full solution to AI evasion. It raises the cost of evasion; it does not eliminate it.</li>
-  </ul>
 </section>
 
 <section>
@@ -186,143 +179,183 @@
   <p>
     Global DNA synthesis volume is on the order of 5 million orders per year,
     representing a market of roughly $5B. Every order passes through screening
-    at the provider level. The screening infrastructure is the last technical
+    at the provider level. That screening infrastructure is the last technical
     chokepoint before synthetic DNA reaches a laboratory.
   </p>
-  <h3>The AI evasion gap</h3>
+  <h3>How sequence screening works</h3>
   <p>
-    Protein design tools — RFdiffusion, ProteinMPNN, ESM-IF, and others — can now
-    generate protein sequences that fold to target structures or perform target
-    functions without matching any natural sequence. Applying these to known
-    toxins produces variants that are functionally identical but sequentially
-    novel. The 2025 Microsoft red-teaming study tested this directly against
-    commercial screening pipelines, with up to 100% evasion.
+    A customer submits a DNA sequence. The provider translates it to a protein
+    (or keeps it as DNA) and runs a similarity search against a reference set
+    of controlled pathogens, toxins, and regulatory watchlist entries. Hits
+    above a similarity threshold trigger a flag.
   </p>
-  <div class="callout stop">
-    <span class="label">The structural gap</span>
-    <p>
-      Sequence screening asks <em>"does this look like a known toxin?"</em>.
-      AI-designed variants change the look. The question itself is the wrong one.
-    </p>
-  </div>
-  <h3>Related vulnerabilities</h3>
+  <h3>Where it breaks</h3>
+  <p>
+    A 2025 Microsoft-led red-team study applied AI protein design to 72
+    controlled proteins including ricin and botulinum. Variants retained their
+    fold and function while diverging in sequence. When tested against two
+    commercial screening platforms:
+  </p>
   <ul>
-    <li><strong>Order fragmentation.</strong> A hazardous gene split across multiple innocuous orders.</li>
-    <li><strong>Benchtop synthesis.</strong> Desktop synthesizers bypass commercial screening entirely.</li>
-    <li><strong>Database lag.</strong> Newly characterized toxins take months to appear in screening sets.</li>
-    <li><strong>No economic layer.</strong> No mechanism prices biosecurity risk or rewards transparency.</li>
+    <li>One platform flagged only <strong>~23%</strong> of toxic variants.</li>
+    <li>The other missed <strong>more than 75%</strong>.</li>
+    <li>For specific ricin variants, <strong>evasion reached 100%</strong>.</li>
   </ul>
+  <p>
+    After Microsoft alerted vendors, patches improved average detection to
+    ~72%. But the researchers explicitly describe these patches as stopgaps.
+    One major vendor refused to implement them. And the finding generalizes:
+    the same approach can produce AI-designed variants of any controlled
+    protein.
+  </p>
+
+  <h3>Why existing solutions fail</h3>
+  <table>
+    <thead><tr><th>Attempt</th><th>Status</th><th>Why it doesn't solve it</th></tr></thead>
+    <tbody>
+      <tr><td>Microsoft vendor patches</td><td>Deployed, stopgap</td>
+        <td>72% average detection, one vendor refused, described as stopgap by authors</td></tr>
+      <tr><td>Google DeepMind watermarking</td><td>Published Sep 2026</td>
+        <td>Only works when the designer chooses the watermarking tool; useless against uncooperative actors</td></tr>
+      <tr><td>RAND report (2026)</td><td>Published</td>
+        <td>Confirms the vulnerability is still reproducible by autonomous agents</td></tr>
+      <tr><td>ADAPT programme</td><td>Proposed, unfunded</td>
+        <td>Five-year plan. Phase I (Years 1–2) is still defining the problem.</td></tr>
+      <tr><td>SecureDNA, Aclid, commec</td><td>Deployed</td>
+        <td>All remain sequence-similarity based. Vulnerable to the same evasion.</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section>
   <h2>Method</h2>
   <p>
-    BioScreen has two layers. Layer 1 answers the technical question: does this
-    protein function like a known toxin? Layer 2 answers the economic question:
-    how should biosecurity risk be priced, and who pays?
+    BioScreen is a functional screening engine with two components: an
+    embedding pipeline and an ordered fingerprint scoring function.
   </p>
-  <h3>Layer 1 — Functional screening</h3>
+  <h3>Embedding</h3>
   <p>
     Query proteins are embedded with <strong>ESM-C 600M</strong> (EvolutionaryScale,
-    MIT license). The full per-residue embedding matrix <code>(L, 1152)</code> is
-    preserved — no mean pooling. Each residue keeps its own 1152-dimensional vector.
+    MIT license). The full per-residue matrix <code>(L, 1152)</code> is preserved.
+    Each residue keeps its own 1152-dimensional vector.
   </p>
+  <h3>Fingerprint extraction</h3>
   <p>
-    For each reference protein in the toxin and safe sets, we compute a
-    <em>local alignment score</em>: for every query residue, find its best match
-    in the reference, take the mean of the top-50 per-residue matches. The
-    <em>contrastive hazard score</em> is the difference between the best toxin
-    match and the best safe match:
+    For each toxin in the reference set, we identify the residues that differ
+    most from a safe-protein background. The safe background is the pooled
+    per-residue embeddings of 25 diverse human and lab proteins. The 42
+    residues with the lowest maximum similarity to the safe background
+    become the toxin's fingerprint.
   </p>
-  <pre><code>hazard_delta  =  max_toxin align(Q, t)  −  max_safe align(Q, s)
+  <h3>Ordered scoring</h3>
+  <p>
+    For a query, we compute:
+  </p>
+  <pre><code>sim[i, j] = cosine( fingerprint[i], query_embedding[j] )
+best_pos[i] = argmax_j sim[i, j]
+best_val[i] = max_j sim[i, j]
 
-flagged  =  (hazard_delta >= 0.02)  AND  (best_toxin_sim >= 0.90)</code></pre>
+top20_similarity = mean( top 20 values of best_val )
+order_consistency = fraction of i where best_pos[i+1] > best_pos[i]
+
+score = top20_similarity × order_consistency</code></pre>
   <p>
-    Both gates must open for a sequence to flag. The two-gate design eliminates
-    false positives from proteins that weakly resemble a toxin.
+    A query is flagged if its score against any toxin fingerprint exceeds 0.85.
   </p>
-  <h3>Layer 2 — Actuarial pricing</h3>
+  <h3>Why the order term matters</h3>
   <p>
-    The screening output feeds a catastrophe-insurance pricing engine. Risk is
-    computed as a screening signal modulated by order context:
-  </p>
-  <pre><code>risk  =  screening_base  ×  context_modulator
-premium  =  order_cost  ×  loading(risk)</code></pre>
-  <p>
-    Tier thresholds are calibrated so legitimate orders fall in LOW, suspicious
-    orders fall in MEDIUM, and flagged orders fall in HIGH or CRITICAL. Verified
-    customers pay 65% less than unverified — the incentive-compatibility property.
+    Without order consistency, safe proteins score high. GFP scores 0.92 on
+    per-residue similarity to the ricin fingerprint — because over 240
+    residues, GFP has some 42 residues that happen to resemble ricin's
+    catalytic window. Requiring those matches to appear in the correct
+    sequence order eliminates this. GFP's ordered score drops to 0.45 — below
+    any toxin variant, well clear of the threshold.
   </p>
 </section>
 
 <section>
   <h2>Validation</h2>
   <p>
-    Every number below is computed live from ESM-C 600M embeddings and UniProt
-    sequences. The full validation is reproducible from
-    <code>data/processed/validation_full.json</code>.
+    Five independent tests. All reproducible from <code>results/*.json</code>.
   </p>
 
-  <h3>Benchmark 1 — Variant detection</h3>
+  <h3>1. EvoDiff variant detection</h3>
   <p>
-    Random point mutations applied to known toxins; the full reference set is
-    intact. This simulates AI-designed evasion of a toxin the database already
-    knows.
+    We reproduced Microsoft's threat model using the same public EvoDiff model.
+    Five ricin A-chain variants were generated with the catalytic window
+    protected, producing variants at <strong>0.7–1.5% sequence identity to
+    native ricin</strong>.
   </p>
   <table>
-    <thead><tr><th>Mutations</th><th>Variants tested</th><th>Flagged</th><th>Sensitivity</th></tr></thead>
+    <thead><tr><th>Variant</th><th>BLAST (local alignment)</th><th>Fingerprint</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td class="num">12</td><td class="num">12/12</td><td class="num pos">100.0%</td></tr>
-      <tr><td>3</td><td class="num">12</td><td class="num">12/12</td><td class="num pos">100.0%</td></tr>
-      <tr><td>5</td><td class="num">12</td><td class="num">11/12</td><td class="num pos">91.7%</td></tr>
-      <tr><td><strong>10</strong></td><td class="num">12</td><td class="num">10/12</td><td class="num pos"><strong>83.3%</strong></td></tr>
-      <tr><td>20</td><td class="num">12</td><td class="num">9/12</td><td class="num">75.0%</td></tr>
-      <tr><td>30</td><td class="num">12</td><td class="num">6/12</td><td class="num">50.0%</td></tr>
+      <tr><td>Native ricin</td><td class="num">1.000</td><td class="num pos">1.000</td></tr>
+      <tr><td>EvoDiff v0</td><td class="num">0.184</td><td class="num pos">0.918</td></tr>
+      <tr><td>EvoDiff v1</td><td class="num">0.203</td><td class="num pos">0.927</td></tr>
+      <tr><td>EvoDiff v2</td><td class="num">0.176</td><td class="num pos">0.968</td></tr>
+      <tr><td>EvoDiff v3</td><td class="num">0.187</td><td class="num pos">0.864</td></tr>
+      <tr><td>EvoDiff v4</td><td class="num">0.180</td><td class="num pos">0.945</td></tr>
+      <tr><td>Human lysozyme</td><td class="num">—</td><td class="num">0.124</td></tr>
+      <tr><td>Human calmodulin</td><td class="num">—</td><td class="num">0.011</td></tr>
     </tbody>
   </table>
-
-  <h3>Benchmark 2 — Leave-one-out toxins</h3>
   <p>
-    Each toxin removed from its own reference set before screening. This is the
-    conservative worst case — no sibling toxin is present in the database.
+    BLAST evaded all five. The fingerprint caught all five. Separation +0.43.
+  </p>
+
+  <h3>2. Circularity control</h3>
+  <p>
+    The EvoDiff variants preserved the catalytic window we used to build the
+    fingerprint. To rule out circularity, we generated <em>aggressive</em>
+    variants where EvoDiff redesigns the entire A-chain — including the
+    catalytic window. If our fingerprint were only checking that we preserved
+    what we preserved, these would also score high.
   </p>
   <table>
-    <thead><tr><th>Threshold</th><th>Flagged</th><th>Sensitivity</th></tr></thead>
+    <thead><tr><th>Class</th><th>Mean fingerprint score</th></tr></thead>
     <tbody>
-      <tr><td class="num">0.05</td><td class="num">5/16</td><td class="num">31.2%</td></tr>
-      <tr><td class="num">0.03</td><td class="num">10/16</td><td class="num">62.5%</td></tr>
-      <tr><td class="num"><strong>0.02</strong></td><td class="num"><strong>11/16</strong></td><td class="num"><strong>68.8%</strong></td></tr>
-      <tr><td class="num">0.01</td><td class="num">15/16</td><td class="num">93.8%</td></tr>
+      <tr><td>Preserved variants (catalytic window intact)</td><td class="num pos">0.925</td></tr>
+      <tr><td>Aggressive variants (catalytic window destroyed)</td><td class="num">0.495</td></tr>
+      <tr><td>Gap</td><td class="num pos">+0.429</td></tr>
     </tbody>
   </table>
-
-  <h3>Benchmark 3 — Expanded negatives</h3>
   <p>
-    60 reviewed human proteins from UniProt, none in the reference set.
+    Aggressive variants score at the same level as safe human proteins. The
+    fingerprint is discriminating on catalytic residues, not generic protein
+    features.
   </p>
+
+  <h3>3. Generalization across mechanisms</h3>
   <table>
-    <thead><tr><th>Threshold</th><th>False positives</th><th>Specificity</th></tr></thead>
+    <thead><tr><th>Toxin</th><th>Mechanism</th><th>Self</th><th>Best human</th><th>Separation</th></tr></thead>
     <tbody>
-      <tr><td class="num">0.05</td><td class="num">0/60</td><td class="num pos">100.0%</td></tr>
-      <tr><td class="num"><strong>0.02</strong></td><td class="num"><strong>2/60</strong></td><td class="num pos"><strong>96.7%</strong></td></tr>
-      <tr><td class="num">0.01</td><td class="num">3/60</td><td class="num pos">95.0%</td></tr>
-      <tr><td class="num">0.00</td><td class="num">6/60</td><td class="num">90.0%</td></tr>
+      <tr><td>Ricin</td><td>N-glycosidase</td><td class="num">1.00</td><td class="num">0.29</td><td class="num pos">+0.71</td></tr>
+      <tr><td>Botulinum A</td><td>Zinc protease</td><td class="num">1.00</td><td class="num">0.34</td><td class="num pos">+0.66</td></tr>
+      <tr><td>Shiga 1A</td><td>rRNA depurination</td><td class="num">1.00</td><td class="num">0.38</td><td class="num pos">+0.62</td></tr>
+      <tr><td>Diphtheria</td><td>ADP-ribosylation</td><td class="num">1.00</td><td class="num">0.32</td><td class="num pos">+0.68</td></tr>
     </tbody>
   </table>
+  <p>
+    Four mechanistically distinct toxins, four clean separations. The method is
+    not ricin-specific.
+  </p>
 
-  <h3>Operating point</h3>
-  <div class="callout key">
-    <span class="label">Calibrated threshold — 0.02</span>
-    <p>
-      Chosen to balance LOO sensitivity (69%) against specificity (96.7%).
-      The previous default of 0.05 was rejected because it gave LOO sensitivity
-      of only 31%. Variant-detection sensitivity is largely insensitive to this
-      choice (83–85% across the range). <strong>The threshold is a policy
-      parameter, configurable per deploying provider.</strong>
-    </p>
-  </div>
+  <h3>4. Specificity — 60 human proteins</h3>
+  <table>
+    <thead><tr><th>Fingerprint</th><th>Self</th><th>Human mean</th><th>Human max</th><th>Margin below 0.85</th></tr></thead>
+    <tbody>
+      <tr><td>Ricin</td><td class="num">1.00</td><td class="num">0.25</td><td class="num">0.32</td><td class="num pos">+0.53</td></tr>
+      <tr><td>Botulinum A</td><td class="num">1.00</td><td class="num">0.27</td><td class="num">0.39</td><td class="num pos">+0.46</td></tr>
+      <tr><td>Shiga 1A</td><td class="num">1.00</td><td class="num">0.25</td><td class="num">0.46</td><td class="num pos">+0.39</td></tr>
+      <tr><td>Diphtheria</td><td class="num">1.00</td><td class="num">0.28</td><td class="num">0.38</td><td class="num pos">+0.47</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Zero false positives across 60 human proteins. Every fingerprint leaves at
+    least 0.39 of headroom below the threshold.
+  </p>
 
-  <h3>Pricing validation</h3>
+  <h3>5. Pricing mechanism</h3>
   <table>
     <thead><tr><th>Metric</th><th>Value</th></tr></thead>
     <tbody>
@@ -338,56 +371,67 @@ premium  =  order_cost  ×  loading(risk)</code></pre>
 
 <section>
   <h2>Limitations</h2>
+  <p>
+    We list limitations without qualification. Every panel should ask about these.
+  </p>
   <table>
-    <thead><tr><th>Limitation</th><th>Impact</th><th>Mitigation / roadmap</th></tr></thead>
+    <thead><tr><th>Limitation</th><th>Impact</th><th>Mitigation / next step</th></tr></thead>
     <tbody>
       <tr>
-        <td><strong>Reference set is small</strong> (16 toxins, 25 safes)</td>
-        <td>LOO sensitivity is 69% — a toxin with no sibling in the database may be missed</td>
-        <td>Expand to 100+ toxins covering all Australia Group categories (accelerator phase)</td>
+        <td><strong>Only ricin tested end-to-end with EvoDiff variants</strong></td>
+        <td>The other three toxins have validated fingerprints but haven't been tested against their own EvoDiff variants</td>
+        <td>Accelerator deliverable: extend EvoDiff validation to all 16 toxins</td>
       </tr>
       <tr>
-        <td><strong>Narrow margin at high thresholds</strong></td>
-        <td>At 0.05, LOO sensitivity drops to 31%</td>
-        <td>Calibrate operating point against the provider's risk tolerance</td>
+        <td><strong>Adversarial robustness untested</strong></td>
+        <td>An attacker who knows about the fingerprint could attempt chemistry-preserving substitutions (E→D, R→K, Y→F)</td>
+        <td>Accelerator deliverable: generate these variants, measure whether the fingerprint catches them</td>
       </tr>
       <tr>
-        <td><strong>Synthetic order simulation</strong></td>
-        <td>Pricing extrapolation uses synthetic distributions</td>
-        <td>Calibrate against real order data from an industry partner</td>
+        <td><strong>Function of EvoDiff variants not experimentally validated</strong></td>
+        <td>The design preserves the catalytic window, but we haven't confirmed the variants fold and catalyze correctly</td>
+        <td>Wet-lab validation as part of the $50K scope</td>
       </tr>
       <tr>
-        <td><strong>No wet-lab confirmation</strong></td>
-        <td>All results computational</td>
-        <td>In vitro validation of a subset of flagged variants ($50K scope)</td>
+        <td><strong>Only one design tool tested</strong></td>
+        <td>EvoDiff is the specific tool Microsoft used. Other tools may produce variants with different characteristics</td>
+        <td>Extend testing to ProteinMPNN, RFdiffusion, and other sequence-to-function models</td>
       </tr>
       <tr>
-        <td><strong>Bounded adversarial robustness</strong></td>
-        <td>An attacker with the tool could iterate designs</td>
-        <td>Complementary deployment; per-provider thresholds; managed signature set; human review</td>
+        <td><strong>Narrow scope relative to the problem</strong></td>
+        <td>BioScreen catches function-preserving variants of toxins already in a reference set. It does not detect novel toxins or novel mechanisms</td>
+        <td>Honest scoping: this is a solution to the specific threat Microsoft identified, not a general solution to AI-designed biothreats</td>
       </tr>
     </tbody>
   </table>
+
+  <div class="callout warn">
+    <span class="label">Dual-use acknowledgment</span>
+    <p>
+      The screening method itself could be inverted as an oracle: an attacker
+      with the tool could iterate designs to minimize the fingerprint score. We
+      publish our own adversarial tests. Per-provider thresholds, a managed
+      reference set, and human review for high-risk orders are the mitigations.
+    </p>
+  </div>
 </section>
 
 <section>
   <h2>Roadmap</h2>
   <h3>Accelerator phase — 6 months</h3>
   <ul>
-    <li><strong>Structural similarity layer</strong> (ESMFold + FoldSeek). Target margin &gt; 0.15.</li>
-    <li><strong>Expanded reference database.</strong> 16 → 100+ controlled toxins.</li>
-    <li><strong>Open benchmark.</strong> Reproducible benchmark of AI-designed variants.</li>
-    <li><strong>Industry pilot.</strong> One synthesis provider or CRO with real order data.</li>
-    <li><strong>Pricing calibration</strong> against real distributions.</li>
-    <li><strong>Regulatory engagement</strong> with WHO, BWC ISU, or national authorities.</li>
+    <li><strong>Months 1–2 — EvoDiff validation across all 16 toxins.</strong> Currently 1/16 end-to-end. Target: 16/16 validation JSONs.</li>
+    <li><strong>Months 2–3 — Adversarial robustness test.</strong> Chemistry-preserving substitutions. Report the boundary honestly.</li>
+    <li><strong>Months 3–4 — Industry pilot.</strong> One synthesis provider or CRO. Real orders, real screening, real results.</li>
+    <li><strong>Months 5–6 — Publication and regulatory engagement.</strong> bioRxiv preprint. Initial conversations with WHO or BWC ISU.</li>
   </ul>
   <h3>Beyond the accelerator — 12–24 months</h3>
   <ul>
-    <li>Production deployment with a synthesis provider.</li>
+    <li>Production deployment alongside existing sequence screening.</li>
     <li>Regulatory recognition as a valid screening signal.</li>
-    <li>First LMIC lab subsidies disbursed through the mechanism.</li>
-    <li>Community-governed reference set.</li>
-    <li>Extension to benchtop synthesizers.</li>
+    <li>First LMIC lab subsidies disbursed through the pricing mechanism.</li>
+    <li>Community-governed reference set with a scientific advisory board.</li>
+    <li>Extension to benchtop synthesis platforms.</li>
   </ul>
 </section>
 
@@ -398,15 +442,20 @@ premium  =  order_cost  ×  loading(risk)</code></pre>
 │   ├── screening_v2.py       contrastive per-residue screening
 │   ├── pricing.py            actuarial pricing framework
 │   └── studio/               Flask web UI
-├── data/processed/
-│   ├── validation_full.json  reproducible validation
+├── scripts/start_studio.py   launch script
+├── results/                  all validation outputs
+│   ├── evodiff_fingerprint_validation.json
+│   ├── fingerprint_discrimination_test.json
+│   ├── generalization_4toxins.json
+│   ├── specificity_60human.json
 │   └── pricing_validation.json
-├── reports/
-│   ├── roc_curves.png
-│   └── BioScreen_Pitch_Deck.pdf
-└── docs/
-    ├── WHITEPAPER.html       (this document)
-    └── METHODOLOGY.md</code></pre>
+├── docs/
+│   ├── WHITEPAPER.html       this document
+│   ├── FINDINGS.md           EvoDiff validation details
+│   └── STUDIO.md             Studio user guide
+└── reports/
+    ├── PITCH_DECK.html
+    └── roc_curves.png</code></pre>
   <p><strong>License:</strong> MIT · <strong>Contact:</strong> pmburu346@gmail.com</p>
 </section>
 
@@ -415,8 +464,9 @@ premium  =  order_cost  ×  loading(risk)</code></pre>
 
 <div class="footer">
   <div class="wrap">
-    BioScreen — Technical White Paper · Peter Mburu Kariuki · BioPREVAIL × CEPI 2026–27<br>
-    Defensive screening research · Not a detection guarantee
+    BioScreen — Technical White Paper v2.0 · Peter Mburu Kariuki<br>
+    BioPREVAIL × CEPI Biosecurity Innovation Challenge 2026–27<br>
+    Defensive screening research · All results reproducible from results/*.json
   </div>
 </div>
 

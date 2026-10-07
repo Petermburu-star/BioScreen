@@ -272,8 +272,10 @@ $("btn-screen").addEventListener("click", async () => {
 
 function renderResult(j) {
   $("instrument").classList.remove("hidden");
+  $("fingerprint-panel").classList.remove("hidden");
   $("verdict-panel").classList.remove("hidden");
   $("pricing-panel").classList.remove("hidden");
+  renderFingerprint(j);
 
   $("toxin-ref").textContent = j.best_toxin_name + " - " + j.best_toxin_acc;
   $("toxin-score").textContent = j.best_toxin_score.toFixed(4);
@@ -382,3 +384,34 @@ window.addEventListener("resize", () => {
 });
 
 warmup();
+
+
+/* ---------- fingerprint panel rendering ---------- */
+function renderFingerprint(j) {
+  const panel = $("fingerprint-panel");
+  if (!panel) return;
+  panel.classList.remove("hidden");
+
+  const hero = $("fp-hero");
+  const flagged = j.fingerprint_flagged;
+  hero.className = "fp-hero " + (flagged ? "" : "clear");
+
+  $("fp-glyph").textContent = flagged ? "◆" : "◇";
+  $("fp-name").textContent = j.fingerprint_best + "  ·  " + j.fingerprint_best_accession;
+  $("fp-score").textContent = j.fingerprint_score.toFixed(4);
+  $("fp-top-k").textContent = j.fingerprint_top_k.toFixed(4);
+  $("fp-order").textContent = j.fingerprint_order.toFixed(3);
+
+  // Ranking table
+  const rank = $("fp-ranking");
+  rank.innerHTML = "";
+  j.fingerprint_ranking.forEach((row, idx) => {
+    const el = document.createElement("div");
+    el.className = "fp-rank-row";
+    el.innerHTML =
+      '<span class="nm">' + (idx + 1) + '. ' + row.name + '</span>' +
+      '<div class="fp-rank-bar"><span style="width:' + Math.min(100, row.score * 100) + '%"></span></div>' +
+      '<span class="sc">' + row.score.toFixed(4) + '</span>';
+    rank.appendChild(el);
+  });
+}
