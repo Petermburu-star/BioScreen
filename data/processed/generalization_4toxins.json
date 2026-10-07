@@ -1,0 +1,26 @@
+{
+  "P02879": {
+    "name": "Ricin (N-glycosidase)",
+    "self_score": 1.000000238418579,
+    "safe_max": 0.29368173203817227,
+    "separation": 0.7063185063804068
+  },
+  "P0DPI1": {
+    "name": "Botulinum A (zinc protease)",
+    "self_score": 1.0,
+    "safe_max": 0.33807159923925634,
+    "separation": 0.6619284007607437
+  },
+  "P10149": {
+    "name": "Shiga 1A (rRNA depurination)",
+    "self_score": 1.0,
+    "safe_max": 0.3764097603355966,
+    "separation": 0.6235902396644034
+  },
+  "P00588": {
+    "name": "Diphtheria (ADP-ribosyltransferase)",
+    "self_score": 1.0,
+    "safe_max": 0.32163149845309374,
+    "separation": 0.6783685015469063
+  }
+}

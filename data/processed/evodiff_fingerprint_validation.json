@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-07T08:51:04.069903Z",
+  "experiment": "ordered_catalytic_fingerprint_vs_evodiff",
+  "toxin": "P02879 (ricin A-chain, residues 36-302 of precursor)",
+  "generation": {
+    "tool": "EvoDiff OA_DM_38M (sequence-conditioned inpaint)",
+    "redesign_regions": [
+      [
+        0,
+        37
+      ],
+      [
+        54,
+        80
+      ],
+      [
+        97,
+        134
+      ],
+      [
+        154,
+        267
+      ]
+    ],
+    "protected": "catalytic residues \u00b18 (positions 45, 88, 142, 145)",
+    "variants_generated": 5
+  },
+  "blast": {
+    "threshold": 0.3,
+    "variant_scores": [
+      0.184,
+      0.203,
+      0.176,
+      0.187,
+      0.18
+    ],
+    "evasion_rate": "5/5 (100%)"
+  },
+  "fingerprint": {
+    "type": "catalytic_window_with_order_consistency",
+    "window_radius": 6,
+    "fingerprint_residues": 42,
+    "scoring": "top20_similarity \u00d7 order_consistency",
+    "variant_scores": [
+      0.9183,
+      0.9272,
+      0.9683,
+      0.8639,
+      0.9452
+    ],
+    "control_scores": {
+      "native_ricin": 1.0,
+      "human_lysozyme": 0.1238,
+      "GFP": 0.4472,
+      "human_calmodulin": 0.0113
+    },
+    "detection_rate": "5/5 (100%)",
+    "separation": 0.4167
+  },
+  "conclusion": "An ordered fingerprint built from a toxin's catalytic window detects BLAST-evading AI-designed variants while cleanly rejecting safe controls. The order-consistency term eliminates false positives that a naive top-k similarity metric produces on unrelated proteins.",
+  "limitations": [
+    "Only ricin tested; generalization to other toxins unverified",
+    "Only 3 safe controls; specificity needs a 60+ protein panel",
+    "Function of EvoDiff variants not experimentally validated",
+    "Single redesign strategy tested"
+  ]
+}
