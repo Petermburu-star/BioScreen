@@ -308,3 +308,7 @@ canvas.ribbon-diverge{height:56px}
   display:block;height:100%;background:linear-gradient(90deg,#0891b2,#22d3ee);
   border-radius:3px;transition:width .5s ease-out;
 }
+
+/* EvoDiff variant chips */
+.chip.evo{color:#fcd34d;border-color:rgba(245,158,11,.4);}
+.chip.evo:hover{color:#fff;border-color:#f59e0b;background:rgba(245,158,11,.12);}

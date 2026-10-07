@@ -229,6 +229,22 @@ def api_example(name):
     return jsonify({"header": lines[0][1:], "sequence": "".join(lines[1:]), "accession": acc})
 
 
+
+
+@app.route("/api/evodiff_variants")
+def api_evodiff_variants():
+    """
+    Return the 5 EvoDiff-generated ricin variants with their pre-computed
+    validation scores. These are the variants that reproduced Microsoft's
+    finding — BLAST evaded them all, the fingerprint caught them all.
+    """
+    import json
+    p = ROOT / "data" / "raw" / "ricin_evodiff_variants.json"
+    if not p.exists():
+        return jsonify({"error": "Variant file missing. Run scripts to regenerate."}), 404
+    return jsonify(json.loads(p.read_text(encoding="utf-8")))
+
+
 if __name__ == "__main__":
     print("Pre-loading engine...")
     _load_engine()

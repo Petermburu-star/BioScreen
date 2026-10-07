@@ -1,0 +1,312 @@
+{
+  "date": "2026-10-07T12:02:41Z",
+  "experiment": "evodiff_16toxin_validation_catalytic_residues",
+  "n_tested": 16,
+  "blast_evaded": 13,
+  "fingerprint_caught": 0,
+  "correct_match": 3,
+  "results": [
+    {
+      "accession": "P02879",
+      "name": "Ricin",
+      "native_length": 500,
+      "catalytic_residues": [
+        80,
+        123,
+        177,
+        180
+      ],
+      "redesign_length": 446,
+      "variant_identity": 0.046,
+      "blast_score": 0.096,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4189,
+      "fingerprint_best": "Anthrax edema factor",
+      "fingerprint_best_acc": "P40136",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 162.8
+    },
+    {
+      "accession": "P0DPI1",
+      "name": "Botulinum neurotoxin type A",
+      "native_length": 500,
+      "catalytic_residues": [
+        223,
+        224,
+        227
+      ],
+      "redesign_length": 479,
+      "variant_identity": 0.01,
+      "blast_score": 0.0442,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4816,
+      "fingerprint_best": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "fingerprint_best_acc": "P09385",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 172.6
+    },
+    {
+      "accession": "P10844",
+      "name": "Botulinum neurotoxin type B",
+      "native_length": 500,
+      "catalytic_residues": [
+        223,
+        224,
+        227
+      ],
+      "redesign_length": 479,
+      "variant_identity": 0.022,
+      "blast_score": 0.043,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4411,
+      "fingerprint_best": "Shiga-like toxin 1 subunit A (Stx1A)",
+      "fingerprint_best_acc": "P10149",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 180.2
+    },
+    {
+      "accession": "P0DPI0",
+      "name": "Botulinum neurotoxin type E",
+      "native_length": 500,
+      "catalytic_residues": [
+        223,
+        224,
+        227
+      ],
+      "redesign_length": 479,
+      "variant_identity": 0.014,
+      "blast_score": 0.045,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4543,
+      "fingerprint_best": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "fingerprint_best_acc": "P09385",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 173.2
+    },
+    {
+      "accession": "P10149",
+      "name": "Shiga-like toxin 1 subunit A (Stx1A)",
+      "native_length": 315,
+      "catalytic_residues": [
+        167,
+        170
+      ],
+      "redesign_length": 295,
+      "variant_identity": 0.019,
+      "blast_score": 0.0711,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4242,
+      "fingerprint_best": "Shiga-like toxin 1 subunit A (Stx1A)",
+      "fingerprint_best_acc": "P10149",
+      "fingerprint_caught": false,
+      "correct_match": true,
+      "elapsed_s": 72.4
+    },
+    {
+      "accession": "P69179",
+      "name": "Shiga-like toxin 1 subunit B (Stx1B)",
+      "native_length": 89,
+      "catalytic_residues": [],
+      "redesign_length": 54,
+      "variant_identity": 0.5169,
+      "blast_score": 0.2801,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4768,
+      "fingerprint_best": "Shiga-like toxin 1 subunit A (Stx1A)",
+      "fingerprint_best_acc": "P10149",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 6.1
+    },
+    {
+      "accession": "P09385",
+      "name": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "native_length": 319,
+      "catalytic_residues": [
+        167,
+        170
+      ],
+      "redesign_length": 299,
+      "variant_identity": 0.0251,
+      "blast_score": 0.061,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4238,
+      "fingerprint_best": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "fingerprint_best_acc": "P09385",
+      "fingerprint_caught": false,
+      "correct_match": true,
+      "elapsed_s": 73.3
+    },
+    {
+      "accession": "P09386",
+      "name": "Shiga-like toxin 2 subunit B (Stx2B)",
+      "native_length": 89,
+      "catalytic_residues": [],
+      "redesign_length": 54,
+      "variant_identity": 0.4719,
+      "blast_score": 0.3297,
+      "blast_evaded": false,
+      "fingerprint_score": 0.5751,
+      "fingerprint_best": "Shiga-like toxin 2 subunit B (Stx2B)",
+      "fingerprint_best_acc": "P09386",
+      "fingerprint_caught": false,
+      "correct_match": true,
+      "elapsed_s": 5.8
+    },
+    {
+      "accession": "Q8X531",
+      "name": "Shiga toxin 2B variant",
+      "native_length": 89,
+      "catalytic_residues": [],
+      "redesign_length": 54,
+      "variant_identity": 0.5393,
+      "blast_score": 0.3297,
+      "blast_evaded": false,
+      "fingerprint_score": 0.5666,
+      "fingerprint_best": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "fingerprint_best_acc": "P09385",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 6.0
+    },
+    {
+      "accession": "P00588",
+      "name": "Diphtheria toxin",
+      "native_length": 500,
+      "catalytic_residues": [
+        21,
+        148
+      ],
+      "redesign_length": 466,
+      "variant_identity": 0.016,
+      "blast_score": 0.0506,
+      "blast_evaded": true,
+      "fingerprint_score": 0.5313,
+      "fingerprint_best": "Shiga-like toxin 1 subunit A (Stx1A)",
+      "fingerprint_best_acc": "P10149",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 165.0
+    },
+    {
+      "accession": "P11140",
+      "name": "Abrin-a chain A",
+      "native_length": 500,
+      "catalytic_residues": [
+        74,
+        113,
+        164,
+        167
+      ],
+      "redesign_length": 446,
+      "variant_identity": 0.0,
+      "blast_score": 0.0883,
+      "blast_evaded": true,
+      "fingerprint_score": 0.6007,
+      "fingerprint_best": "Shiga-like toxin 1 subunit A (Stx1A)",
+      "fingerprint_best_acc": "P10149",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 162.9
+    },
+    {
+      "accession": "P33183",
+      "name": "Modeccin",
+      "native_length": 500,
+      "catalytic_residues": [
+        80,
+        123,
+        177,
+        180
+      ],
+      "redesign_length": 446,
+      "variant_identity": 0.012,
+      "blast_score": 0.0856,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4684,
+      "fingerprint_best": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "fingerprint_best_acc": "P09385",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 160.3
+    },
+    {
+      "accession": "P13423",
+      "name": "Anthrax protective antigen",
+      "native_length": 500,
+      "catalytic_residues": [],
+      "redesign_length": 300,
+      "variant_identity": 0.202,
+      "blast_score": 0.3736,
+      "blast_evaded": false,
+      "fingerprint_score": 0.5518,
+      "fingerprint_best": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "fingerprint_best_acc": "P09385",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 108.2
+    },
+    {
+      "accession": "P15917",
+      "name": "Anthrax lethal factor",
+      "native_length": 500,
+      "catalytic_residues": [
+        686,
+        690,
+        728,
+        735
+      ],
+      "redesign_length": 500,
+      "variant_identity": 0.012,
+      "blast_score": 0.0173,
+      "blast_evaded": true,
+      "fingerprint_score": 0.5214,
+      "fingerprint_best": "Shiga-like toxin 1 subunit A (Stx1A)",
+      "fingerprint_best_acc": "P10149",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 196.9
+    },
+    {
+      "accession": "P40136",
+      "name": "Anthrax edema factor",
+      "native_length": 500,
+      "catalytic_residues": [
+        351
+      ],
+      "redesign_length": 483,
+      "variant_identity": 0.012,
+      "blast_score": 0.0381,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4866,
+      "fingerprint_best": "Shiga-like toxin 1 subunit B (Stx1B)",
+      "fingerprint_best_acc": "P69179",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 172.1
+    },
+    {
+      "accession": "P04958",
+      "name": "Tetanus toxin",
+      "native_length": 500,
+      "catalytic_residues": [
+        375,
+        271
+      ],
+      "redesign_length": 466,
+      "variant_identity": 0.012,
+      "blast_score": 0.0654,
+      "blast_evaded": true,
+      "fingerprint_score": 0.4504,
+      "fingerprint_best": "Shiga-like toxin 2 subunit A (Stx2A)",
+      "fingerprint_best_acc": "P09385",
+      "fingerprint_caught": false,
+      "correct_match": false,
+      "elapsed_s": 168.3
+    }
+  ]
+}

@@ -1,0 +1,319 @@
+{
+  "date": "2026-10-07T13:56:41Z",
+  "experiment": "evodiff_catalytic_window_all_toxins",
+  "n_toxins": 12,
+  "n_variants": 36,
+  "blast_evaded": 36,
+  "fingerprint_caught": 26,
+  "total_runtime_min": 56.3,
+  "results": [
+    {
+      "accession": "P02879",
+      "name": "Ricin",
+      "region_length": 267,
+      "n_catalytic": 4,
+      "n_fingerprint_residues": 42,
+      "n_redesign_chunks": 4,
+      "variants": [
+        {
+          "id": 0.018726591760299626,
+          "blast": 0.18440233236151604,
+          "fp": 0.938067087313024
+        },
+        {
+          "id": 0.011235955056179775,
+          "blast": 0.17565597667638483,
+          "fp": 0.9520371556282043
+        },
+        {
+          "id": 0.0149812734082397,
+          "blast": 0.1836734693877551,
+          "fp": 0.891110699351241
+        }
+      ]
+    },
+    {
+      "accession": "P0DPI1",
+      "name": "Botulinum A",
+      "region_length": 437,
+      "n_catalytic": 3,
+      "n_fingerprint_residues": 17,
+      "n_redesign_chunks": 2,
+      "variants": [
+        {
+          "id": 0.009153318077803204,
+          "blast": 0.050522648083623695,
+          "fp": 0.8933116793632507
+        },
+        {
+          "id": 0.011441647597254004,
+          "blast": 0.05313588850174216,
+          "fp": 0.8765543103218079
+        },
+        {
+          "id": 0.016018306636155607,
+          "blast": 0.050522648083623695,
+          "fp": 0.9269891977310181
+        }
+      ]
+    },
+    {
+      "accession": "P10844",
+      "name": "Botulinum B",
+      "region_length": 435,
+      "n_catalytic": 3,
+      "n_fingerprint_residues": 17,
+      "n_redesign_chunks": 2,
+      "variants": [
+        {
+          "id": 0.020689655172413793,
+          "blast": 0.05026223776223776,
+          "fp": 0.8435102552175522
+        },
+        {
+          "id": 0.016091954022988506,
+          "blast": 0.048513986013986016,
+          "fp": 0.8852016925811768
+        },
+        {
+          "id": 0.01839080459770115,
+          "blast": 0.04895104895104895,
+          "fp": 0.8897591829299927
+        }
+      ]
+    },
+    {
+      "accession": "P0DPI0",
+      "name": "Botulinum E",
+      "region_length": 435,
+      "n_catalytic": 3,
+      "n_fingerprint_residues": 17,
+      "n_redesign_chunks": 2,
+      "variants": [
+        {
+          "id": 0.011494252873563218,
+          "blast": 0.05159597726278968,
+          "fp": 0.8820657134056091
+        },
+        {
+          "id": 0.011494252873563218,
+          "blast": 0.05115872321818977,
+          "fp": 0.9000809192657471
+        },
+        {
+          "id": 0.009195402298850575,
+          "blast": 0.050284215128989944,
+          "fp": 0.4824824631214142
+        }
+      ]
+    },
+    {
+      "accession": "P10149",
+      "name": "Shiga 1A",
+      "region_length": 315,
+      "n_catalytic": 2,
+      "n_fingerprint_residues": 16,
+      "n_redesign_chunks": 2,
+      "variants": [
+        {
+          "id": 0.01904761904761905,
+          "blast": 0.0711139081183134,
+          "fp": 0.938046932220459
+        },
+        {
+          "id": 0.022222222222222223,
+          "blast": 0.06482064191315293,
+          "fp": 0.9287023544311523
+        },
+        {
+          "id": 0.012698412698412698,
+          "blast": 0.06356198867212083,
+          "fp": 0.8484480460484822
+        }
+      ]
+    },
+    {
+      "accession": "P09385",
+      "name": "Shiga 2A",
+      "region_length": 319,
+      "n_catalytic": 2,
+      "n_fingerprint_residues": 16,
+      "n_redesign_chunks": 2,
+      "variants": [
+        {
+          "id": 0.025078369905956112,
+          "blast": 0.06096059113300493,
+          "fp": 0.8357257366180421
+        },
+        {
+          "id": 0.018808777429467086,
+          "blast": 0.06527093596059114,
+          "fp": 0.911872386932373
+        },
+        {
+          "id": 0.02821316614420063,
+          "blast": 0.0603448275862069,
+          "fp": 0.8569578647613526
+        }
+      ]
+    },
+    {
+      "accession": "P00588",
+      "name": "Diphtheria",
+      "region_length": 193,
+      "n_catalytic": 2,
+      "n_fingerprint_residues": 26,
+      "n_redesign_chunks": 3,
+      "variants": [
+        {
+          "id": 0.38341968911917096,
+          "blast": 0.14676113360323886,
+          "fp": 0.9156976938247681
+        },
+        {
+          "id": 0.3316062176165803,
+          "blast": 0.11538461538461539,
+          "fp": 0.7484536790847779
+        },
+        {
+          "id": 0.37305699481865284,
+          "blast": 0.16093117408906882,
+          "fp": 0.8651307678222656
+        }
+      ]
+    },
+    {
+      "accession": "P11140",
+      "name": "Abrin",
+      "region_length": 260,
+      "n_catalytic": 4,
+      "n_fingerprint_residues": 42,
+      "n_redesign_chunks": 4,
+      "variants": [
+        {
+          "id": 0.015384615384615385,
+          "blast": 0.17054845980465816,
+          "fp": 0.8496142364129787
+        },
+        {
+          "id": 0.011538461538461539,
+          "blast": 0.19158527422990232,
+          "fp": 0.8945467341236951
+        },
+        {
+          "id": 0.019230769230769232,
+          "blast": 0.1825694966190834,
+          "fp": 0.8026343584060669
+        }
+      ]
+    },
+    {
+      "accession": "P33183",
+      "name": "Modeccin",
+      "region_length": 260,
+      "n_catalytic": 4,
+      "n_fingerprint_residues": 42,
+      "n_redesign_chunks": 4,
+      "variants": [
+        {
+          "id": 0.023076923076923078,
+          "blast": 0.1711229946524064,
+          "fp": 0.8562352468327779
+        },
+        {
+          "id": 0.019230769230769232,
+          "blast": 0.19022154316271964,
+          "fp": 0.7844589221768262
+        },
+        {
+          "id": 0.026923076923076925,
+          "blast": 0.16653934300993126,
+          "fp": 0.909092375418035
+        }
+      ]
+    },
+    {
+      "accession": "P15917",
+      "name": "Anthrax LF",
+      "region_length": 309,
+      "n_catalytic": 4,
+      "n_fingerprint_residues": 37,
+      "n_redesign_chunks": 3,
+      "variants": [
+        {
+          "id": 0.006472491909385114,
+          "blast": 0.15875,
+          "fp": 0.9075280030568441
+        },
+        {
+          "id": 0.006472491909385114,
+          "blast": 0.154375,
+          "fp": 0.9146951304541694
+        },
+        {
+          "id": 0.006472491909385114,
+          "blast": 0.14125,
+          "fp": 0.8704768816630045
+        }
+      ]
+    },
+    {
+      "accession": "P40136",
+      "name": "Anthrax EF",
+      "region_length": 500,
+      "n_catalytic": 1,
+      "n_fingerprint_residues": 13,
+      "n_redesign_chunks": 2,
+      "variants": [
+        {
+          "id": 0.012,
+          "blast": 0.03809897879025923,
+          "fp": 0.9581117630004883
+        },
+        {
+          "id": 0.008,
+          "blast": 0.04281225451688924,
+          "fp": 0.8761442055304844
+        },
+        {
+          "id": 0.012,
+          "blast": 0.04124116260801257,
+          "fp": 0.9426041841506958
+        }
+      ]
+    },
+    {
+      "accession": "P04958",
+      "name": "Tetanus",
+      "region_length": 450,
+      "n_catalytic": 2,
+      "n_fingerprint_residues": 43,
+      "n_redesign_chunks": 3,
+      "variants": [
+        {
+          "id": 0.0133,
+          "blast": 0.105,
+          "fp": 0.8382
+        },
+        {
+          "id": 0.0156,
+          "blast": 0.1185,
+          "fp": 0.8157
+        },
+        {
+          "id": 0.0133,
+          "blast": 0.1101,
+          "fp": 0.8957
+        }
+      ],
+      "catalytic_residues_used": [
+        233,
+        234,
+        237,
+        271,
+        375
+      ],
+      "note": "Corrected: added HExxH zinc-binding motif residues (233, 234, 237)"
+    }
+  ]
+}

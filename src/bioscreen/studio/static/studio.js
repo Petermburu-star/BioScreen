@@ -415,3 +415,49 @@ function renderFingerprint(j) {
     rank.appendChild(el);
   });
 }
+
+
+/* ---------- EvoDiff variant chips ---------- */
+let _evodiffCache = null;
+
+async function _loadEvoDiffVariants() {
+  if (_evodiffCache) return _evodiffCache;
+  const r = await fetch("/api/evodiff_variants");
+  if (!r.ok) throw new Error("evodiff_variants fetch failed");
+  _evodiffCache = await r.json();
+  return _evodiffCache;
+}
+
+document.querySelectorAll(".chip.evo").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const idx = parseInt(btn.dataset.evo, 10);
+    const original = btn.textContent;
+    btn.textContent = "...";
+    try {
+      const data = await _loadEvoDiffVariants();
+      const v = data.variants[idx];
+      if (!v) {
+        alert("Variant " + idx + " not found");
+        return;
+      }
+      $("seq-input").value = v.sequence;
+      if (typeof updateSeqMeta === "function") updateSeqMeta();
+      // Show the pre-computed scores in a small banner
+      const note = document.createElement("div");
+      note.className = "evo-banner";
+      note.innerHTML =
+        '<strong>EvoDiff variant v' + idx + '</strong>  ' +
+        'identity to native ricin = ' + (v.sequence_identity_to_native * 100).toFixed(2) + '%  ·  ' +
+        'BLAST score = ' + v.blast_score.toFixed(3) + ' (evaded)  ·  ' +
+        'fingerprint = ' + v.fingerprint_score.toFixed(3) + ' (caught)  ·  ' +
+        '<em>Click Screen to re-validate live</em>';
+      const existing = document.querySelector(".evo-banner");
+      if (existing) existing.remove();
+      const wrap = $("seq-input").parentElement;
+      wrap.appendChild(note);
+    } catch (e) {
+      alert("Could not load variant: " + e.message);
+    }
+    btn.textContent = original;
+  });
+});
