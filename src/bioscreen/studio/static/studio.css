@@ -632,3 +632,21 @@ canvas.ribbon-diverge{height:56px}
 @media (max-width:780px){
   .gen-controls{grid-template-columns:1fr;}
 }
+
+
+/* ---------- pipeline trace: variant badges ---------- */
+.ts-variant{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:9.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:#f59e0b;
+  background:rgba(245,158,11,.14);
+  border:1px solid rgba(245,158,11,.3);
+  border-radius:3px;
+  padding:1px 6px;
+  margin-left:6px;
+  vertical-align:middle;
+}

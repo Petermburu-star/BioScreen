@@ -502,12 +502,19 @@ function renderTrace(result) {
     return;
   }
 
-  // Header
+  // Determine whether this trace has variant tags (Generate tab) or not (Screen tab)
+  const hasVariants = result.trace.some((s) => s.variant !== undefined && s.variant !== null);
+
+  // Header — compute total defensively
+  const totalMs = (result.total_elapsed_ms !== undefined && result.total_elapsed_ms !== null)
+    ? result.total_elapsed_ms
+    : result.trace.reduce((sum, s) => sum + (s.elapsed_ms || 0), 0);
+
   const hdr = document.createElement("div");
   hdr.className = "trace-header";
   hdr.innerHTML =
     '<span class="th-left">' + result.trace.length + ' steps executed</span>' +
-    '<span class="th-total">total: ' + result.total_elapsed_ms.toFixed(1) + ' ms</span>';
+    '<span class="th-total">total: ' + totalMs.toFixed(1) + ' ms</span>';
   container.appendChild(hdr);
 
   // Steps
@@ -524,8 +531,12 @@ function renderTrace(result) {
       details = '<div class="ts-details"><pre>' + lines + '</pre></div>';
     }
 
+    const variantBadge = (hasVariants && step.variant !== null && step.variant !== undefined)
+      ? '<span class="ts-variant">v' + step.variant + '</span>'
+      : '';
+
     el.innerHTML =
-      '<div class="ts-phase">' + (step.phase || "step") + '</div>' +
+      '<div class="ts-phase">' + (step.phase || "step") + ' ' + variantBadge + '</div>' +
       '<div class="ts-name">' + step.name + '</div>' +
       '<div class="ts-time">' + step.elapsed_ms.toFixed(2) + ' ms</div>' +
       '<div class="ts-io">' +
@@ -740,6 +751,24 @@ function pollJob(jobId) {
   }, 2000);
 }
 
+
+
+/* ============================================================
+   PIPELINE TRACE — generate-tab routing
+   ============================================================ */
+function showGenerateTrace(result) {
+  // result is the full job.result containing .trace and .variants
+  if (!result || !result.trace) return;
+  renderTrace(result);
+  // Switch to the Pipeline trace tab automatically
+  document.querySelectorAll(".tab").forEach((b) => {
+    b.classList.toggle("active", b.dataset.tab === "trace");
+  });
+  document.querySelectorAll(".tab-panel").forEach((p) => {
+    p.classList.toggle("active", p.dataset.panel === "trace");
+  });
+}
+
 function renderGenerateResult(result) {
   const el = $("gen-results");
   if (!el) return;
@@ -800,6 +829,9 @@ function renderGenerateResult(result) {
       }).join("");
     el.appendChild(cross);
   }
+
+  // Also feed the pipeline trace tab with this generation run
+  showGenerateTrace(result);
 }
 
 // Load toxins when Generate tab is clicked
