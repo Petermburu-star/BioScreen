@@ -793,6 +793,8 @@ function renderGenerateResult(result) {
       '<th>Variant</th><th>Length</th><th>Identity</th>' +
       '<th>BLAST</th><th>Fingerprint</th>' +
       '<th>BLAST verdict</th><th>Fingerprint verdict</th>' +
+      '<th>Overall verdict</th>' +
+      '<th>Tier</th><th>Premium</th>' +
     '</tr></thead><tbody></tbody>';
 
   const tbody = tbl.querySelector("tbody");
@@ -800,6 +802,12 @@ function renderGenerateResult(result) {
     const tr = document.createElement("tr");
     const blCls = v.blast_evaded ? "evaded" : "blast-caught";
     const fpCls = v.fingerprint_caught ? "caught" : "clear";
+    const verdict = v.verdict || "—";
+    const verdictCls = verdict === "FLAGGED" ? "evaded" : "caught";
+    const tier = (v.pricing && v.pricing.tier) ? v.pricing.tier : "—";
+    const premium = (v.pricing && v.pricing.premium_usd !== undefined)
+      ? "$" + v.pricing.premium_usd.toFixed(2) : "—";
+
     tr.innerHTML =
       '<td>v' + v.idx + '</td>' +
       '<td>' + v.length + '</td>' +
@@ -807,7 +815,10 @@ function renderGenerateResult(result) {
       '<td>' + v.blast.toFixed(3) + '</td>' +
       '<td>' + (v.fingerprint !== null ? v.fingerprint.toFixed(3) : '—') + '</td>' +
       '<td><span class="gen-badge ' + blCls + '">' + (v.blast_evaded ? 'EVADED' : 'caught') + '</span></td>' +
-      '<td><span class="gen-badge ' + fpCls + '">' + (v.fingerprint_caught ? 'CAUGHT' : 'clear') + '</span></td>';
+      '<td><span class="gen-badge ' + fpCls + '">' + (v.fingerprint_caught ? 'CAUGHT' : 'clear') + '</span></td>' +
+      '<td><span class="gen-badge ' + verdictCls + '">' + verdict + '</span></td>' +
+      '<td>' + tier + '</td>' +
+      '<td>' + premium + '</td>';
     tbody.appendChild(tr);
   });
 

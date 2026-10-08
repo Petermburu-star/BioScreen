@@ -492,6 +492,33 @@ def api_generate():
                 embed_fn=embed_fn,
                 progress_cb=progress_cb,
             )
+
+            # Enrich each variant with contrastive verdict + actuarial pricing
+            s = _engine["screener"]
+            pricer = _engine["pricer"]
+            for v in result["variants"]:
+                seq = v["sequence"]
+                try:
+                    sr = s.screen(seq)
+                except Exception:
+                    sr = {"flagged": False, "hazard_delta": 0.0, "best_toxin_score": 0.0}
+                fp_flagged = bool(v.get("fingerprint_caught", False))
+                v["verdict"] = "FLAGGED" if (sr["flagged"] or fp_flagged) else "CLEAR"
+                v["contrastive_delta"] = round(sr["hazard_delta"], 4)
+                v["contrastive_flagged"] = bool(sr["flagged"])
+                try:
+                    order = OrderRisk(
+                        customer_verified=True,
+                        order_size_bp=2000,
+                        organism="human",
+                        screening_hazard_delta=sr["hazard_delta"],
+                        screening_best_toxin_sim=sr["best_toxin_score"],
+                        customer_history=0.8,
+                    )
+                    v["pricing"] = pricer.compute_premium(order, order_cost_usd=2000)
+                except Exception:
+                    v["pricing"] = None
+
             _generate_jobs[job_id]["result"] = result
             _generate_jobs[job_id]["status"] = "ready"
             _generate_jobs[job_id]["elapsed_s"] = round(
