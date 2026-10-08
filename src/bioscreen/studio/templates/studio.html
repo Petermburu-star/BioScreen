@@ -14,6 +14,12 @@
     <span class="name">BioScreen</span>
     <span class="sub">Studio</span>
   </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="screen">Screen</button>
+    <button class="tab" data-tab="trace">Pipeline trace</button>
+    <button class="tab" data-tab="adversarial">Adversarial</button>
+    <button class="tab" data-tab="reproduce">Reproduce</button>
+  </nav>
   <div class="status" id="status">
     <span class="pip" id="status-pip"></span>
     <span id="status-text">initialising engine...</span>
@@ -22,184 +28,306 @@
 
 <main class="stage">
 
-  <section class="panel input-panel">
-    <div class="panel-head">
-      <span class="panel-num">01</span>
-      <span class="panel-title">Query</span>
-      <span class="panel-hint">paste a protein sequence, or load a live example from UniProt</span>
-    </div>
-    <div class="seq-input-wrap">
-      <textarea id="seq-input" spellcheck="false" autocomplete="off"
-        placeholder="MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQ..."></textarea>
-      <div class="seq-meta">
-        <span id="seq-len">0 aa</span>
-        <span id="seq-comp">-</span>
-      </div>
-    </div>
-    <div class="examples">
-      <span class="examples-label">Load from UniProt:</span>
-      <button class="chip" data-ex="ricin">Ricin</button>
-      <button class="chip" data-ex="botulinum_a">Botulinum A</button>
-      <button class="chip" data-ex="diphtheria">Diphtheria</button>
-      <button class="chip" data-ex="gfp">GFP</button>
-      <button class="chip" data-ex="insulin">Insulin</button>
-      <button class="chip" data-ex="lysozyme">Lysozyme</button>
-    </div>
-    <div class="examples" style="margin-top:10px;">
-      <span class="examples-label" style="color:#f59e0b;">EvoDiff variants:</span>
-      <button class="chip evo" data-evo="0">v0</button>
-      <button class="chip evo" data-evo="1">v1</button>
-      <button class="chip evo" data-evo="2">v2</button>
-      <button class="chip evo" data-evo="3">v3</button>
-      <button class="chip evo" data-evo="4">v4</button>
-    </div>
+  <!-- ============ TAB: SCREEN ============ -->
+  <div class="tab-panel active" data-panel="screen">
 
-    <button class="btn-primary" id="btn-screen" disabled>
-      <span class="btn-icon">&#9656;</span> Screen
-    </button>
-  </section>
+    <section class="panel input-panel">
+      <div class="panel-head">
+        <span class="panel-num">01</span>
+        <span class="panel-title">Query</span>
+        <span class="panel-hint">paste a protein sequence, or load a live example from UniProt</span>
+      </div>
+      <div class="seq-input-wrap">
+        <textarea id="seq-input" spellcheck="false" autocomplete="off"
+          placeholder="MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQ..."></textarea>
+        <div class="seq-meta">
+          <span id="seq-len">0 aa</span>
+          <span id="seq-comp">-</span>
+        </div>
+      </div>
+      <div class="examples">
+        <span class="examples-label">Load from UniProt:</span>
+        <button class="chip" data-ex="ricin">Ricin</button>
+        <button class="chip" data-ex="botulinum_a">Botulinum A</button>
+        <button class="chip" data-ex="diphtheria">Diphtheria</button>
+        <button class="chip" data-ex="gfp">GFP</button>
+        <button class="chip" data-ex="insulin">Insulin</button>
+        <button class="chip" data-ex="lysozyme">Lysozyme</button>
+      </div>
+      <button class="btn-primary" id="btn-screen" disabled>
+        <span class="btn-icon">&#9656;</span> Screen
+      </button>
+    </section>
 
-  <section class="panel instrument-panel hidden" id="instrument">
-    <div class="panel-head">
-      <span class="panel-num">02</span>
-      <span class="panel-title">Residue alignment map</span>
-      <span class="panel-hint">per-position match strength against the winning reference</span>
-    </div>
-    <div class="ribbon-block">
-      <div class="ribbon-head">
-        <span class="ribbon-label toxin">Best toxin match</span>
-        <span class="ribbon-ref" id="toxin-ref">-</span>
-        <span class="ribbon-score" id="toxin-score">-</span>
+    <section class="panel instrument-panel hidden" id="instrument">
+      <div class="panel-head">
+        <span class="panel-num">02</span>
+        <span class="panel-title">Residue alignment map</span>
+        <span class="panel-hint">per-position match strength against the winning reference</span>
       </div>
-      <canvas id="toxin-ribbon" class="ribbon" height="64"></canvas>
-    </div>
-    <div class="ribbon-block divergence-block">
-      <div class="ribbon-head">
-        <span class="ribbon-label">Divergence &middot; toxin &minus; safe</span>
-        <span class="ribbon-hint">above centre = toxin wins &middot; below = safe wins</span>
+      <div class="ribbon-block">
+        <div class="ribbon-head">
+          <span class="ribbon-label toxin">Best toxin match</span>
+          <span class="ribbon-ref" id="toxin-ref">-</span>
+          <span class="ribbon-score" id="toxin-score">-</span>
+        </div>
+        <canvas id="toxin-ribbon" class="ribbon" height="64"></canvas>
       </div>
-      <canvas id="diverge-ribbon" class="ribbon ribbon-diverge" height="56"></canvas>
-    </div>
-    <div class="ribbon-block">
-      <div class="ribbon-head">
-        <span class="ribbon-label safe">Best safe match</span>
-        <span class="ribbon-ref" id="safe-ref">-</span>
-        <span class="ribbon-score" id="safe-score">-</span>
+      <div class="ribbon-block divergence-block">
+        <div class="ribbon-head">
+          <span class="ribbon-label">Divergence &middot; toxin &minus; safe</span>
+          <span class="ribbon-hint">above centre = toxin wins &middot; below = safe wins</span>
+        </div>
+        <canvas id="diverge-ribbon" class="ribbon ribbon-diverge" height="56"></canvas>
       </div>
-      <canvas id="safe-ribbon" class="ribbon" height="64"></canvas>
-    </div>
-  </section>
+      <div class="ribbon-block">
+        <div class="ribbon-head">
+          <span class="ribbon-label safe">Best safe match</span>
+          <span class="ribbon-ref" id="safe-ref">-</span>
+          <span class="ribbon-score" id="safe-score">-</span>
+        </div>
+        <canvas id="safe-ribbon" class="ribbon" height="64"></canvas>
+      </div>
+    </section>
 
-  <section class="panel fingerprint-panel hidden" id="fingerprint-panel">
-    <div class="panel-head">
-      <span class="panel-num">03</span>
-      <span class="panel-title">Ordered catalytic fingerprint</span>
-      <span class="panel-hint">detects AI-designed variants that BLAST cannot see</span>
-    </div>
-    <div class="fp-hero" id="fp-hero">
-      <div class="fp-glyph" id="fp-glyph">-</div>
-      <div class="fp-copy">
-        <div class="fp-label">Best fingerprint match</div>
-        <div class="fp-name" id="fp-name">-</div>
-        <div class="fp-score" id="fp-score">-</div>
+    <section class="panel fingerprint-panel hidden" id="fingerprint-panel">
+      <div class="panel-head">
+        <span class="panel-num">03</span>
+        <span class="panel-title">Ordered catalytic fingerprint</span>
+        <span class="panel-hint">detects AI-designed variants that BLAST cannot see</span>
       </div>
-      <div class="fp-meters">
-        <div class="fp-meter">
-          <span class="fp-meter-label">top-20 similarity</span>
-          <span class="fp-meter-val" id="fp-top-k">-</span>
+      <div class="fp-hero" id="fp-hero">
+        <div class="fp-glyph" id="fp-glyph">-</div>
+        <div class="fp-copy">
+          <div class="fp-label">Best fingerprint match</div>
+          <div class="fp-name" id="fp-name">-</div>
+          <div class="fp-score" id="fp-score">-</div>
         </div>
-        <div class="fp-meter">
-          <span class="fp-meter-label">order consistency</span>
-          <span class="fp-meter-val" id="fp-order">-</span>
+        <div class="fp-meters">
+          <div class="fp-meter">
+            <span class="fp-meter-label">top-20 similarity</span>
+            <span class="fp-meter-val" id="fp-top-k">-</span>
+          </div>
+          <div class="fp-meter">
+            <span class="fp-meter-label">order consistency</span>
+            <span class="fp-meter-val" id="fp-order">-</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="fp-rank">
-      <div class="fp-rank-head">Top fingerprints for this query</div>
-      <div id="fp-ranking"></div>
-    </div>
-  </section>
+      <div class="fp-rank">
+        <div class="fp-rank-head">Top fingerprints for this query</div>
+        <div id="fp-ranking"></div>
+      </div>
+    </section>
 
-  <section class="panel verdict-panel hidden" id="verdict-panel">
-    <div class="verdict-hero" id="verdict-hero">
-      <div class="verdict-glyph" id="verdict-glyph">-</div>
-      <div class="verdict-copy">
-        <div class="verdict-word" id="verdict-word">-</div>
-        <div class="verdict-line" id="verdict-line">-</div>
+    <section class="panel verdict-panel hidden" id="verdict-panel">
+      <div class="verdict-hero" id="verdict-hero">
+        <div class="verdict-glyph" id="verdict-glyph">-</div>
+        <div class="verdict-copy">
+          <div class="verdict-word" id="verdict-word">-</div>
+          <div class="verdict-line" id="verdict-line">-</div>
+          <div class="verdict-action" id="verdict-action">-</div>
+        </div>
+        <button class="btn-copy" id="btn-copy" title="Copy result JSON">Copy JSON</button>
       </div>
-      <button class="btn-copy" id="btn-copy" title="Copy result JSON">Copy JSON</button>
-    </div>
-    <div class="gates">
-      <div class="gate" id="gate-delta">
-        <div class="gate-row">
-          <span class="gate-name">&Delta; &ge; <em id="thr-delta">0.05</em></span>
-          <span class="gate-val">-</span>
+      <div class="gates">
+        <div class="gate" id="gate-delta">
+          <div class="gate-row">
+            <span class="gate-name">&Delta; &ge; <em id="thr-delta">0.05</em></span>
+            <span class="gate-val">-</span>
+          </div>
+          <div class="gate-bar">
+            <div class="gate-fill"></div>
+            <div class="gate-threshold"></div>
+          </div>
         </div>
-        <div class="gate-bar">
-          <div class="gate-fill"></div>
-          <div class="gate-threshold"></div>
+        <div class="gate" id="gate-floor">
+          <div class="gate-row">
+            <span class="gate-name">toxin &ge; <em id="thr-floor">0.90</em></span>
+            <span class="gate-val">-</span>
+          </div>
+          <div class="gate-bar">
+            <div class="gate-fill"></div>
+            <div class="gate-threshold"></div>
+          </div>
         </div>
       </div>
-      <div class="gate" id="gate-floor">
-        <div class="gate-row">
-          <span class="gate-name">toxin &ge; <em id="thr-floor">0.90</em></span>
-          <span class="gate-val">-</span>
-        </div>
-        <div class="gate-bar">
-          <div class="gate-fill"></div>
-          <div class="gate-threshold"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="panel pricing-panel hidden" id="pricing-panel">
-    <div class="panel-head">
-      <span class="panel-num">04</span>
-      <span class="panel-title">Actuarial pricing</span>
-      <span class="panel-hint">the same signal, converted into a risk-priced premium</span>
-    </div>
-    <div class="pricing-grid">
-      <div class="context">
-        <label class="field">
-          <span class="field-label">Verified customer</span>
-          <input type="checkbox" id="in-verified" class="toggle">
-        </label>
-        <label class="field">
-          <span class="field-label">History <em id="in-history-val">0.50</em></span>
-          <input type="range" id="in-history" min="0" max="1" step="0.05" value="0.5">
-        </label>
-        <label class="field">
-          <span class="field-label">Organism</span>
-          <select id="in-organism">
-            <option value="human">Human</option>
-            <option value="synthetic">Synthetic</option>
-            <option value="animal">Animal</option>
-            <option value="plant">Plant</option>
-            <option value="environmental">Environmental</option>
-          </select>
-        </label>
-        <label class="field">
-          <span class="field-label">Order size (bp)</span>
-          <input type="number" id="in-size" value="2000" min="1">
-        </label>
-        <label class="field">
-          <span class="field-label">Order cost (USD)</span>
-          <input type="number" id="in-cost" value="2000" min="1">
-        </label>
+    <section class="panel pricing-panel hidden" id="pricing-panel">
+      <div class="panel-head">
+        <span class="panel-num">04</span>
+        <span class="panel-title">Actuarial pricing</span>
+        <span class="panel-hint">the same signal, converted into a risk-priced premium</span>
       </div>
-      <div class="readout">
-        <div class="readout-tier" id="out-tier">-</div>
-        <div class="readout-premium" id="out-premium">-</div>
-        <div class="readout-provenance" id="out-provenance">-</div>
-        <div class="readout-meta">
-          <span>risk <em id="out-risk">-</em></span>
-          <span>loading <em id="out-loading">-</em></span>
+      <div class="pricing-grid">
+        <div class="context">
+          <label class="field">
+            <span class="field-label">Verified customer</span>
+            <input type="checkbox" id="in-verified" class="toggle">
+          </label>
+          <label class="field">
+            <span class="field-label">History <em id="in-history-val">0.50</em></span>
+            <input type="range" id="in-history" min="0" max="1" step="0.05" value="0.5">
+          </label>
+          <label class="field">
+            <span class="field-label">Organism</span>
+            <select id="in-organism">
+              <option value="human">Human</option>
+              <option value="synthetic">Synthetic</option>
+              <option value="animal">Animal</option>
+              <option value="plant">Plant</option>
+              <option value="environmental">Environmental</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Order size (bp)</span>
+            <input type="number" id="in-size" value="2000" min="1">
+          </label>
+          <label class="field">
+            <span class="field-label">Order cost (USD)</span>
+            <input type="number" id="in-cost" value="2000" min="1">
+          </label>
         </div>
-        <div class="readout-action" id="out-action">-</div>
+        <div class="readout">
+          <div class="readout-tier" id="out-tier">-</div>
+          <div class="readout-premium" id="out-premium">-</div>
+          <div class="readout-provenance" id="out-provenance">-</div>
+          <div class="readout-meta">
+            <span>risk <em id="out-risk">-</em></span>
+            <span>loading <em id="out-loading">-</em></span>
+          </div>
+          <div class="readout-action" id="out-action">-</div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+  </div>
+
+  <!-- ============ TAB: TRACE ============ -->
+  <div class="tab-panel" data-panel="trace">
+    <section class="panel">
+      <div class="panel-head">
+        <span class="panel-num">▸</span>
+        <span class="panel-title">Pipeline trace</span>
+        <span class="panel-hint">every step the engine ran for your last request</span>
+      </div>
+      <div id="trace-content">
+        <p class="trace-empty">No request yet. Go to the <strong>Screen</strong> tab, submit a sequence, then come back here.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ TAB: ADVERSARIAL ============ -->
+  <div class="tab-panel" data-panel="adversarial">
+    <section class="panel">
+      <div class="panel-head">
+        <span class="panel-num">&#9656;</span>
+        <span class="panel-title">Adversarial validation</span>
+        <span class="panel-hint">EvoDiff variants vs BLAST vs ordered fingerprint</span>
+      </div>
+
+      <p class="adv-intro">
+        Every toxin below was used to generate <strong>3 independent AI-designed variants</strong>
+        with <strong>Microsoft's EvoDiff model</strong>. For each variant, we report the
+        sequence identity to the native toxin, the <strong>BLAST</strong> score (the incumbent
+        tool), and our <strong>ordered fingerprint</strong> score.
+      </p>
+
+      <div class="adv-summary">
+        <div class="adv-summary-cell">
+          <div class="adv-k">Toxins tested</div>
+          <div class="adv-v" id="adv-n-toxins">&mdash;</div>
+        </div>
+        <div class="adv-summary-cell">
+          <div class="adv-k">Variants generated</div>
+          <div class="adv-v" id="adv-n-variants">&mdash;</div>
+        </div>
+        <div class="adv-summary-cell">
+          <div class="adv-k">BLAST evaded</div>
+          <div class="adv-v warn" id="adv-blast-evaded">&mdash;</div>
+        </div>
+        <div class="adv-summary-cell">
+          <div class="adv-k">Fingerprint caught</div>
+          <div class="adv-v ok" id="adv-fp-caught">&mdash;</div>
+        </div>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead>
+            <tr>
+              <th>Toxin</th>
+              <th>Variant</th>
+              <th>Identity</th>
+              <th>BLAST</th>
+              <th>Fingerprint</th>
+              <th>BLAST verdict</th>
+              <th>Fingerprint verdict</th>
+            </tr>
+          </thead>
+          <tbody id="adv-tbody">
+            <tr><td colspan="7" class="adv-loading">Loading&hellip;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="adv-legend">
+        <span class="adv-legend-item">
+          <span class="adv-swatch evaded"></span> BLAST evaded (&lt;0.30) &mdash; the threat
+        </span>
+        <span class="adv-legend-item">
+          <span class="adv-swatch caught"></span> Fingerprint caught (&ge;0.85) &mdash; the defense
+        </span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ TAB: REPRODUCE ============ -->
+  <div class="tab-panel" data-panel="reproduce">
+    <section class="panel">
+      <div class="panel-head">
+        <span class="panel-num">▸</span>
+        <span class="panel-title">Reproduce this on your machine</span>
+        <span class="panel-hint">clone, build, run — same results</span>
+      </div>
+      <h3 class="rp-h">1. Clone the repository</h3>
+      <pre class="rp-code">git clone https://github.com/Petermburu-star/BioScreen
+cd BioScreen</pre>
+
+      <h3 class="rp-h">2. Install dependencies</h3>
+      <pre class="rp-code">python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt</pre>
+
+      <h3 class="rp-h">3. Set your HuggingFace token</h3>
+      <pre class="rp-code">echo "HF_TOKEN=hf_your_token_here" &gt; .env</pre>
+      <p class="rp-note">Get a token at <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a> and accept the license at <a href="https://huggingface.co/biohub/ESMC-600M" target="_blank">biohub/ESMC-600M</a>.</p>
+
+      <h3 class="rp-h">4. Build the reference and fingerprint files</h3>
+      <pre class="rp-code">python scripts/build_references.py
+python scripts/build_fingerprints.py</pre>
+
+      <h3 class="rp-h">5. Reproduce the ricin validation</h3>
+      <pre class="rp-code">python scripts/reproduce_ricin_test.py</pre>
+      <p class="rp-note">Expected output: 3 EvoDiff variants, BLAST &lt; 0.30 (evaded), fingerprint ≥ 0.85 (caught).</p>
+
+      <h3 class="rp-h">6. Launch this Studio</h3>
+      <pre class="rp-code">python scripts/start_studio.py</pre>
+      <p class="rp-note">Then open <code>http://127.0.0.1:5000</code>.</p>
+
+      <hr class="rp-rule">
+
+      <h3 class="rp-h">The engine source code</h3>
+      <p class="rp-note">These are the exact files that produced every number you saw. Loaded live from the running engine.</p>
+      <div id="source-files">
+        <button class="rp-src-btn" data-file="screening_v2.py">screening_v2.py</button>
+        <button class="rp-src-btn" data-file="fingerprint.py">fingerprint.py</button>
+        <button class="rp-src-btn" data-file="pricing.py">pricing.py</button>
+      </div>
+      <pre class="rp-code rp-src" id="source-view">Select a file above to view its source.</pre>
+    </section>
+  </div>
 
 </main>
 

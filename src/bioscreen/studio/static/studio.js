@@ -10,10 +10,18 @@ async function pollStatus() {
       $("status-pip").className = "pip ready";
       $("status-text").textContent = "engine ready - " + j.toxins + " toxins - " + j.safes + " safes";
       $("btn-screen").disabled = false;
-    } else if (j.status === "loading" || j.status === "idle") {
+    } else if (j.status === "loading") {
       $("status-pip").className = "pip loading";
-      $("status-text").textContent = "loading engine (ESM-C 600M)...";
-      setTimeout(pollStatus, 1500);
+      const p = j.progress || {};
+      const secs = p.elapsed_s !== undefined ? ` [${p.elapsed_s}s]` : "";
+      const stage = p.stage ? p.stage.toUpperCase() : "loading";
+      const detail = p.detail || "loading engine";
+      $("status-text").textContent = stage + secs + " · " + detail;
+      setTimeout(pollStatus, 1000);
+    } else if (j.status === "idle") {
+      $("status-pip").className = "pip loading";
+      $("status-text").textContent = "waiting for engine to start...";
+      setTimeout(pollStatus, 1000);
     } else {
       $("status-pip").className = "pip error";
       $("status-text").textContent = "error: " + (j.error || "unknown");
@@ -271,6 +279,8 @@ $("btn-screen").addEventListener("click", async () => {
 });
 
 function renderResult(j) {
+  renderTrace(j);
+
   $("instrument").classList.remove("hidden");
   $("fingerprint-panel").classList.remove("hidden");
   $("verdict-panel").classList.remove("hidden");
@@ -461,3 +471,171 @@ document.querySelectorAll(".chip.evo").forEach((btn) => {
     btn.textContent = original;
   });
 });
+
+
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
+document.querySelectorAll(".tab").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll(".tab").forEach((b) => b.classList.toggle("active", b === btn));
+    document.querySelectorAll(".tab-panel").forEach((p) => {
+      p.classList.toggle("active", p.dataset.panel === target);
+    });
+  });
+});
+
+
+/* ============================================================
+   TRACE RENDERER
+   ============================================================ */
+let _lastResult = null;
+
+function renderTrace(result) {
+  const container = $("trace-content");
+  if (!container) return;
+  container.innerHTML = "";
+
+  if (!result || !result.trace || result.trace.length === 0) {
+    container.innerHTML = '<p class="trace-empty">No trace available for this request.</p>';
+    return;
+  }
+
+  // Header
+  const hdr = document.createElement("div");
+  hdr.className = "trace-header";
+  hdr.innerHTML =
+    '<span class="th-left">' + result.trace.length + ' steps executed</span>' +
+    '<span class="th-total">total: ' + result.total_elapsed_ms.toFixed(1) + ' ms</span>';
+  container.appendChild(hdr);
+
+  // Steps
+  result.trace.forEach((step) => {
+    const el = document.createElement("div");
+    el.className = "trace-step";
+    el.dataset.step = step.step;
+
+    let details = "";
+    if (step.details && Object.keys(step.details).length > 0) {
+      const lines = Object.entries(step.details)
+        .map(([k, v]) => "  " + k + ": " + (typeof v === "object" ? JSON.stringify(v) : v))
+        .join("\n");
+      details = '<div class="ts-details"><pre>' + lines + '</pre></div>';
+    }
+
+    el.innerHTML =
+      '<div class="ts-phase">' + (step.phase || "step") + '</div>' +
+      '<div class="ts-name">' + step.name + '</div>' +
+      '<div class="ts-time">' + step.elapsed_ms.toFixed(2) + ' ms</div>' +
+      '<div class="ts-io">' +
+        '<span class="io-k">input</span><span class="io-v">' + step.input + '</span>' +
+        '<span class="io-k">output</span><span class="io-v">' + step.output + '</span>' +
+      '</div>' +
+      details;
+
+    container.appendChild(el);
+  });
+}
+
+
+/* ============================================================
+   SOURCE VIEWER (Reproduce tab)
+   ============================================================ */
+let _sourceCache = null;
+
+async function loadSources() {
+  if (_sourceCache) return _sourceCache;
+  const r = await fetch("/api/source");
+  _sourceCache = await r.json();
+  return _sourceCache;
+}
+
+document.querySelectorAll(".rp-src-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const file = btn.dataset.file;
+    document.querySelectorAll(".rp-src-btn").forEach((b) => b.classList.toggle("active", b === btn));
+    const sources = await loadSources();
+    const view = $("source-view");
+    view.textContent = sources[file] || "// file not found";
+  });
+});
+
+
+/* ============================================================
+   HOOK INTO SCREEN RESULT
+   ============================================================ */
+// Wrap the existing renderResult to also feed the trace panel
+if (typeof window._origRenderResult === "undefined") {
+  window._origRenderResult = window.renderResult;
+}
+
+/* ============================================================
+   ADVERSARIAL TAB
+   ============================================================ */
+let _advLoaded = false;
+
+async function loadAdversarial() {
+  if (_advLoaded) return;
+  const tbody = $("adv-tbody");
+  if (!tbody) return;
+
+  try {
+    const r = await fetch("/api/adversarial");
+    if (!r.ok) {
+      tbody.innerHTML = '<tr><td colspan="7" class="adv-loading">' +
+        'Results file not found. Run the 16-toxin validation first.</td></tr>';
+      return;
+    }
+    const data = await r.json();
+    renderAdversarial(data);
+    _advLoaded = true;
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="7" class="adv-loading">' +
+      'Load failed: ' + e.message + '</td></tr>';
+  }
+}
+
+function renderAdversarial(data) {
+  $("adv-n-toxins").textContent = data.n_toxins;
+  $("adv-n-variants").textContent = data.n_variants;
+
+  const blPct = ((data.blast_evaded / data.n_variants) * 100).toFixed(0);
+  $("adv-blast-evaded").textContent = data.blast_evaded + " / " + data.n_variants + " (" + blPct + "%)";
+
+  const fpPct = ((data.fingerprint_caught / data.n_variants) * 100).toFixed(0);
+  $("adv-fp-caught").textContent = data.fingerprint_caught + " / " + data.n_variants + " (" + fpPct + "%)";
+
+  const tbody = $("adv-tbody");
+  tbody.innerHTML = "";
+
+  data.toxins.forEach((tox) => {
+    tox.variants.forEach((v, idx) => {
+      const tr = document.createElement("tr");
+      const isFirst = idx === 0;
+      const blastCls = v.blast_verdict === "EVADED" ? "evaded" : "blast-caught";
+      const fpCls = v.fingerprint_verdict === "CAUGHT" ? "caught" : "clear";
+
+      tr.innerHTML =
+        '<td class="adv-toxin-name">' + (isFirst ? tox.name : '') + '</td>' +
+        '<td class="adv-variant-idx">v' + v.idx + '</td>' +
+        '<td>' + (v.identity * 100).toFixed(2) + '%</td>' +
+        '<td>' + v.blast.toFixed(3) + '</td>' +
+        '<td>' + v.fingerprint.toFixed(3) + '</td>' +
+        '<td><span class="adv-verdict ' + blastCls + '">' + v.blast_verdict + '</span></td>' +
+        '<td><span class="adv-verdict ' + fpCls + '">' + v.fingerprint_verdict + '</span></td>';
+
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+// Hook: load when tab is clicked
+document.querySelectorAll(".tab").forEach((btn) => {
+  if (btn.dataset.tab === "adversarial") {
+    btn.addEventListener("click", () => setTimeout(loadAdversarial, 50));
+  }
+});
+
+// Also preload silently after a short delay so first click is instant
+setTimeout(() => { if (!_advLoaded) loadAdversarial(); }, 1500);
