@@ -429,6 +429,102 @@ def api_adversarial():
     })
 
 
+
+
+# ----------------------------------------------------------------------
+# Variant generation (EvoDiff live)
+# ----------------------------------------------------------------------
+_generate_jobs = {}
+_generate_lock = threading.Lock()
+
+
+@app.route("/api/generate", methods=["POST"])
+def api_generate():
+    """Start a background EvoDiff generation job. Returns job_id."""
+    _load_engine()
+    data = request.get_json(silent=True) or {}
+    accession = (data.get("accession") or "").strip()
+    mode = data.get("mode", "preserved")
+    n_variants = int(data.get("n_variants", 3))
+
+    from bioscreen.toxins import TOXIN_CONFIG
+    if accession not in TOXIN_CONFIG:
+        return jsonify({"error": f"Unknown toxin: {accession}"}), 400
+    if mode not in ("preserved", "aggressive"):
+        return jsonify({"error": "mode must be 'preserved' or 'aggressive'"}), 400
+
+    import uuid
+    job_id = str(uuid.uuid4())
+
+    with _generate_lock:
+        _generate_jobs[job_id] = {
+            "id": job_id,
+            "status": "queued",
+            "accession": accession,
+            "mode": mode,
+            "n_variants": n_variants,
+            "stage": "queued",
+            "progress": 0.0,
+            "result": None,
+            "error": None,
+            "started_at": time.time(),
+        }
+
+    def _run():
+        try:
+            _generate_jobs[job_id]["status"] = "running"
+            from bioscreen.generate import generate_variants
+
+            def progress_cb(stage, frac):
+                _generate_jobs[job_id]["stage"] = stage
+                _generate_jobs[job_id]["progress"] = frac
+
+            fp_emb = _engine["fingerprinter"].fingerprints if _engine["fingerprinter"] else {}
+
+            def embed_fn(seq):
+                return _engine["screener"].embed_per_residue(seq)
+
+            result = generate_variants(
+                accession=accession,
+                mode=mode,
+                n_variants=n_variants,
+                fingerprint_embeddings=fp_emb,
+                embed_fn=embed_fn,
+                progress_cb=progress_cb,
+            )
+            _generate_jobs[job_id]["result"] = result
+            _generate_jobs[job_id]["status"] = "ready"
+            _generate_jobs[job_id]["elapsed_s"] = round(
+                time.time() - _generate_jobs[job_id]["started_at"], 1
+            )
+        except Exception as e:
+            import traceback
+            _generate_jobs[job_id]["status"] = "error"
+            _generate_jobs[job_id]["error"] = str(e)
+            _generate_jobs[job_id]["traceback"] = traceback.format_exc()
+
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"job_id": job_id, "status": "queued"})
+
+
+@app.route("/api/generate/<job_id>")
+def api_generate_status(job_id):
+    job = _generate_jobs.get(job_id)
+    if not job:
+        return jsonify({"error": "unknown job"}), 404
+    return jsonify(job)
+
+
+@app.route("/api/toxins")
+def api_toxins():
+    """List all configured toxins for the Generate tab dropdown."""
+    from bioscreen.toxins import TOXIN_CONFIG
+    return jsonify([
+        {"accession": acc, "name": cfg["name"], "mechanism": cfg["mechanism"]}
+        for acc, cfg in TOXIN_CONFIG.items()
+    ])
+
+
 if __name__ == "__main__":
     print("Pre-loading engine...")
     _load_engine()

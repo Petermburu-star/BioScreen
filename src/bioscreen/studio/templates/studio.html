@@ -17,6 +17,7 @@
   <nav class="tabs" id="tabs">
     <button class="tab active" data-tab="screen">Screen</button>
     <button class="tab" data-tab="trace">Pipeline trace</button>
+    <button class="tab" data-tab="generate">Generate</button>
     <button class="tab" data-tab="adversarial">Adversarial</button>
     <button class="tab" data-tab="reproduce">Reproduce</button>
   </nav>
@@ -215,6 +216,49 @@
       <div id="trace-content">
         <p class="trace-empty">No request yet. Go to the <strong>Screen</strong> tab, submit a sequence, then come back here.</p>
       </div>
+    </section>
+  </div>
+
+  <!-- ============ TAB: GENERATE ============ -->
+  <div class="tab-panel" data-panel="generate">
+    <section class="panel">
+      <div class="panel-head">
+        <span class="panel-num">&#9656;</span>
+        <span class="panel-title">Live variant generation</span>
+        <span class="panel-hint">run EvoDiff on any toxin and score the result</span>
+      </div>
+
+      <div class="gen-controls">
+        <label class="gen-field">
+          <span class="gen-label">Toxin</span>
+          <select id="gen-toxin">
+            <option value="">loading...</option>
+          </select>
+        </label>
+        <label class="gen-field">
+          <span class="gen-label">Mode</span>
+          <select id="gen-mode">
+            <option value="preserved">Preserved &mdash; catalytic window protected</option>
+            <option value="aggressive">Aggressive &mdash; full redesign</option>
+          </select>
+        </label>
+        <label class="gen-field">
+          <span class="gen-label">Variants</span>
+          <input type="number" id="gen-n" value="3" min="1" max="5">
+        </label>
+        <button class="gen-btn" id="gen-start">Generate live</button>
+      </div>
+
+      <div class="gen-status" id="gen-status" style="display:none;">
+        <div class="gen-status-row">
+          <span id="gen-status-stage">idle</span>
+          <span id="gen-status-pct">0%</span>
+        </div>
+        <div class="gen-bar"><div class="gen-bar-fill" id="gen-bar-fill"></div></div>
+        <p class="gen-note" id="gen-note">Generation on CPU takes 2&ndash;4 minutes per variant.</p>
+      </div>
+
+      <div class="gen-results" id="gen-results"></div>
     </section>
   </div>
 

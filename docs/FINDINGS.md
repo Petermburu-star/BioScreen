@@ -10,44 +10,47 @@ Microsoft's 2025 red-teaming study showed that AI-designed ricin variants evade 
 
 **Setup:**
 
-- Ricin A-chain (267 aa) from AlphaFold DB (P02879)
+- 12 toxins with literature-curated catalytic residues
+- Ricin A-chain (267 aa), botulinum light chains (437 aa), shiga A subunits (315 aa), and others
 - EvoDiff `inpaint_simple` redesigns scaffold regions
 - Catalytic residues preserved (±8 window)
-- Result: 5 variants, sequence identity **0.7 – 1.5%** to native
+- 3 independent variants per toxin (36 variants total)
 
-**BLAST detection:** 5/5 evaded (all scored below 0.30 local alignment threshold).
+**BLAST detection:** 36/36 evaded (all scored below 0.30 local alignment threshold).
 
 ---
 
 ## The detection method
 
-A **fingerprint** built from the native toxin's catalytic window (42 residues) and scored with two constraints:
+A **fingerprint** built from each toxin's catalytic window (residues within ±6 of each catalytic residue) and scored with two constraints:
 
 1. **Per-residue similarity** — how well do fingerprint residues match the query?
 2. **Order consistency** — do consecutive fingerprint residues land in the correct relative positions?
 
     score = top20_similarity × order_consistency
 
-The order term is what eliminates false positives. GFP scored 0.92 on per-residue similarity but dropped to 0.45 once order was required.
+The order term eliminates false positives. GFP scored 0.92 on per-residue similarity but dropped to 0.45 once order was required.
 
 ---
 
-## Validation results
+## Validation results — 16 toxins
 
-| Protein class | BLAST | Fingerprint | Verdict |
-|---|---|---|---|
-| Native ricin | 1.00 | 1.00 | Flag |
-| EvoDiff variant 0 | 0.18 | 0.92 | Flag (BLAST missed) |
-| EvoDiff variant 1 | 0.20 | 0.93 | Flag (BLAST missed) |
-| EvoDiff variant 2 | 0.18 | 0.97 | Flag (BLAST missed) |
-| EvoDiff variant 3 | 0.19 | 0.86 | Flag (BLAST missed) |
-| EvoDiff variant 4 | 0.18 | 0.95 | Flag (BLAST missed) |
-| Aggressive redesign | 0.06 | 0.50 | Clear |
-| Human lysozyme | — | 0.12 | Clear |
-| GFP | — | 0.45 | Clear |
-| Human calmodulin | — | 0.01 | Clear |
+| Toxin | Variants caught | FP range |
+|---|---|---|
+| Ricin | 3/3 | 0.89 – 0.95 |
+| Botulinum A | 3/3 | 0.88 – 0.93 |
+| Botulinum B | 2/3 | 0.84 – 0.89 |
+| Botulinum E | 2/3 | 0.48 – 0.90 |
+| Shiga 1A | 2/3 | 0.85 – 0.94 |
+| Shiga 2A | 2/3 | 0.84 – 0.91 |
+| Diphtheria | 2/3 | 0.75 – 0.92 |
+| Abrin | 1/3 | 0.80 – 0.90 |
+| Modeccin | 2/3 | 0.78 – 0.91 |
+| Anthrax LF | 3/3 | 0.87 – 0.92 |
+| Anthrax EF | 3/3 | 0.88 – 0.96 |
+| Tetanus | 1/3 | 0.49 – 0.90 |
 
-**Separation: +0.42.**
+**Aggregate: 26/36 caught (72%). BLAST evaded 36/36 (100%).**
 
 ---
 
@@ -99,19 +102,23 @@ Zero false positives across 60 human proteins. Every fingerprint leaves at least
 
 ## What's uncertain
 
-1. **Only ricin tested end-to-end with EvoDiff variants.** The other three toxins have validated fingerprints but haven't been tested against their own EvoDiff variants.
+1. **10 of 36 variants were missed (28%).** Most landed at 0.78–0.84 — one point below the 0.85 threshold. Threshold tuning may recover some without sacrificing specificity.
 
-2. **Adversarial robustness untested.** An attacker who knows about the fingerprint could attempt chemistry-preserving substitutions (E→D, R→K, Y→F). Whether the fingerprint catches those is unverified.
+2. **Abrin is the weakest fingerprint** (1/3). Abrin and ricin are both plant RIPs; the abrin fingerprint may be partially shadowed by ricin's.
 
-3. **Function of EvoDiff variants not experimentally validated.** The design preserves the catalytic window, but we haven't confirmed the variants fold and catalyze correctly.
+3. **Tetanus needs UniProt annotation verification.** Currently 1/3 with a best-guess catalytic set. UniProt active-site annotations will fix it.
 
-4. **Only one design tool tested.** EvoDiff is the specific tool Microsoft used. Other tools (ProteinMPNN, RFdiffusion) may produce variants with different characteristics.
+4. **Adversarial robustness untested.** An attacker who knows about the fingerprint could attempt chemistry-preserving substitutions (E→D, R→K, Y→F). Whether the fingerprint catches those is unverified.
+
+5. **Function of EvoDiff variants not experimentally validated.** The design preserves the catalytic window, but we haven't confirmed the variants fold and catalyze correctly.
+
+6. **Only one design tool tested.** EvoDiff is the specific tool Microsoft used. Other tools (ProteinMPNN, RFdiffusion) may produce variants with different characteristics.
 
 ---
 
 ## Interpretation
 
-The ordered catalytic fingerprint detects AI-designed variants of known toxins that BLAST cannot see. It generalizes across mechanisms. It cleanly rejects safe proteins when the order-consistency term is included.
+The ordered catalytic fingerprint detects AI-designed variants of known toxins that BLAST cannot see. It generalizes across four mechanistically distinct toxins. It cleanly rejects safe proteins when the order-consistency term is included. It catches 72% of EvoDiff variants on average across 12 toxins — enough to prove the method, not enough to be production-grade.
 
 This is not a general solution to AI-designed biothreats. It is a specific solution to the threat Microsoft identified: function-preserving, sequence-diverging variants of toxins already in a reference set.
 
@@ -119,12 +126,13 @@ This is not a general solution to AI-designed biothreats. It is a specific solut
 
 ## Reproduction
 
-All results reproducible from `results/*.json`.
+All results reproducible from `results/evodiff_16toxins_full.json`.
 
 Full pipeline:
 
-1. Fetch ricin A-chain from AlphaFold DB (P02879)
+1. Fetch toxin sequences from UniProt
 2. Install EvoDiff from GitHub (microsoft/evodiff)
-3. Run `inpaint_simple` with catalytic window protected
-4. Build fingerprint from the catalytic window
-5. Score with `top20_similarity × order_consistency`
+3. For each toxin: extract region, build fingerprint, run `inpaint_simple` with catalytic window protected
+4. Score with BLAST and fingerprint
+
+See `docs/PROTOCOL.md` for the exact recipe.

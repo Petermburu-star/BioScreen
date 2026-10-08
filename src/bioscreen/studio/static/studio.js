@@ -639,3 +639,172 @@ document.querySelectorAll(".tab").forEach((btn) => {
 
 // Also preload silently after a short delay so first click is instant
 setTimeout(() => { if (!_advLoaded) loadAdversarial(); }, 1500);
+
+
+/* ============================================================
+   GENERATE TAB
+   ============================================================ */
+let _toxinsLoaded = false;
+let _pollTimer = null;
+
+async function loadToxins() {
+  if (_toxinsLoaded) return;
+  try {
+    const r = await fetch("/api/toxins");
+    const toxins = await r.json();
+    const sel = $("gen-toxin");
+    if (!sel) return;
+    sel.innerHTML = "";
+    toxins.forEach((t) => {
+      const opt = document.createElement("option");
+      opt.value = t.accession;
+      opt.textContent = t.name + "  (" + t.mechanism + ")";
+      sel.appendChild(opt);
+    });
+    _toxinsLoaded = true;
+  } catch (e) {
+    console.error("Failed to load toxins:", e);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const startBtn = $("gen-start");
+  if (!startBtn) return;
+
+  startBtn.addEventListener("click", async () => {
+    const acc = $("gen-toxin").value;
+    const mode = $("gen-mode").value;
+    const n = parseInt($("gen-n").value) || 3;
+    if (!acc) return;
+
+    const btn = $("gen-start");
+    btn.disabled = true;
+    btn.textContent = "Generating...";
+
+    const status = $("gen-status");
+    status.style.display = "block";
+    $("gen-status-stage").textContent = "queued";
+    $("gen-status-pct").textContent = "0%";
+    $("gen-bar-fill").style.width = "0%";
+    $("gen-note").textContent = mode === "aggressive"
+      ? "Aggressive mode redesigns the entire region. On CPU: 1–3 minutes per variant."
+      : "Preserved mode protects the catalytic window. On CPU: 1–3 minutes per variant.";
+    $("gen-results").innerHTML = "";
+
+    try {
+      const r = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accession: acc, mode: mode, n_variants: n }),
+      });
+      const j = await r.json();
+      if (j.error) throw new Error(j.error);
+      pollJob(j.job_id);
+    } catch (e) {
+      $("gen-status-stage").textContent = "error: " + e.message;
+      btn.disabled = false;
+      btn.textContent = "Generate live";
+    }
+  });
+});
+
+function pollJob(jobId) {
+  if (_pollTimer) clearInterval(_pollTimer);
+  _pollTimer = setInterval(async () => {
+    try {
+      const r = await fetch("/api/generate/" + jobId);
+      const job = await r.json();
+
+      if (job.status === "ready") {
+        clearInterval(_pollTimer);
+        $("gen-status-stage").textContent = "done in " + (job.elapsed_s || "?") + " s";
+        $("gen-status-pct").textContent = "100%";
+        $("gen-bar-fill").style.width = "100%";
+        $("gen-start").disabled = false;
+        $("gen-start").textContent = "Generate live";
+        renderGenerateResult(job.result);
+      } else if (job.status === "error") {
+        clearInterval(_pollTimer);
+        $("gen-status-stage").textContent = "error: " + (job.error || "unknown");
+        $("gen-start").disabled = false;
+        $("gen-start").textContent = "Generate live";
+      } else {
+        $("gen-status-stage").textContent = job.stage || job.status;
+        const pct = Math.round((job.progress || 0) * 100);
+        $("gen-status-pct").textContent = pct + "%";
+        $("gen-bar-fill").style.width = pct + "%";
+      }
+    } catch (e) {
+      console.error("Poll error:", e);
+    }
+  }, 2000);
+}
+
+function renderGenerateResult(result) {
+  const el = $("gen-results");
+  if (!el) return;
+  el.innerHTML = "";
+
+  // Header
+  const head = document.createElement("div");
+  head.className = "gen-cross";
+  head.innerHTML =
+    '<div class="gen-cross-head">' +
+      result.name + ' &middot; ' + result.mode + ' mode &middot; ' +
+      result.region_length + ' aa region &middot; ' +
+      result.n_catalytic + ' catalytic residues' +
+    '</div>';
+  el.appendChild(head);
+
+  // Per-variant table
+  const tbl = document.createElement("table");
+  tbl.className = "gen-result-table";
+  tbl.innerHTML =
+    '<thead><tr>' +
+      '<th>Variant</th><th>Length</th><th>Identity</th>' +
+      '<th>BLAST</th><th>Fingerprint</th>' +
+      '<th>BLAST verdict</th><th>Fingerprint verdict</th>' +
+    '</tr></thead><tbody></tbody>';
+
+  const tbody = tbl.querySelector("tbody");
+  result.variants.forEach((v) => {
+    const tr = document.createElement("tr");
+    const blCls = v.blast_evaded ? "evaded" : "blast-caught";
+    const fpCls = v.fingerprint_caught ? "caught" : "clear";
+    tr.innerHTML =
+      '<td>v' + v.idx + '</td>' +
+      '<td>' + v.length + '</td>' +
+      '<td>' + (v.identity * 100).toFixed(2) + '%</td>' +
+      '<td>' + v.blast.toFixed(3) + '</td>' +
+      '<td>' + (v.fingerprint !== null ? v.fingerprint.toFixed(3) : '—') + '</td>' +
+      '<td><span class="gen-badge ' + blCls + '">' + (v.blast_evaded ? 'EVADED' : 'caught') + '</span></td>' +
+      '<td><span class="gen-badge ' + fpCls + '">' + (v.fingerprint_caught ? 'CAUGHT' : 'clear') + '</span></td>';
+    tbody.appendChild(tr);
+  });
+
+  el.appendChild(tbl);
+
+  // Cross-match for first variant
+  if (result.variants[0] && result.variants[0].cross_ranking && result.variants[0].cross_ranking.length) {
+    const cross = document.createElement("div");
+    cross.className = "gen-cross";
+    cross.innerHTML =
+      '<div class="gen-cross-head">Cross-match: variant v0 fingerprint vs all other toxins</div>' +
+      result.variants[0].cross_ranking.map(([acc, score]) => {
+        const pct = Math.min(100, score * 100).toFixed(0);
+        return '<div class="gen-cross-row">' +
+          '<span class="nm">' + acc + '</span>' +
+          '<div class="bar"><span style="width:' + pct + '%"></span></div>' +
+          '<span class="sc">' + score.toFixed(4) + '</span>' +
+          '</div>';
+      }).join("");
+    el.appendChild(cross);
+  }
+}
+
+// Load toxins when Generate tab is clicked
+document.querySelectorAll(".tab").forEach((btn) => {
+  if (btn.dataset.tab === "generate") {
+    btn.addEventListener("click", () => setTimeout(loadToxins, 50));
+  }
+});
