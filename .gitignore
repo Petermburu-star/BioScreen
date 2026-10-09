@@ -29,3 +29,10 @@ data/processed/*
 # Stray HuggingFace artifacts
 data/*.json
 data/*.pdb
+
+# ---------- PRIVATE — do not commit ----------
+# Handoff / session state document (personal notes, not for public repo)
+docs/HANDOFF.md
+docs/HANDOFF.local.md
+**/HANDOFF.md
+**/.handoff/

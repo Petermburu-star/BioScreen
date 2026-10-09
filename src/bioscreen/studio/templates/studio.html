@@ -60,6 +60,60 @@
       </button>
     </section>
 
+    <section class="panel contrastive-panel hidden" id="contrastive-panel">
+      <div class="panel-head">
+        <span class="panel-num">02</span>
+        <span class="panel-title">Contrastive screening</span>
+        <span class="panel-hint">whole-protein embedding comparison against 16 toxins + 25 safes</span>
+      </div>
+
+      <div class="ctr-hero" id="ctr-hero">
+        <div class="ctr-glyph" id="ctr-glyph">-</div>
+        <div class="ctr-copy">
+          <div class="ctr-label">Contrastive verdict</div>
+          <div class="ctr-name" id="ctr-name">-</div>
+          <div class="ctr-score" id="ctr-score">-</div>
+        </div>
+        <div class="ctr-meters">
+          <div class="ctr-meter">
+            <span class="ctr-meter-label">best toxin match</span>
+            <span class="ctr-meter-val" id="ctr-toxin">-</span>
+          </div>
+          <div class="ctr-meter">
+            <span class="ctr-meter-label">best safe match</span>
+            <span class="ctr-meter-val" id="ctr-safe">-</span>
+          </div>
+          <div class="ctr-meter">
+            <span class="ctr-meter-label">hazard delta</span>
+            <span class="ctr-meter-val" id="ctr-delta">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctr-gates" id="ctr-gates">
+        <div class="gate" id="ctr-gate-delta">
+          <div class="gate-row">
+            <span class="gate-name">&Delta; &ge; <em id="ctr-thr-delta">0.02</em></span>
+            <span class="gate-val" id="ctr-gate-delta-val">-</span>
+          </div>
+          <div class="gate-bar">
+            <div class="gate-fill" id="ctr-gate-delta-fill"></div>
+            <div class="gate-threshold" id="ctr-gate-delta-thr"></div>
+          </div>
+        </div>
+        <div class="gate" id="ctr-gate-floor">
+          <div class="gate-row">
+            <span class="gate-name">toxin &ge; <em id="ctr-thr-floor">0.90</em></span>
+            <span class="gate-val" id="ctr-gate-floor-val">-</span>
+          </div>
+          <div class="gate-bar">
+            <div class="gate-fill" id="ctr-gate-floor-fill"></div>
+            <div class="gate-threshold" id="ctr-gate-floor-thr"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="panel instrument-panel hidden" id="instrument">
       <div class="panel-head">
         <span class="panel-num">02</span>

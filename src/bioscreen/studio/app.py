@@ -233,7 +233,9 @@ def api_screen():
     delta = best_toxin_score - best_safe_score
     gate_delta = delta >= s.hazard_threshold
     gate_floor = best_toxin_score >= s.toxin_similarity_floor
-    flagged = bool(gate_delta and gate_floor)
+    contrastive_flagged = bool(gate_delta and gate_floor)
+    # Final verdict is deferred until after fingerprint scoring below; kept here
+    # so we don't recompute. Both signals will be OR-ed together.
 
     # ---- Step 4: fingerprint extraction ----
     # Compute per-residue embeddings for the fingerprint stage (reusing query_emb)
@@ -288,15 +290,18 @@ def api_screen():
     }
 
     # ---- Step 6: verdict ----
+    fingerprint_flagged = bool(fp_result.get("fingerprint_flagged", False))
+    final_flagged = bool(contrastive_flagged or fingerprint_flagged)
+
     trace.append({
         "step": 6, "phase": "verdict",
         "name": "Verdict decision",
         "elapsed_ms": 0.1,
         "input": f"contrastive delta={delta:.4f}, fingerprint={fp_result['fingerprint_score']:.4f}",
-        "output": "FLAGGED" if (flagged or fp_result["fingerprint_flagged"]) else "CLEAR",
+        "output": "FLAGGED" if final_flagged else "CLEAR",
         "details": {
-            "contrastive_flagged": flagged,
-            "fingerprint_flagged": fp_result["fingerprint_flagged"],
+            "contrastive_flagged": contrastive_flagged,
+            "fingerprint_flagged": fingerprint_flagged,
             "hazard_delta": round(delta, 4),
         },
     })
@@ -309,6 +314,16 @@ def api_screen():
 
     total_ms = round((time.perf_counter() - t_total_start) * 1000, 2)
 
+    # --- Verdict reason: which signal triggered, for display ---
+    if final_flagged and contrastive_flagged and fingerprint_flagged:
+        verdict_reason = "Both contrastive and fingerprint"
+    elif final_flagged and fingerprint_flagged:
+        verdict_reason = "Fingerprint (contrastive was clear)"
+    elif final_flagged and contrastive_flagged:
+        verdict_reason = "Contrastive (fingerprint was clear)"
+    else:
+        verdict_reason = "Neither signal fired"
+
     return jsonify({
         "sequence_length": len(sequence),
         # Contrastive
@@ -319,7 +334,11 @@ def api_screen():
         "best_safe_name": best_safe_name,
         "best_safe_acc": best_safe_acc,
         "hazard_delta": round(delta, 4),
-        "flagged": flagged,
+        # Verdict
+        "flagged": final_flagged,
+        "contrastive_flagged": contrastive_flagged,
+        "fingerprint_flagged": fingerprint_flagged,
+        "verdict_reason": verdict_reason,
         "gate_delta": bool(gate_delta),
         "gate_floor": bool(gate_floor),
         "threshold_delta": s.hazard_threshold,
@@ -493,7 +512,7 @@ def api_generate():
                 progress_cb=progress_cb,
             )
 
-            # Enrich each variant with contrastive verdict + actuarial pricing
+            # Enrich each variant with contrastive verdict + reason + pricing
             s = _engine["screener"]
             pricer = _engine["pricer"]
             for v in result["variants"]:
@@ -502,17 +521,32 @@ def api_generate():
                     sr = s.screen(seq)
                 except Exception:
                     sr = {"flagged": False, "hazard_delta": 0.0, "best_toxin_score": 0.0}
+
                 fp_flagged = bool(v.get("fingerprint_caught", False))
-                v["verdict"] = "FLAGGED" if (sr["flagged"] or fp_flagged) else "CLEAR"
-                v["contrastive_delta"] = round(sr["hazard_delta"], 4)
-                v["contrastive_flagged"] = bool(sr["flagged"])
+                contrastive_flagged = bool(sr.get("flagged", False))
+
+                v["contrastive_delta"] = round(sr.get("hazard_delta", 0.0), 4)
+                v["contrastive_toxin_sim"] = round(sr.get("best_toxin_score", 0.0), 4)
+                v["contrastive_flagged"] = contrastive_flagged
+                v["verdict"] = "FLAGGED" if (contrastive_flagged or fp_flagged) else "CLEAR"
+
+                # Reason — which layer(s) fired
+                if contrastive_flagged and fp_flagged:
+                    v["verdict_reason"] = "Both contrastive and fingerprint"
+                elif fp_flagged:
+                    v["verdict_reason"] = "Fingerprint (contrastive was clear)"
+                elif contrastive_flagged:
+                    v["verdict_reason"] = "Contrastive (fingerprint was clear)"
+                else:
+                    v["verdict_reason"] = "Neither signal fired"
+
                 try:
                     order = OrderRisk(
                         customer_verified=True,
                         order_size_bp=2000,
                         organism="human",
-                        screening_hazard_delta=sr["hazard_delta"],
-                        screening_best_toxin_sim=sr["best_toxin_score"],
+                        screening_hazard_delta=sr.get("hazard_delta", 0.0),
+                        screening_best_toxin_sim=sr.get("best_toxin_score", 0.0),
                         customer_history=0.8,
                     )
                     v["pricing"] = pricer.compute_premium(order, order_cost_usd=2000)

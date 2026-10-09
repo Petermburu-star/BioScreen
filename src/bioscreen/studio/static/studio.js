@@ -279,12 +279,14 @@ $("btn-screen").addEventListener("click", async () => {
 });
 
 function renderResult(j) {
-  renderTrace(j);
+  renderTrace(j, "screen");
 
+  $("contrastive-panel").classList.remove("hidden");
   $("instrument").classList.remove("hidden");
   $("fingerprint-panel").classList.remove("hidden");
   $("verdict-panel").classList.remove("hidden");
   $("pricing-panel").classList.remove("hidden");
+  renderContrastive(j);
   renderFingerprint(j);
 
   $("toxin-ref").textContent = j.best_toxin_name + " - " + j.best_toxin_acc;
@@ -303,6 +305,18 @@ function renderResult(j) {
   $("verdict-line").textContent = j.flagged
     ? "This sequence carries a functional signature of a controlled toxin."
     : "No functional toxin signature detected.";
+
+  // Add verdict reason line
+  const heroCopy = hero.querySelector(".verdict-copy");
+  if (heroCopy) {
+    let reasonEl = heroCopy.querySelector(".verdict-reason");
+    if (!reasonEl) {
+      reasonEl = document.createElement("div");
+      reasonEl.className = "verdict-reason";
+      heroCopy.appendChild(reasonEl);
+    }
+    reasonEl.textContent = "Signal: " + (j.verdict_reason || "—");
+  }
 
   $("thr-delta").textContent = j.threshold_delta.toFixed(2);
   $("thr-floor").textContent = j.threshold_floor.toFixed(2);
@@ -788,41 +802,133 @@ function renderGenerateResult(result) {
   // Per-variant table
   const tbl = document.createElement("table");
   tbl.className = "gen-result-table";
+  tbl.id = "gen-result-tbl";
   tbl.innerHTML =
     '<thead><tr>' +
-      '<th>Variant</th><th>Length</th><th>Identity</th>' +
-      '<th>BLAST</th><th>Fingerprint</th>' +
-      '<th>BLAST verdict</th><th>Fingerprint verdict</th>' +
-      '<th>Overall verdict</th>' +
-      '<th>Tier</th><th>Premium</th>' +
+      '<th>Variant</th>' +
+      '<th>Identity</th>' +
+      '<th>BLAST</th>' +
+      '<th>Contrastive</th>' +
+      '<th>Fingerprint</th>' +
+      '<th>Verdict</th>' +
+      '<th>Signal</th>' +
+      '<th>Tier / Premium</th>' +
+      '<th>Actions</th>' +
     '</tr></thead><tbody></tbody>';
 
   const tbody = tbl.querySelector("tbody");
   result.variants.forEach((v) => {
     const tr = document.createElement("tr");
+    tr.className = "gen-variant-row";
+
     const blCls = v.blast_evaded ? "evaded" : "blast-caught";
     const fpCls = v.fingerprint_caught ? "caught" : "clear";
+    const ctrFlagged = v.contrastive_flagged || false;
+    const ctrCls = ctrFlagged ? "caught" : "clear";
+    const ctrLabel = ctrFlagged ? "FLAG" : "clear";
+
     const verdict = v.verdict || "—";
     const verdictCls = verdict === "FLAGGED" ? "evaded" : "caught";
     const tier = (v.pricing && v.pricing.tier) ? v.pricing.tier : "—";
     const premium = (v.pricing && v.pricing.premium_usd !== undefined)
       ? "$" + v.pricing.premium_usd.toFixed(2) : "—";
 
+    const ctrDelta = (v.contrastive_delta !== undefined && v.contrastive_delta !== null)
+      ? (v.contrastive_delta >= 0 ? "+" : "") + v.contrastive_delta.toFixed(4)
+      : "—";
+
+    const reason = v.verdict_reason || "—";
+    let sigClass = "clear", sigLabel = "—";
+    if (reason.indexOf("Both") === 0) { sigClass = "caught"; sigLabel = "BOTH"; }
+    else if (reason.indexOf("Fingerprint") === 0) { sigClass = "caught"; sigLabel = "FP"; }
+    else if (reason.indexOf("Contrastive") === 0) { sigClass = "caught"; sigLabel = "CTR"; }
+    else if (reason.indexOf("Neither") === 0) { sigClass = "clear"; sigLabel = "NONE"; }
+
+    // Combined cell: score + verdict for each method
+    const blastCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + v.blast.toFixed(3) + '</span>' +
+        '<span class="gen-badge ' + blCls + '">' + (v.blast_evaded ? 'EVADED' : 'caught') + '</span>' +
+      '</div>';
+    const ctrCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + ctrDelta + '</span>' +
+        '<span class="gen-badge ' + ctrCls + '">' + ctrLabel + '</span>' +
+      '</div>';
+    const fpCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + (v.fingerprint !== null ? v.fingerprint.toFixed(3) : '—') + '</span>' +
+        '<span class="gen-badge ' + fpCls + '">' + (v.fingerprint_caught ? 'CAUGHT' : 'clear') + '</span>' +
+      '</div>';
+    const tierCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + tier + '</span>' +
+        '<span class="gen-num-muted">' + premium + '</span>' +
+      '</div>';
+
     tr.innerHTML =
       '<td>v' + v.idx + '</td>' +
-      '<td>' + v.length + '</td>' +
       '<td>' + (v.identity * 100).toFixed(2) + '%</td>' +
-      '<td>' + v.blast.toFixed(3) + '</td>' +
-      '<td>' + (v.fingerprint !== null ? v.fingerprint.toFixed(3) : '—') + '</td>' +
-      '<td><span class="gen-badge ' + blCls + '">' + (v.blast_evaded ? 'EVADED' : 'caught') + '</span></td>' +
-      '<td><span class="gen-badge ' + fpCls + '">' + (v.fingerprint_caught ? 'CAUGHT' : 'clear') + '</span></td>' +
+      '<td>' + blastCell + '</td>' +
+      '<td>' + ctrCell + '</td>' +
+      '<td>' + fpCell + '</td>' +
       '<td><span class="gen-badge ' + verdictCls + '">' + verdict + '</span></td>' +
-      '<td>' + tier + '</td>' +
-      '<td>' + premium + '</td>';
+      '<td><span class="gen-badge ' + sigClass + '">' + sigLabel + '</span></td>' +
+      '<td>' + tierCell + '</td>' +
+      '<td>' +
+        '<button class="gen-mini" data-vidx="' + v.idx + '" data-action="toggle-seq">seq</button> ' +
+        '<button class="gen-mini primary" data-vidx="' + v.idx + '" data-action="send-to-screen">→ Screen</button>' +
+      '</td>';
     tbody.appendChild(tr);
+
+    // Hidden sequence row
+    const seqTr = document.createElement("tr");
+    seqTr.className = "gen-seq-row";
+    seqTr.dataset.seqFor = v.idx;
+    seqTr.style.display = "none";
+    seqTr.innerHTML =
+      '<td colspan="9">' +
+        '<pre class="gen-seq-block">' + (v.sequence || "no sequence stored") + '</pre>' +
+      '</td>';
+    tbody.appendChild(seqTr);
   });
 
   el.appendChild(tbl);
+
+  // Wire buttons via delegation
+  tbl.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const idx = parseInt(btn.dataset.vidx, 10);
+    const variant = result.variants.find((x) => x.idx === idx);
+    if (!variant) return;
+
+    if (btn.dataset.action === "toggle-seq") {
+      const seqRow = tbl.querySelector('.gen-seq-row[data-seq-for="' + idx + '"]');
+      if (!seqRow) return;
+      const visible = seqRow.style.display !== "none";
+      seqRow.style.display = visible ? "none" : "";
+      btn.textContent = visible ? "Show seq" : "Hide seq";
+    }
+
+    if (btn.dataset.action === "send-to-screen") {
+      // Fill the Screen textarea
+      const ta = $("seq-input");
+      if (!ta) return;
+      ta.value = variant.sequence || "";
+      if (typeof updateSeqMeta === "function") updateSeqMeta();
+
+      // Switch to Screen tab
+      const screenTab = document.querySelector('.tab[data-tab="screen"]');
+      if (screenTab) screenTab.click();
+
+      // Auto-click Screen after a short delay so the user sees the textarea populate
+      setTimeout(() => {
+        const screenBtn = $("btn-screen");
+        if (screenBtn && !screenBtn.disabled) screenBtn.click();
+      }, 600);
+    }
+  });
 
   // Cross-match for first variant
   if (result.variants[0] && result.variants[0].cross_ranking && result.variants[0].cross_ranking.length) {
@@ -851,3 +957,69 @@ document.querySelectorAll(".tab").forEach((btn) => {
     btn.addEventListener("click", () => setTimeout(loadToxins, 50));
   }
 });
+
+
+/* ============================================================
+   CONTRASTIVE PANEL — Screen tab
+   ============================================================ */
+function renderContrastive(j) {
+  const hero = $("ctr-hero");
+  if (!hero) return;
+
+  const flagged = j.contrastive_flagged || j.flagged || false;
+  hero.className = "ctr-hero " + (flagged ? "flagged" : "clear");
+
+  $("ctr-glyph").textContent = flagged ? "\u26A0" : "\u2713";
+  $("ctr-name").textContent =
+    (flagged ? "Flagged" : "Clear") + " \u00B7 best match: " + (j.best_toxin_name || "—");
+  $("ctr-score").textContent = (j.best_toxin_score || 0).toFixed(4);
+
+  $("ctr-toxin").textContent =
+    (j.best_toxin_name || "—") + "  " + (j.best_toxin_score || 0).toFixed(4);
+  $("ctr-safe").textContent =
+    (j.best_safe_name || "—") + "  " + (j.best_safe_score || 0).toFixed(4);
+
+  const delta = j.hazard_delta || 0;
+  const deltaStr = (delta >= 0 ? "+" : "") + delta.toFixed(4);
+  $("ctr-delta").textContent = deltaStr;
+
+  // Gates
+  const thrDelta = j.threshold_delta || 0.02;
+  const thrFloor = j.threshold_floor || 0.90;
+  $("ctr-thr-delta").textContent = thrDelta.toFixed(2);
+  $("ctr-thr-floor").textContent = thrFloor.toFixed(2);
+
+  updateGateBar(
+    "ctr-gate-delta",
+    delta,
+    thrDelta,
+    (v) => (v >= 0 ? "+" : "") + v.toFixed(4)
+  );
+  updateGateBar(
+    "ctr-gate-floor",
+    j.best_toxin_score || 0,
+    thrFloor,
+    (v) => v.toFixed(4)
+  );
+}
+
+function updateGateBar(containerId, value, threshold, format) {
+  const el = $(containerId);
+  if (!el) return;
+
+  const passed = value >= threshold;
+  el.classList.toggle("pass", passed);
+  el.classList.toggle("fail", !passed);
+
+  const fill = el.querySelector(".gate-fill");
+  const thr  = el.querySelector(".gate-threshold");
+  const val  = el.querySelector(".gate-val");
+
+  const maxScale = Math.max(Math.abs(threshold) * 3, Math.abs(value) * 1.2, 0.01);
+  const width = Math.min(100, Math.max(0, (value / maxScale) * 100));
+  const thrPos = Math.min(100, Math.max(0, (threshold / maxScale) * 100));
+
+  fill.style.width = width + "%";
+  thr.style.left = thrPos + "%";
+  val.textContent = format(value);
+}
