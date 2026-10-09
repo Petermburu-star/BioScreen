@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BioScreen Studio</title>
-<link rel="stylesheet" href="/static/studio.css">
+<link rel="stylesheet" href="/static/studio.css?v=1791545123">
 </head>
 <body>
 
@@ -47,13 +47,31 @@
         </div>
       </div>
       <div class="examples">
-        <span class="examples-label">Load from UniProt:</span>
+        <span class="examples-label">Quick chips:</span>
         <button class="chip" data-ex="ricin">Ricin</button>
         <button class="chip" data-ex="botulinum_a">Botulinum A</button>
         <button class="chip" data-ex="diphtheria">Diphtheria</button>
         <button class="chip" data-ex="gfp">GFP</button>
         <button class="chip" data-ex="insulin">Insulin</button>
         <button class="chip" data-ex="lysozyme">Lysozyme</button>
+      </div>
+
+      <div class="ref-loader">
+        <div class="ref-loader-row">
+          <label class="ref-field">
+            <span class="ref-label">Load reference — toxin</span>
+            <select id="ref-toxin">
+              <option value="">select a toxin…</option>
+            </select>
+          </label>
+          <label class="ref-field">
+            <span class="ref-label">Load reference — safe</span>
+            <select id="ref-safe">
+              <option value="">select a safe protein…</option>
+            </select>
+          </label>
+          <button class="ref-btn" id="ref-load" disabled>Load selected</button>
+        </div>
       </div>
       <button class="btn-primary" id="btn-screen" disabled>
         <span class="btn-icon">&#9656;</span> Screen
@@ -282,6 +300,13 @@
         <span class="panel-hint">run EvoDiff on any toxin and score the result</span>
       </div>
 
+      <div class="gen-mode-switch" id="gen-mode-switch">
+        <button class="gen-mode-btn active" data-gen-mode="curated">Curated toxin</button>
+        <button class="gen-mode-btn" data-gen-mode="custom">Custom sequence</button>
+      </div>
+
+      <!-- ========== SUB-PANEL: CURATED ========== -->
+      <div class="gen-subpanel active" data-gen-sub="curated">
       <div class="gen-controls">
         <label class="gen-field">
           <span class="gen-label">Toxin</span>
@@ -313,7 +338,75 @@
       </div>
 
       <div class="gen-results" id="gen-results"></div>
-    </section>
+          </div><!-- /curated subpanel -->
+
+      <!-- ========== SUB-PANEL: CUSTOM ========== -->
+      <div class="gen-subpanel" data-gen-sub="custom">
+
+        <div class="gen-custom-fetch">
+          <label class="gen-field">
+            <span class="gen-label">Fetch from UniProt (accession)</span>
+            <div class="gen-fetch-row">
+              <input type="text" id="gen-uniprot-acc" placeholder="e.g. P02879, P0DPI1, P42212">
+              <button class="gen-btn small" id="gen-uniprot-fetch">Fetch</button>
+            </div>
+          </label>
+          <div class="gen-fetch-meta" id="gen-uniprot-meta"></div>
+        </div>
+
+        <div class="gen-custom-or">— or paste a sequence directly —</div>
+
+        <label class="gen-field full">
+          <span class="gen-label">Custom protein sequence</span>
+          <textarea id="gen-custom-seq" class="gen-textarea"
+            placeholder="Paste a protein sequence (single-letter amino acids, 50-500 residues)"></textarea>
+          <span class="gen-seq-meta" id="gen-custom-len">0 aa</span>
+        </label>
+
+        <div class="gen-custom-options">
+          <label class="gen-field">
+            <span class="gen-label">Region start</span>
+            <input type="number" id="gen-custom-start" value="0" min="0">
+          </label>
+          <label class="gen-field">
+            <span class="gen-label">Region end</span>
+            <input type="number" id="gen-custom-end" placeholder="(end of seq)">
+          </label>
+          <label class="gen-field checkbox">
+            <input type="checkbox" id="gen-auto-catalytic" checked>
+            <span class="gen-label-inline">Auto-detect catalytic-like residues</span>
+          </label>
+        </div>
+
+        <div class="gen-custom-options">
+          <label class="gen-field">
+            <span class="gen-label">Mode</span>
+            <select id="gen-custom-mode">
+              <option value="preserved">Preserved &mdash; protect catalytic window</option>
+              <option value="aggressive">Aggressive &mdash; full redesign</option>
+            </select>
+          </label>
+          <label class="gen-field">
+            <span class="gen-label">Variants</span>
+            <input type="number" id="gen-custom-n" value="3" min="1" max="5">
+          </label>
+          <button class="gen-btn" id="gen-custom-start">Generate live</button>
+        </div>
+
+        <div class="gen-status" id="gen-custom-status" style="display:none;">
+          <div class="gen-status-row">
+            <span id="gen-custom-stage">idle</span>
+            <span id="gen-custom-pct">0%</span>
+          </div>
+          <div class="gen-bar"><div class="gen-bar-fill" id="gen-custom-bar"></div></div>
+          <p class="gen-note" id="gen-custom-note"></p>
+        </div>
+
+        <div class="gen-results" id="gen-custom-results"></div>
+
+      </div><!-- /custom subpanel -->
+
+</section>
   </div>
 
   <!-- ============ TAB: ADVERSARIAL ============ -->
@@ -429,6 +522,6 @@ python scripts/build_fingerprints.py</pre>
 
 </main>
 
-<script src="/static/studio.js"></script>
+<script src="/static/studio.js?v=1791545123"></script>
 </body>
 </html>

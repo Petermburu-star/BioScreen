@@ -1023,3 +1023,454 @@ function updateGateBar(containerId, value, threshold, format) {
   thr.style.left = thrPos + "%";
   val.textContent = format(value);
 }
+
+
+/* ============================================================
+   CUSTOM SEQUENCE MODE — Generate tab
+   ============================================================ */
+
+// ----- Mode switch (curated vs custom) -----
+document.querySelectorAll(".gen-mode-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const mode = btn.dataset.genMode;
+    document.querySelectorAll(".gen-mode-btn").forEach((b) =>
+      b.classList.toggle("active", b === btn));
+    document.querySelectorAll(".gen-subpanel").forEach((p) =>
+      p.classList.toggle("active", p.dataset.genSub === mode));
+  });
+});
+
+// ----- Sequence length counter -----
+const customSeqEl = $("gen-custom-seq");
+if (customSeqEl) {
+  customSeqEl.addEventListener("input", () => {
+    const s = customSeqEl.value.replace(/\s/g, "").toUpperCase();
+    $("gen-custom-len").textContent = s.length + " aa";
+    // Auto-set region end if not manually set
+    const endEl = $("gen-custom-end");
+    if (endEl && !endEl.value) {
+      endEl.placeholder = "(end of seq = " + s.length + ")";
+    }
+  });
+}
+
+// ----- UniProt fetch -----
+const fetchBtn = $("gen-uniprot-fetch");
+if (fetchBtn) {
+  fetchBtn.addEventListener("click", async () => {
+    const acc = ($("gen-uniprot-acc").value || "").trim().toUpperCase();
+    if (!acc) return;
+    fetchBtn.disabled = true;
+    fetchBtn.textContent = "...";
+    $("gen-uniprot-meta").innerHTML = "";
+
+    try {
+      const r = await fetch("/api/uniprot_fetch/" + encodeURIComponent(acc));
+      const j = await r.json();
+      if (j.error) throw new Error(j.error);
+
+      // Populate textarea
+      customSeqEl.value = j.sequence;
+      customSeqEl.dispatchEvent(new Event("input"));
+
+      // Show metadata
+      const siteBits = [];
+      if (j.active_sites && j.active_sites.length) {
+        j.active_sites.forEach((s) => siteBits.push(
+          '<span class="fm-site">active: ' + s.start + (s.end !== s.start ? "–" + s.end : "") + "</span>"
+        ));
+      }
+      if (j.binding_sites && j.binding_sites.length) {
+        j.binding_sites.slice(0, 4).forEach((s) => siteBits.push(
+          '<span class="fm-site">binding: ' + s.start + (s.end !== s.start ? "–" + s.end : "") + "</span>"
+        ));
+      }
+
+      $("gen-uniprot-meta").innerHTML =
+        '<div><span class="fm-label">accession</span><span class="fm-val">' + j.accession + "</span></div>" +
+        '<div><span class="fm-label">name</span><span class="fm-val">' + (j.name || "—") + "</span></div>" +
+        '<div><span class="fm-label">organism</span><span class="fm-val">' + (j.organism || "—") + "</span></div>" +
+        '<div><span class="fm-label">length</span><span class="fm-val">' + j.length + " aa</span></div>" +
+        (siteBits.length ? '<div style="margin-top:6px">' + siteBits.join("") + "</div>" : "");
+
+      // If UniProt has active sites, pre-fill region
+      if (j.active_sites && j.active_sites.length) {
+        const first = j.active_sites[0].start;
+        const last = j.active_sites[j.active_sites.length - 1].end;
+        const pad = 50;
+        $("gen-custom-start").value = Math.max(0, first - pad - 1);
+        $("gen-custom-end").value = Math.min(j.length, last + pad);
+      }
+    } catch (e) {
+      $("gen-uniprot-meta").innerHTML =
+        '<div style="color:#f59e0b">Fetch failed: ' + e.message + "</div>";
+    } finally {
+      fetchBtn.disabled = false;
+      fetchBtn.textContent = "Fetch";
+    }
+  });
+}
+
+// ----- Custom generation start -----
+const customStart = $("gen-custom-start");
+if (customStart) {
+  customStart.addEventListener("click", async () => {
+    const seq = (customSeqEl.value || "").replace(/\s/g, "").toUpperCase();
+    if (seq.length < 50) {
+      alert("Sequence must be at least 50 residues");
+      return;
+    }
+    const mode = $("gen-custom-mode").value;
+    const n = parseInt($("gen-custom-n").value) || 3;
+    const start = parseInt($("gen-custom-start").value) || 0;
+    const endRaw = $("gen-custom-end").value;
+    const end = endRaw ? parseInt(endRaw) : null;
+    const autoCat = $("gen-auto-catalytic").checked;
+
+    customStart.disabled = true;
+    customStart.textContent = "Generating...";
+
+    $("gen-custom-status").style.display = "block";
+    $("gen-custom-stage").textContent = "queued";
+    $("gen-custom-pct").textContent = "0%";
+    $("gen-custom-bar").style.width = "0%";
+    $("gen-custom-note").textContent = mode === "aggressive"
+      ? "Aggressive mode redesigns the entire region."
+      : "Preserved mode protects auto-detected catalytic-like residues.";
+    $("gen-custom-results").innerHTML = "";
+
+    try {
+      const r = await fetch("/api/generate_custom", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sequence: seq,
+          mode: mode,
+          n_variants: n,
+          region_start: start,
+          region_end: end,
+          auto_catalytic: autoCat,
+        }),
+      });
+      const j = await r.json();
+      if (j.error) throw new Error(j.error);
+      pollCustomJob(j.job_id);
+    } catch (e) {
+      $("gen-custom-stage").textContent = "error: " + e.message;
+      customStart.disabled = false;
+      customStart.textContent = "Generate live";
+    }
+  });
+}
+
+let _customPollTimer = null;
+function pollCustomJob(jobId) {
+  if (_customPollTimer) clearInterval(_customPollTimer);
+  _customPollTimer = setInterval(async () => {
+    try {
+      const r = await fetch("/api/generate/" + jobId);
+      const job = await r.json();
+
+      if (job.status === "ready") {
+        clearInterval(_customPollTimer);
+        $("gen-custom-stage").textContent = "done in " + (job.elapsed_s || "?") + " s";
+        $("gen-custom-pct").textContent = "100%";
+        $("gen-custom-bar").style.width = "100%";
+        $("gen-custom-start").disabled = false;
+        $("gen-custom-start").textContent = "Generate live";
+        renderGenerateResult(job.result, "gen-custom-results");
+      } else if (job.status === "error") {
+        clearInterval(_customPollTimer);
+        $("gen-custom-stage").textContent = "error: " + (job.error || "unknown");
+        $("gen-custom-start").disabled = false;
+        $("gen-custom-start").textContent = "Generate live";
+      } else {
+        $("gen-custom-stage").textContent = job.stage || job.status;
+        const pct = Math.round((job.progress || 0) * 100);
+        $("gen-custom-pct").textContent = pct + "%";
+        $("gen-custom-bar").style.width = pct + "%";
+      }
+    } catch (e) {
+      console.error("poll error:", e);
+    }
+  }, 2000);
+}
+
+/* ============================================================
+   REFACTOR: make renderGenerateResult target-agnostic
+   (Accept an optional container ID; default to gen-results)
+   ============================================================ */
+if (typeof window._origRenderGenerateResult === "undefined") {
+  window._origRenderGenerateResult = window.renderGenerateResult;
+}
+
+window.renderGenerateResult = function(result, targetId) {
+  const el = $(targetId || "gen-results");
+  if (!el) return;
+  el.innerHTML = "";
+
+  // Header
+  const head = document.createElement("div");
+  head.className = "gen-cross";
+  head.innerHTML =
+    '<div class="gen-cross-head">' +
+      result.name + ' &middot; ' + result.mode + ' mode &middot; ' +
+      result.region_length + ' aa region &middot; ' +
+      result.n_catalytic + ' catalytic residues' +
+      (result.source === "custom" ? ' &middot; custom sequence' : '') +
+      (result.auto_catalytic ? ' &middot; auto-detected' : '') +
+    '</div>';
+  el.appendChild(head);
+
+  // Results table (same layout as curated)
+  const tbl = document.createElement("table");
+  tbl.className = "gen-result-table";
+  tbl.innerHTML =
+    '<thead><tr>' +
+      '<th>Variant</th>' +
+      '<th>Identity</th>' +
+      '<th>BLAST</th>' +
+      '<th>Contrastive</th>' +
+      '<th>Fingerprint</th>' +
+      '<th>Verdict</th>' +
+      '<th>Signal</th>' +
+      '<th>Tier / Premium</th>' +
+      '<th>Actions</th>' +
+    '</tr></thead><tbody></tbody>';
+
+  const tbody = tbl.querySelector("tbody");
+  result.variants.forEach((v) => {
+    const tr = document.createElement("tr");
+    tr.className = "gen-variant-row";
+
+    const blCls = v.blast_evaded ? "evaded" : "blast-caught";
+    const fpCls = v.fingerprint_caught ? "caught" : "clear";
+    const ctrFlagged = v.contrastive_flagged || false;
+    const ctrCls = ctrFlagged ? "caught" : "clear";
+    const ctrLabel = ctrFlagged ? "FLAG" : "clear";
+
+    const verdict = v.verdict || "—";
+    const verdictCls = verdict === "FLAGGED" ? "evaded" : "caught";
+    const tier = (v.pricing && v.pricing.tier) ? v.pricing.tier : "—";
+    const premium = (v.pricing && v.pricing.premium_usd !== undefined)
+      ? "$" + v.pricing.premium_usd.toFixed(2) : "—";
+
+    const ctrDelta = (v.contrastive_delta !== undefined && v.contrastive_delta !== null)
+      ? (v.contrastive_delta >= 0 ? "+" : "") + v.contrastive_delta.toFixed(4)
+      : "—";
+
+    const reason = v.verdict_reason || "—";
+    let sigClass = "clear", sigLabel = "—";
+    if (reason.indexOf("Both") === 0) { sigClass = "caught"; sigLabel = "BOTH"; }
+    else if (reason.indexOf("Fingerprint") === 0) { sigClass = "caught"; sigLabel = "FP"; }
+    else if (reason.indexOf("Contrastive") === 0) { sigClass = "caught"; sigLabel = "CTR"; }
+    else if (reason.indexOf("Neither") === 0) { sigClass = "clear"; sigLabel = "NONE"; }
+
+    const blastCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + v.blast.toFixed(3) + '</span>' +
+        '<span class="gen-badge ' + blCls + '">' + (v.blast_evaded ? 'EVADED' : 'caught') + '</span>' +
+      '</div>';
+    const ctrCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + ctrDelta + '</span>' +
+        '<span class="gen-badge ' + ctrCls + '">' + ctrLabel + '</span>' +
+      '</div>';
+    const fpCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + (v.fingerprint !== null ? v.fingerprint.toFixed(3) : '—') + '</span>' +
+        '<span class="gen-badge ' + fpCls + '">' + (v.fingerprint_caught ? 'CAUGHT' : 'clear') + '</span>' +
+      '</div>';
+    const tierCell =
+      '<div class="gen-stack">' +
+        '<span class="gen-num">' + tier + '</span>' +
+        '<span class="gen-num-muted">' + premium + '</span>' +
+      '</div>';
+
+    tr.innerHTML =
+      '<td>v' + v.idx + '</td>' +
+      '<td>' + (v.identity * 100).toFixed(2) + '%</td>' +
+      '<td>' + blastCell + '</td>' +
+      '<td>' + ctrCell + '</td>' +
+      '<td>' + fpCell + '</td>' +
+      '<td><span class="gen-badge ' + verdictCls + '">' + verdict + '</span></td>' +
+      '<td><span class="gen-badge ' + sigClass + '">' + sigLabel + '</span></td>' +
+      '<td>' + tierCell + '</td>' +
+      '<td>' +
+        '<button class="gen-mini" data-vidx="' + v.idx + '" data-action="toggle-seq">seq</button> ' +
+        '<button class="gen-mini primary" data-vidx="' + v.idx + '" data-action="send-to-screen">→ Screen</button>' +
+      '</td>';
+    tbody.appendChild(tr);
+
+    // Hidden sequence row
+    const seqTr = document.createElement("tr");
+    seqTr.className = "gen-seq-row";
+    seqTr.dataset.seqFor = v.idx;
+    seqTr.style.display = "none";
+    seqTr.innerHTML = '<td colspan="9"><pre class="gen-seq-block">' +
+      (v.sequence || "") + '</pre></td>';
+    tbody.appendChild(seqTr);
+  });
+
+  el.appendChild(tbl);
+
+  // Wire buttons
+  tbl.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const idx = parseInt(btn.dataset.vidx, 10);
+    const variant = result.variants.find((x) => x.idx === idx);
+    if (!variant) return;
+
+    if (btn.dataset.action === "toggle-seq") {
+      const seqRow = tbl.querySelector('.gen-seq-row[data-seq-for="' + idx + '"]');
+      if (!seqRow) return;
+      const visible = seqRow.style.display !== "none";
+      seqRow.style.display = visible ? "none" : "";
+      btn.textContent = visible ? "seq" : "hide";
+    }
+
+    if (btn.dataset.action === "send-to-screen") {
+      const ta = $("seq-input");
+      if (!ta) return;
+      ta.value = variant.sequence || "";
+      if (typeof updateSeqMeta === "function") updateSeqMeta();
+      const screenTab = document.querySelector('.tab[data-tab="screen"]');
+      if (screenTab) screenTab.click();
+      setTimeout(() => {
+        const screenBtn = $("btn-screen");
+        if (screenBtn && !screenBtn.disabled) screenBtn.click();
+      }, 600);
+    }
+  });
+
+  // Cross-match for first variant
+  if (result.variants[0] && result.variants[0].cross_ranking && result.variants[0].cross_ranking.length) {
+    const cross = document.createElement("div");
+    cross.className = "gen-cross";
+    cross.innerHTML =
+      '<div class="gen-cross-head">Cross-match: variant v0 fingerprint vs all other toxins</div>' +
+      result.variants[0].cross_ranking.map(([acc, score]) => {
+        const pct = Math.min(100, score * 100).toFixed(0);
+        return '<div class="gen-cross-row">' +
+          '<span class="nm">' + acc + '</span>' +
+          '<div class="bar"><span style="width:' + pct + '%"></span></div>' +
+          '<span class="sc">' + score.toFixed(4) + '</span>' +
+          '</div>';
+      }).join("");
+    el.appendChild(cross);
+  }
+
+  // Pipeline trace
+  if (result.trace) {
+    showGenerateTrace(result);
+  }
+};
+
+
+/* ============================================================
+   SCREEN TAB — reference dropdowns
+   ============================================================ */
+let _referencesLoaded = false;
+
+async function loadReferences() {
+  if (_referencesLoaded) return;
+  const tsel = $("ref-toxin");
+  const ssel = $("ref-safe");
+  const btn  = $("ref-load");
+  if (!tsel || !ssel || !btn) return;
+
+  try {
+    const r = await fetch("/api/references");
+    if (!r.ok) throw new Error("status " + r.status);
+    const j = await r.json();
+
+    // Clear and populate toxin dropdown
+    tsel.innerHTML = '<option value="">select a toxin…</option>';
+    j.toxins.forEach((t) => {
+      const opt = document.createElement("option");
+      opt.value = t.accession;
+      opt.textContent = t.name + "  (" + t.accession + ")";
+      tsel.appendChild(opt);
+    });
+
+    // Clear and populate safe dropdown
+    ssel.innerHTML = '<option value="">select a safe protein…</option>';
+    j.safes.forEach((t) => {
+      const opt = document.createElement("option");
+      opt.value = t.accession;
+      opt.textContent = t.name + "  (" + t.accession + ")";
+      ssel.appendChild(opt);
+    });
+
+    _referencesLoaded = true;
+  } catch (e) {
+    console.error("references fetch failed:", e);
+  }
+}
+
+// Enable load button when either dropdown has a value
+function updateRefLoadBtn() {
+  const tsel = $("ref-toxin");
+  const ssel = $("ref-safe");
+  const btn  = $("ref-load");
+  if (!btn) return;
+  const hasToxin = tsel && tsel.value;
+  const hasSafe  = ssel && ssel.value;
+  // Only one at a time — prefer whichever was changed most recently
+  btn.disabled = !(hasToxin || hasSafe);
+}
+
+// When user changes one dropdown, clear the other
+const tsel = $("ref-toxin");
+const ssel = $("ref-safe");
+const loadBtn = $("ref-load");
+
+if (tsel) {
+  tsel.addEventListener("change", () => {
+    if (tsel.value && ssel) ssel.value = "";
+    updateRefLoadBtn();
+  });
+}
+if (ssel) {
+  ssel.addEventListener("change", () => {
+    if (ssel.value && tsel) tsel.value = "";
+    updateRefLoadBtn();
+  });
+}
+
+if (loadBtn) {
+  loadBtn.addEventListener("click", async () => {
+    let acc = (tsel && tsel.value) || (ssel && ssel.value);
+    if (!acc) return;
+
+    const originalText = loadBtn.textContent;
+    loadBtn.disabled = true;
+    loadBtn.textContent = "…";
+
+    try {
+      const r = await fetch("/api/reference_sequence/" + encodeURIComponent(acc));
+      const j = await r.json();
+      if (j.error) throw new Error(j.error);
+
+      const ta = $("seq-input");
+      if (!ta) return;
+      ta.value = j.sequence || "";
+      if (typeof updateSeqMeta === "function") updateSeqMeta();
+
+      // Auto-run Screen after a short delay
+      setTimeout(() => {
+        const screenBtn = $("btn-screen");
+        if (screenBtn && !screenBtn.disabled) screenBtn.click();
+      }, 400);
+    } catch (e) {
+      alert("Could not load reference: " + e.message);
+    } finally {
+      loadBtn.textContent = originalText;
+      updateRefLoadBtn();
+    }
+  });
+}
+
+// Preload the reference list on page load (async — no need to block)
+setTimeout(loadReferences, 800);

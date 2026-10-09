@@ -586,6 +586,265 @@ def api_toxins():
     ])
 
 
+
+
+# ----------------------------------------------------------------------
+# Custom sequence generation
+# ----------------------------------------------------------------------
+@app.route("/api/uniprot_fetch/<accession>")
+def api_uniprot_fetch(accession):
+    """Fetch a protein sequence and annotations from UniProt."""
+    import requests
+    accession = accession.strip().upper()
+    if not accession or not accession.replace(".", "").isalnum():
+        return jsonify({"error": "invalid accession"}), 400
+
+    url = f"https://rest.uniprot.org/uniprotkb/{accession}.json"
+    try:
+        r = requests.get(url, timeout=30)
+    except Exception as e:
+        return jsonify({"error": f"network: {e}"}), 502
+    if r.status_code != 200:
+        return jsonify({"error": f"UniProt returned {r.status_code}"}), 404
+
+    data = r.json()
+    seq = data.get("sequence", {}).get("value", "")
+    if not seq:
+        return jsonify({"error": "no sequence in entry"}), 404
+
+    name = ""
+    desc = data.get("proteinDescription", {})
+    rec = desc.get("recommendedName", {})
+    if rec:
+        name = rec.get("fullName", {}).get("value", "")
+    if not name:
+        subs = desc.get("submissionNames", [])
+        if subs:
+            name = subs[0].get("fullName", {}).get("value", "")
+    organism = data.get("organism", {}).get("scientificName", "")
+
+    # Extract active site + binding site annotations
+    active_sites = []
+    binding_sites = []
+    for f in data.get("features", []):
+        ftype = f.get("type", "")
+        loc = f.get("location", {})
+        start = loc.get("start", {}).get("value")
+        end = loc.get("end", {}).get("value")
+        note = f.get("description", "")
+        if ftype == "Active site":
+            active_sites.append({"start": start, "end": end, "note": note})
+        elif ftype == "Binding site":
+            binding_sites.append({"start": start, "end": end, "note": note})
+
+    return jsonify({
+        "accession": accession,
+        "name": name or accession,
+        "organism": organism,
+        "length": len(seq),
+        "sequence": seq,
+        "active_sites": active_sites,
+        "binding_sites": binding_sites,
+    })
+
+
+@app.route("/api/generate_custom", methods=["POST"])
+def api_generate_custom():
+    """Start a background custom-sequence generation job."""
+    _load_engine()
+    data = request.get_json(silent=True) or {}
+    sequence = (data.get("sequence") or "").strip().upper()
+    mode = data.get("mode", "preserved")
+    n_variants = int(data.get("n_variants", 3))
+    region_start = int(data.get("region_start", 0))
+    region_end = data.get("region_end")
+    catalytic_residues = data.get("catalytic_residues") or None
+    auto_catalytic = bool(data.get("auto_catalytic", True))
+
+    if len(sequence) < 50:
+        return jsonify({"error": "Sequence must be ≥50 residues"}), 400
+    if mode not in ("preserved", "aggressive"):
+        return jsonify({"error": "mode must be preserved or aggressive"}), 400
+
+    import uuid
+    job_id = str(uuid.uuid4())
+
+    with _generate_lock:
+        _generate_jobs[job_id] = {
+            "id": job_id, "status": "queued",
+            "accession": "custom", "mode": mode, "n_variants": n_variants,
+            "stage": "queued", "progress": 0.0,
+            "result": None, "error": None,
+            "started_at": time.time(),
+        }
+
+    def _run():
+        try:
+            _generate_jobs[job_id]["status"] = "running"
+            from bioscreen.generate import generate_variants_custom
+
+            def progress_cb(stage, frac):
+                _generate_jobs[job_id]["stage"] = stage
+                _generate_jobs[job_id]["progress"] = frac
+
+            fp_emb = _engine["fingerprinter"].fingerprints if _engine["fingerprinter"] else {}
+
+            def embed_fn(seq):
+                return _engine["screener"].embed_per_residue(seq)
+
+            # Safe pool for auto-catalytic detection
+            import pickle, numpy as np
+            ref_path = ROOT / "data" / "processed" / "per_residue_embeddings.pkl"
+            ref_data = pickle.loads(ref_path.read_bytes())
+            safe_pool = np.vstack([ref_data["safes"]["embeddings"][a]
+                                    for a in ref_data["safes"]["embeddings"]])
+            safe_pool = safe_pool / (np.linalg.norm(safe_pool, axis=1, keepdims=True) + 1e-8)
+
+            result = generate_variants_custom(
+                sequence=sequence,
+                region_start=region_start,
+                region_end=region_end,
+                catalytic_residues=catalytic_residues,
+                auto_catalytic=auto_catalytic,
+                mode=mode,
+                n_variants=n_variants,
+                fingerprint_embeddings=fp_emb,
+                embed_fn=embed_fn,
+                safe_pool=safe_pool,
+                progress_cb=progress_cb,
+            )
+
+            # Enrich with contrastive verdict + pricing
+            s = _engine["screener"]
+            pricer = _engine["pricer"]
+            for v in result["variants"]:
+                seq = v["sequence"]
+                try:
+                    sr = s.screen(seq)
+                except Exception:
+                    sr = {"flagged": False, "hazard_delta": 0.0, "best_toxin_score": 0.0}
+
+                fp_flagged = bool(v.get("fingerprint_caught", False))
+                contrastive_flagged = bool(sr.get("flagged", False))
+
+                v["contrastive_delta"] = round(sr.get("hazard_delta", 0.0), 4)
+                v["contrastive_toxin_sim"] = round(sr.get("best_toxin_score", 0.0), 4)
+                v["contrastive_flagged"] = contrastive_flagged
+                v["verdict"] = "FLAGGED" if (contrastive_flagged or fp_flagged) else "CLEAR"
+
+                if contrastive_flagged and fp_flagged:
+                    v["verdict_reason"] = "Both contrastive and fingerprint"
+                elif fp_flagged:
+                    v["verdict_reason"] = "Fingerprint (contrastive was clear)"
+                elif contrastive_flagged:
+                    v["verdict_reason"] = "Contrastive (fingerprint was clear)"
+                else:
+                    v["verdict_reason"] = "Neither signal fired"
+
+                try:
+                    order = OrderRisk(
+                        customer_verified=True, order_size_bp=2000, organism="human",
+                        screening_hazard_delta=sr.get("hazard_delta", 0.0),
+                        screening_best_toxin_sim=sr.get("best_toxin_score", 0.0),
+                        customer_history=0.8,
+                    )
+                    v["pricing"] = pricer.compute_premium(order, order_cost_usd=2000)
+                except Exception:
+                    v["pricing"] = None
+
+            _generate_jobs[job_id]["result"] = result
+            _generate_jobs[job_id]["status"] = "ready"
+            _generate_jobs[job_id]["elapsed_s"] = round(
+                time.time() - _generate_jobs[job_id]["started_at"], 1)
+        except Exception as e:
+            import traceback
+            _generate_jobs[job_id]["status"] = "error"
+            _generate_jobs[job_id]["error"] = str(e)
+            _generate_jobs[job_id]["traceback"] = traceback.format_exc()
+
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"job_id": job_id, "status": "queued"})
+
+
+
+
+# ----------------------------------------------------------------------
+# Reference set listing (for Screen tab dropdowns)
+# ----------------------------------------------------------------------
+@app.route("/api/references")
+def api_references():
+    """Return the full reference set: 16 toxins + 25 safes."""
+    _load_engine()
+    s = _engine["screener"]
+    if s is None:
+        return jsonify({"error": "engine not loaded"}), 503
+
+    toxins = [
+        {"accession": acc, "name": nm, "type": "toxin"}
+        for acc, nm in zip(s.toxin_accessions, s.toxin_names)
+    ]
+    safes = [
+        {"accession": acc, "name": nm, "type": "safe"}
+        for acc, nm in zip(s.safe_accessions, s.safe_names)
+    ]
+    return jsonify({
+        "toxins": sorted(toxins, key=lambda x: x["name"]),
+        "safes":  sorted(safes,  key=lambda x: x["name"]),
+    })
+
+
+@app.route("/api/reference_sequence/<accession>")
+def api_reference_sequence(accession):
+    """Return the sequence for a given reference accession."""
+    _load_engine()
+    s = _engine["screener"]
+    if s is None:
+        return jsonify({"error": "engine not loaded"}), 503
+
+    acc = accession.strip().upper()
+
+    # Look up in the screener's embeddings dicts (keys are accessions)
+    if acc in s.toxin_embeddings:
+        idx = s.toxin_accessions.index(acc)
+        name = s.toxin_names[idx]
+        kind = "toxin"
+    elif acc in s.safe_embeddings:
+        idx = s.safe_accessions.index(acc)
+        name = s.safe_names[idx]
+        kind = "safe"
+    else:
+        return jsonify({"error": f"unknown reference: {acc}"}), 404
+
+    # Retrieve the original sequence from the CSV
+    import pandas as pd
+    ref_csv = ROOT / "data" / "raw" / "toxin_references.csv"
+    safe_csv = ROOT / "data" / "raw" / "safe_reference.csv"
+
+    seq = None
+    for csv_path in (ref_csv, safe_csv):
+        if not csv_path.exists():
+            continue
+        try:
+            df = pd.read_csv(csv_path)
+            row = df[df["accession"] == acc]
+            if not row.empty:
+                seq = row.iloc[0]["sequence"]
+                break
+        except Exception:
+            continue
+
+    if seq is None:
+        return jsonify({"error": f"sequence not found for {acc}"}), 404
+
+    return jsonify({
+        "accession": acc,
+        "name": name,
+        "type": kind,
+        "length": len(seq),
+        "sequence": seq,
+    })
+
+
 if __name__ == "__main__":
     print("Pre-loading engine...")
     _load_engine()
