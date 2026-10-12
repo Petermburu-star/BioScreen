@@ -66,7 +66,7 @@ identical scores. The current recorded run:
 
 ---
 
-## 4. Re-run the full 16-toxin benchmark
+## 4. Re-run the full benchmark (13 catalytic toxins)
 
 The 12 toxins with catalytic residues each get 3 EvoDiff variants (36 total).
 Preserved mode: catalytic windows protected, everything else redesigned.
@@ -74,7 +74,8 @@ Preserved mode: catalytic windows protected, everything else redesigned.
 Expected outcomes (recorded in `results/evodiff_16toxins_full.json`):
 
 - BLAST evaded: 36 / 36 (100%)
-- Fingerprint caught: 26 / 36 (72%)
+- Fingerprint caught: 20 / 39 (51.3%) — ESM-based
+- Context-free caught: 39 / 39 (100%) preserved, 0 / 39 aggressive
 
 Per-toxin breakdown is in `docs/FINDINGS.md`.
 
@@ -144,3 +145,17 @@ Exact commit hash not pinned — re-run behaviour may shift with upstream change
   Y375), but only catches 1 / 3 EvoDiff variants — likely a sensitivity issue,
   not an annotation issue.
 - **No wet-lab validation.** All results are computational.
+
+---
+
+## 8. Context-free layer (independent validation)
+
+The context-free fingerprint runs alongside the ESM fingerprint and does
+not depend on any protein language model. To validate it independently:
+
+    python -c "from bioscreen.contextfree import ContextFreeFingerprint; help(ContextFreeFingerprint.verdict)"
+
+The full validation output is in:
+
+    results/contextfree_specificity_v2.json           # 0/13 false positives
+    results/contextfree_preserved_vs_aggressive.json  # 39/39 vs 0/39 separation

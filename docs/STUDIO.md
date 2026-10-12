@@ -14,7 +14,7 @@ BioScreen Studio has five tabs:
 | **Screen** | Paste a protein sequence (or load a reference). Get the contrastive verdict, per-residue ribbons, fingerprint score, tier, and premium. |
 | **Pipeline trace** | Step-by-step timeline of the last Screen run — every intermediate value, every timing. |
 | **Generate** | Run EvoDiff on a curated toxin, or on any custom sequence (paste or fetch from UniProt by accession). Preserved and aggressive modes. |
-| **Adversarial** | Pre-computed 12-toxin EvoDiff comparison. BLAST evaded 36/36, fingerprint caught 26/36. |
+| **Adversarial** | Pre-computed 13-toxin EvoDiff comparison. BLAST evaded 39/39. ESM fingerprint 20/39 preserved, context-free 39/39 preserved / 0/39 aggressive. |
 | **Re-run** | Clone/build commands and a live source viewer for the engine modules. |
 
 Every number is computed live from ESM-C 600M embeddings and UniProt sequences.
@@ -101,7 +101,8 @@ cache in seconds.
   | Layer | Gate |
   |---|---|
   | Contrastive | `hazard_delta >= 0.02` **and** `best_toxin_score >= 0.90` |
-  | Fingerprint | `fingerprint_score >= 0.85` |
+  | ESM fingerprint | `fingerprint_score >= 0.85` |
+  | Context-free | `motif_passes` **and** `per_site_max >= 0.60` |
 
   A query is flagged if **either** layer fires.
 
@@ -173,7 +174,8 @@ document what the engine produced, not fixtures the UI reads from.
        |  /api/example/... -> fetches live sequences from UniProt
        v
     bioscreen.screening_v2.BioScreenV2   -> contrastive per-residue alignment
-    bioscreen.fingerprint                -> ordered catalytic fingerprint
+    bioscreen.fingerprint                -> ordered catalytic fingerprint (ESM-based)
+    bioscreen.contextfree                -> context-free fingerprint (motif + per-site)
     bioscreen.pricing.ActuarialPricer    -> catastrophe-insurance pricing
 
 The Flask server binds to 127.0.0.1 only. It is not exposed to the network.
