@@ -1,0 +1,734 @@
+{
+  "experiment": "cross_mechanism_transfer_matrix",
+  "date": "2026-10-12",
+  "n_fingerprints": 13,
+  "self_fires": 13,
+  "cross_fires": 4,
+  "cross_fires_detail": [
+    [
+      "P09385",
+      "P10149",
+      "Shiga 2A fires on Shiga 1A region (identical catalytic positions)"
+    ],
+    [
+      "P10149",
+      "P09385",
+      "Shiga 1A fires on Shiga 2A region (identical catalytic positions)"
+    ],
+    [
+      "P0DPI0",
+      "P0DPI1",
+      "Botulinum E fires on Botulinum A region (identical HExxH positions)"
+    ],
+    [
+      "P0DPI1",
+      "P0DPI0",
+      "Botulinum A fires on Botulinum E region (identical HExxH positions)"
+    ]
+  ],
+  "interpretation": "The fingerprint is position-specific. Cross-fires occur only when two toxins share identical catalytic positions in their respective regions. Same-mechanism toxins with different catalytic positions (ricin vs abrin, botulinum A vs B) do not cross-fire. This is correct behavior for a position-specific detector, and confirms the fingerprint is not a permissive motif scanner.",
+  "matrix": {
+    "P00588": {
+      "P00588": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.336
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0273
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0987
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0987
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0335
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.1454
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0155
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0289
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.1785
+      }
+    },
+    "P02879": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": true,
+        "per_site": 0.9727
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P04958": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P09385": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": true,
+        "per_site": 0.9182
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": true,
+        "per_site": 0.9182
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P0DPI0": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P0DPI1": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P0DPI1": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P0DPI1": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P10149": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": true,
+        "per_site": 0.9182
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": true,
+        "per_site": 0.9182
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P10844": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P11140": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": true,
+        "per_site": 0.9727
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P11439": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0401
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.2995
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.2995
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0091
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0926
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.1593
+      }
+    },
+    "P15917": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": true,
+        "per_site": 1.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P33183": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": true,
+        "per_site": 0.9182
+      },
+      "P40136": {
+        "fires": false,
+        "per_site": 0.0
+      }
+    },
+    "P40136": {
+      "P00588": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P02879": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P04958": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P09385": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI0": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P0DPI1": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10149": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P10844": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11140": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P11439": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P15917": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P33183": {
+        "fires": false,
+        "per_site": 0.0
+      },
+      "P40136": {
+        "fires": true,
+        "per_site": 1.0
+      }
+    }
+  }
+}
