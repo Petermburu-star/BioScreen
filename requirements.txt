@@ -1,12 +1,35 @@
-transformers>=4.40.0
+# BioScreen — Python dependencies
+#
+# Install with:
+#     pip install -r requirements.txt
+#
+# NOTE: EvoDiff is NOT pip-installable. It is cloned separately:
+#     git clone https://github.com/microsoft/evodiff external/evodiff
+# The engine adds external/evodiff to sys.path at runtime.
+#
+# You also need a HuggingFace token in .env (see README).
+
+# Core ML
 torch>=2.2.0
+transformers>=4.40.0
+esm>=3.4.1
+
+# Numerics
 numpy>=1.26.0
 pandas>=2.2.0
 scipy>=1.12.0
 scikit-learn>=1.4.0
+
+# Bioinformatics
 biopython>=1.83
-requests>=2.31.0
+
+# Web / Studio
 flask>=3.0.0
 python-dotenv>=1.0.0
-matplotlib>=3.8.0
+
+# Networking / CLI
+requests>=2.31.0
 tqdm>=4.66.0
+
+# Reporting
+matplotlib>=3.8.0
