@@ -226,13 +226,14 @@ def generate_variants(
 
     if mode == "preserved":
         chunks = _build_chunks(L, cat_rel, "preserved")
-        fp_idx = sorted(set(
-            p + off for p in cat_rel for off in range(-6, 7)
-            if 0 <= p + off < L
-        ))
     else:
         chunks = _build_chunks(L, cat_rel, "aggressive")
-        fp_idx = None
+
+    # Fingerprint is always built from catalytic windows (needed for scoring)
+    fp_idx = sorted(set(
+        p + off for p in cat_rel for off in range(-6, 7)
+        if 0 <= p + off < L
+    ))
 
     if not chunks:
         raise ValueError(f"No redesign region for {accession} in mode {mode}")
@@ -354,13 +355,14 @@ def generate_variants_custom(
 
     if mode == "preserved":
         chunks = _build_chunks(L, cat_rel, "preserved")
-        fp_idx = sorted(set(
-            p + off for p in cat_rel for off in range(-6, 7)
-            if 0 <= p + off < L
-        ))
     else:
         chunks = _build_chunks(L, cat_rel, "aggressive")
-        fp_idx = None
+
+    # Fingerprint is always built from catalytic windows (needed for scoring)
+    fp_idx = sorted(set(
+        p + off for p in cat_rel for off in range(-6, 7)
+        if 0 <= p + off < L
+    ))
 
     if not chunks:
         raise ValueError("No redesign region left after protecting catalytic windows")
