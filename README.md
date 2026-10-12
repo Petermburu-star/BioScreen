@@ -2,15 +2,23 @@
 
 **Functional screening and actuarial risk pricing for DNA synthesis biosecurity.**
 
-A working prototype that catches AI-designed toxins by function, not sequence — and prices the risk through a self-financing actuarial mechanism.
+A working detector for AI-designed toxin variants that sequence screening cannot
+see — validated against Microsoft's own EvoDiff model — plus a self-financing
+economic mechanism that funds global biosecurity capacity.
 
 ---
 
 ## The problem
 
-Current DNA synthesis screening relies on sequence similarity to known hazards. AI protein design can now rewrite a toxin's primary sequence while preserving its function. A 2025 Microsoft-led red-teaming study demonstrated that **up to 100% of AI-designed ricin variants evaded major commercial screening tools**.
+Current DNA synthesis screening relies on sequence similarity to known hazards.
+AI protein design can now rewrite a toxin's primary sequence while preserving
+its function. A 2025 Microsoft-led red-teaming study demonstrated that **up to
+100% of AI-designed ricin variants evaded major commercial screening tools**.
 
-The same weakness enables order fragmentation and benchtop synthesis.
+As of October 2026, no working countermeasure has been deployed. Microsoft's
+patches are documented stopgaps. DeepMind's watermarking only works for
+cooperative designers. The ADAPT programme is unfunded. Every deployed tool
+remains sequence-based.
 
 ---
 
@@ -18,9 +26,20 @@ The same weakness enables order fragmentation and benchtop synthesis.
 
 BioScreen has two layers.
 
-**Layer 1 — Functional screening.** Embed proteins with ESM-C 600M, preserve per-residue embeddings, and score using an **ordered catalytic fingerprint** — a compact representation of the residues that determine the toxin's chemistry, in their correct sequence order.
+**Layer 1 — Functional screening.** Embed proteins with ESM-C 600M and run
+**two independent detectors**:
 
-**Layer 2 — Actuarial pricing.** Convert the screening signal and order context into a risk-priced premium. A 0.12% loading on synthesis orders funds a global biosecurity pool.
+1. **Contrastive** — the difference between best-match similarity to 16
+   controlled toxins and best-match similarity to 25 safe reference proteins.
+2. **Ordered catalytic fingerprint** — a novel method that compares only the
+   residues within ±6 of each toxin's literature-curated catalytic residues,
+   with a sequence-order consistency requirement to reject false positives.
+
+A query is flagged if **either** detector fires.
+
+**Layer 2 — Actuarial pricing.** Convert the screening signal and order context
+into a risk-priced premium. A 0.12% loading on synthesis orders funds a global
+biosecurity pool.
 
 ---
 
@@ -28,105 +47,60 @@ BioScreen has two layers.
 
 | Test | Result |
 |---|---|
-| EvoDiff variants evading BLAST | **5/5 caught** by ordered fingerprint |
-| Aggressive redesigns (catalytic window destroyed) | **Correctly cleared** (mean 0.50) |
-| Generalization across 4 toxin mechanisms | **Separation 0.62 – 0.71** |
-| Human protein rejection | **Zero false positives across 60 proteins** |
-| ProteinMPNN variants | 100% detection |
+| EvoDiff ricin variants, BLAST evaded | 5/5 |
+| EvoDiff ricin variants, fingerprint caught | **5/5** |
+| Full 16-toxin EvoDiff benchmark, BLAST evaded | 36/36 (100%) |
+| Full 16-toxin EvoDiff benchmark, fingerprint caught | **26/36 (72%)** |
+| Circularity control (aggressive variants) | Correctly cleared at 0.50 vs 0.92 |
+| 60 human proteins vs 4 fingerprints | **Zero false positives** |
+| Generalization across 4 toxin mechanisms | Separation 0.62 – 0.71 |
+| Pricing mechanism | 0.12% loading, $14.9M/year projected |
 
-Every number reproducible from `results/*.json`. No hardcoded values.
+Every number is derived from `results/*.json`. EvoDiff is stochastic — re-runs produce new variants with similar qualitative behaviour, not identical scores. The deterministic parts (fingerprint scoring, specificity on 60 human proteins, pricing) reproduce exactly.
+
+### Per-toxin EvoDiff detection
+
+| Toxin | Caught | FP range |
+|---|---|---|
+| Ricin | 3/3 | 0.89 – 0.95 |
+| Botulinum A | 3/3 | 0.88 – 0.93 |
+| Botulinum B | 2/3 | 0.84 – 0.89 |
+| Botulinum E | 2/3 | 0.48 – 0.90 |
+| Shiga 1A | 2/3 | 0.85 – 0.94 |
+| Shiga 2A | 2/3 | 0.84 – 0.91 |
+| Diphtheria | 2/3 | 0.75 – 0.92 |
+| Abrin | 1/3 | 0.80 – 0.90 |
+| Modeccin | 2/3 | 0.78 – 0.91 |
+| Anthrax LF | 3/3 | 0.87 – 0.92 |
+| Anthrax EF | 3/3 | 0.88 – 0.96 |
+| Tetanus | 1/3 | 0.49 – 0.90 |
 
 ---
 
 ## What's novel
 
-- **Ordered catalytic fingerprint** — a data-driven representation of the residues that determine toxin chemistry, with sequence-order consistency to reject false positives.
-- **Detection of EvoDiff variants BLAST cannot see** — reproduces and answers Microsoft's finding.
+- **Ordered catalytic fingerprint** — a data-driven representation of the
+  structural signature of a toxin's active site, with a sequence-order
+  consistency constraint that rejects safe proteins while keeping functional
+  variants.
+- **Detection of EvoDiff variants BLAST cannot see** — reproduces and answers
+  Microsoft's finding.
+- **Two independent detection layers OR-combined** — contrastive for
+  interpretability, fingerprint for sharp discrimination. Defense in depth
+  inside one tool.
 - **Actuarial pricing layer** — no existing biosecurity tool prices risk.
-
-Full context, including a landscape analysis of existing solutions, is in `docs/WHITEPAPER.html`.
+- **Live 5-tab Studio** — every number computed live, every step traced.
 
 ---
 
 ## Install
 
-    git clone https://github.com/Petermburu-star/BioScreen
-    cd BioScreen
-    python -m venv .venv
-    .venv\Scripts\activate
-    pip install -r requirements.txt
-    echo "HF_TOKEN=hf_your_token_here" > .env
+```bash
+git clone https://github.com/Petermburu-star/BioScreen
+cd BioScreen
+python -m venv .venv
+.venv\Scripts\activate           # Windows
+# source .venv/bin/activate      # macOS / Linux
 
-You need a HuggingFace token. Get one at https://huggingface.co/settings/tokens and accept the license at https://huggingface.co/biohub/ESMC-600M.
-
----
-
-## Run the Studio
-
-    python scripts/start_studio.py
-
-Then open http://127.0.0.1:5000. Full guide in `docs/STUDIO.md`.
-
----
-
-## Use the Python API
-
-    from bioscreen import BioScreenV2
-
-    screener = BioScreenV2(
-        model=model,
-        tokenizer=tokenizer,
-        per_residue_path="data/processed/per_residue_embeddings.pkl",
-    )
-    result = screener.screen("MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQ")
-    # {'best_toxin_score': 0.87, 'hazard_delta': 0.05, 'flagged': True, ...}
-
----
-
-## Structure
-
-    BioScreen/
-    ├── src/bioscreen/
-    │   ├── screening_v2.py          contrastive per-residue screening
-    │   ├── pricing.py               actuarial pricing framework
-    │   └── studio/                  web UI (Flask)
-    ├── scripts/
-    │   └── start_studio.py          launch the Studio
-    ├── results/                     all validation outputs (JSON)
-    ├── docs/
-    │   ├── WHITEPAPER.html          full technical white paper
-    │   ├── STUDIO.md                Studio user guide
-    │   └── FINDINGS.md              EvoDiff fingerprint validation
-    ├── reports/                     pitch deck, plots
-    └── data/
-        ├── raw/                     UniProt CSVs (gitignored)
-        └── processed/               embeddings, fingerprints (gitignored)
-
----
-
-## Stack
-
-- ESM-C 600M (EvolutionaryScale, MIT license, Hugging Face)
-- EvoDiff (Microsoft, MIT license)
-- UniProt reference database
-- Python: transformers, torch, numpy, pandas, biopython, flask
-
----
-
-## The EvoDiff test
-
-See `docs/FINDINGS.md` for the full reproduction of Microsoft's finding and the ordered fingerprint result.
-
----
-
-## License
-
-MIT — see LICENSE.
-
----
-
-## Author
-
-Peter Mburu Kariuki — pmburu346@gmail.com
-
-Pre-submission prototype for BioPREVAIL × CEPI Biosecurity Innovation Challenge 2026–27.
+pip install -r requirements.txt
+echo "HF_TOKEN=hf_your_token_here" > .env

@@ -394,7 +394,7 @@ def api_example(name):
 
 @app.route("/api/source")
 def api_source():
-    """Return the actual source code of the three engine files for the Reproduce tab."""
+    """Return the actual source code of the three engine files for the Re-run tab."""
     files = {
         "screening_v2.py": (ROOT / "src" / "bioscreen" / "screening_v2.py").read_text(encoding="utf-8"),
         "fingerprint.py": (ROOT / "src" / "bioscreen" / "fingerprint.py").read_text(encoding="utf-8"),

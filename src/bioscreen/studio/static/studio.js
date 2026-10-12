@@ -565,7 +565,7 @@ function renderTrace(result) {
 
 
 /* ============================================================
-   SOURCE VIEWER (Reproduce tab)
+   SOURCE VIEWER (Re-run tab)
    ============================================================ */
 let _sourceCache = null;
 

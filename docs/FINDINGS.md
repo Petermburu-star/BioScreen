@@ -1,6 +1,6 @@
 # BioScreen — Findings
 
-Technical results from the EvoDiff validation. Full reproduction steps below.
+Technical results from the EvoDiff validation. Full re-run steps below.
 
 ---
 
@@ -124,9 +124,9 @@ This is not a general solution to AI-designed biothreats. It is a specific solut
 
 ---
 
-## Reproduction
+## Re-running the benchmark
 
-All results reproducible from `results/evodiff_16toxins_full.json`.
+All results derived from `results/evodiff_16toxins_full.json` — one recorded EvoDiff run. Re-runs produce new variants with similar behaviour.
 
 Full pipeline:
 

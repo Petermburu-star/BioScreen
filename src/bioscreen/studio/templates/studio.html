@@ -19,7 +19,7 @@
     <button class="tab" data-tab="trace">Pipeline trace</button>
     <button class="tab" data-tab="generate">Generate</button>
     <button class="tab" data-tab="adversarial">Adversarial</button>
-    <button class="tab" data-tab="reproduce">Reproduce</button>
+    <button class="tab" data-tab="rerun">Re-run</button>
   </nav>
   <div class="status" id="status">
     <span class="pip" id="status-pip"></span>
@@ -474,12 +474,12 @@
     </section>
   </div>
 
-  <!-- ============ TAB: REPRODUCE ============ -->
-  <div class="tab-panel" data-panel="reproduce">
+  <!-- ============ TAB: RE-RUN ============ -->
+  <div class="tab-panel" data-panel="rerun">
     <section class="panel">
       <div class="panel-head">
         <span class="panel-num">▸</span>
-        <span class="panel-title">Reproduce this on your machine</span>
+        <span class="panel-title">Re-run this on your machine</span>
         <span class="panel-hint">clone, build, run — same results</span>
       </div>
       <h3 class="rp-h">1. Clone the repository</h3>
@@ -499,8 +499,8 @@ pip install -r requirements.txt</pre>
       <pre class="rp-code">python scripts/build_references.py
 python scripts/build_fingerprints.py</pre>
 
-      <h3 class="rp-h">5. Reproduce the ricin validation</h3>
-      <pre class="rp-code">python scripts/reproduce_ricin_test.py</pre>
+      <h3 class="rp-h">5. Re-run the ricin benchmark</h3>
+      <pre class="rp-code">python scripts/rerun_ricin_benchmark.py</pre>
       <p class="rp-note">Expected output: 3 EvoDiff variants, BLAST &lt; 0.30 (evaded), fingerprint ≥ 0.85 (caught).</p>
 
       <h3 class="rp-h">6. Launch this Studio</h3>
