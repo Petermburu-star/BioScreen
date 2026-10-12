@@ -84,7 +84,7 @@ cache in seconds.
 
 1. **Paste** a protein sequence into the textarea — single-letter amino acid
    code, no spaces, no FASTA header.
-2. **Or pick a reference** from the dropdown — Ricin, Botulinum A, etc. The
+2. **Or pick a reference** from the dropdown — Ricin, Botulinum A, Pseudomonas ExoA (P11439), etc. The
    sequence is fetched live from UniProt.
 3. **Click Screen.**
 

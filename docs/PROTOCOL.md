@@ -14,7 +14,7 @@ EvoDiff clone), see `docs/STUDIO.md` § First-time setup.
 
     python scripts/build_references.py
 
-Fetches 16 controlled toxins + 25 safe reference proteins from UniProt,
+Fetches 17 controlled toxins (including P11439 / Pseudomonas ExoA) + 25 safe reference proteins from UniProt,
 embeds each with ESM-C 600M in isolated context, and writes:
 
     data/processed/per_residue_embeddings.pkl
