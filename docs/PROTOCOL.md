@@ -159,3 +159,28 @@ The full validation output is in:
 
     results/contextfree_specificity_v2.json           # 0/13 false positives
     results/contextfree_preserved_vs_aggressive.json  # 39/39 vs 0/39 separation
+
+---
+
+## 9. Comparison against commercial screening (deferred)
+
+The IBBIS **commec** (Common Mechanism for DNA Synthesis Screening) is the
+open-source incumbent. A head-to-head comparison is a natural accelerator-phase
+deliverable, but requires infrastructure we do not currently have running:
+
+- **NCBI BLAST+ binaries** — not on PATH
+- **nt database** — ~100+ GB download, multi-hour setup
+- **IBBIS controlled-sequence database** — requires registration
+
+**Methodology (for when this is run):**
+1. Back-translate protein variants to DNA
+2. Run commec with the full reference stack
+3. Record: caught / missed per variant
+4. Compare to BioScreen's context-free layer on the same set
+
+**Interim baseline:** we already report the BLAST protein-level result
+(39/39 preserved and 39/39 aggressive variants evade BLAST). This is the
+weaker incumbent comparison. commec would be the stronger one.
+
+**Deferred to:** accelerator phase, session with the hardware and database
+bandwidth to run the comparison properly.
