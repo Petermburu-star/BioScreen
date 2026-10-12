@@ -42,3 +42,6 @@ docs/HANDOFF.local.md
 *.bak2
 *.bak3
 *.bak4
+
+# Reference downloads (AAindex, Pfam HMMs, Stockholm alignments) — regenerable
+data/reference/
