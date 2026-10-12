@@ -231,8 +231,150 @@ class ContextFreeFingerprint:
         return hits / len(self.fingerprint_indices)
 
 
+
+# --------------------------------------------------------------------------
+# Motif patterns per mechanism class
+# --------------------------------------------------------------------------
+# A catalytic motif is a set of residue *types* at fixed relative
+# positions. If the query doesn't reproduce them, it cannot be a
+# functional variant — reject regardless of embedding similarity.
+# Conservative substitutions are permitted (Y<->F, E<->D, R<->K, H<->K/R).
+
+MOTIFS = {
+    "N-glycosidase":     {"required": ["Y", "Y", "E", "R"]},
+    "Zinc protease":     {"required": ["H", "E", "H"]},
+    "rRNA depurination": {"required": ["E", "R"]},
+    "Adenylate cyclase": {"required": ["H"]},
+    "ADP-ribosylation":  {"required": None},   # variable active-site chemistry
+}
+
+CONSERVATIVE_SUBSTITUTIONS = {
+    "Y": {"F", "W"}, "F": {"Y", "W"},
+    "E": {"D"},      "D": {"E"},
+    "R": {"K"},      "K": {"R"},
+    "H": {"K", "R"},
+    "N": {"Q"},      "Q": {"N"},
+    "S": {"T"},      "T": {"S"},
+    "A": {"G", "S"}, "G": {"A", "S"},
+    "V": {"I", "L"}, "I": {"V", "L"}, "L": {"I", "V"},
+}
+
+# Threshold for the per-site max verdict.
+PER_SITE_THRESHOLD = 0.60
+
+
+# --------------------------------------------------------------------------
+# Public helper — motif check
+# --------------------------------------------------------------------------
+def motif_passes(query_region: str, native_region: str,
+                 cat_positions: list[int], mechanism: str
+                 ) -> tuple[bool, str]:
+    """Check whether the query preserves the mechanism's catalytic motif.
+
+    Returns (passes, reason). ``reason`` is a short diagnostic string.
+    """
+    required = MOTIFS.get(mechanism, {}).get("required", "unknown")
+    if required is None:
+        return True, "no-motif-class"
+    if required == "unknown":
+        return True, f"unknown-mechanism:{mechanism}"
+
+    if len(query_region) != len(native_region):
+        return False, f"length-mismatch({len(query_region)}!={len(native_region)})"
+
+    for idx in cat_positions:
+        n_aa = native_region[idx]
+        q_aa = query_region[idx]
+        if q_aa == n_aa:
+            continue
+        if q_aa in CONSERVATIVE_SUBSTITUTIONS.get(n_aa, set()):
+            continue
+        return False, f"site-{idx}:{n_aa}->{q_aa}"
+    return True, "motif-preserved"
+
+
+# --------------------------------------------------------------------------
+# Patch the ContextFreeFingerprint class
+# --------------------------------------------------------------------------
+def _per_site_max(self, query_region: str) -> float:
+    """Score each catalytic site's local window independently.
+
+    Returns the max across sites. Unlike the combined score, this does
+    NOT require every site to be preserved — a variant that keeps any
+    one functional site fires.
+    """
+    q = query_region.upper()
+    if len(q) != len(self.region):
+        return 0.0
+
+    scores = []
+    for cat_idx in self.cat_positions:
+        lo = max(0, cat_idx - self.window)
+        hi = min(len(self.region), cat_idx + self.window + 1)
+        idx = list(range(lo, hi))
+
+        native_res = self.region[cat_idx]
+        query_res = q[cat_idx]
+        identity = 1.0 if query_res == native_res else 0.0
+
+        blosum = self._blosum[native_res][query_res]
+        bl_norm = max(0.0, min(1.0, (blosum + 3.0) / 11.0))
+
+        corrs = []
+        for scale in self.scales.values():
+            n = np.array([scale[self.region[i]] for i in idx])
+            v = np.array([scale[q[i]] for i in idx])
+            if n.std() > 1e-9 and v.std() > 1e-9:
+                corrs.append(float(np.corrcoef(n, v)[0, 1]))
+        aai = max(0.0, float(np.mean(corrs))) if corrs else 0.0
+
+        fp_ident = sum(1 for i in idx if q[i] == self.region[i]) / len(idx)
+        scores.append(identity * (0.50 * fp_ident + 0.30 * bl_norm + 0.20 * aai))
+
+    return max(scores) if scores else 0.0
+
+
+def _motif_check(self, query_region: str, mechanism: str
+                 ) -> tuple[bool, str]:
+    """Convenience wrapper — calls motif_passes with self's region."""
+    return motif_passes(query_region, self.region, self.cat_positions, mechanism)
+
+
+def _verdict(self, query_region: str, mechanism: str) -> dict:
+    """Combined verdict: motif gate AND per-site max.
+
+    Returns a dict with the individual signals and the final decision.
+    The verdict is:
+        fires = motif_pass AND per_site_max >= PER_SITE_THRESHOLD
+    """
+    motif_ok, reason = self._motif_check(query_region, mechanism)
+    psm = self._per_site_max(query_region) if motif_ok else 0.0
+    fires = bool(motif_ok and psm >= PER_SITE_THRESHOLD)
+    return {
+        "fires": fires,
+        "motif_pass": bool(motif_ok),
+        "motif_reason": reason,
+        "per_site_max": round(float(psm), 4),
+        "combined_score": round(float(self.score(query_region)["combined"]), 4),
+        "threshold": PER_SITE_THRESHOLD,
+    }
+
+
+# --------------------------------------------------------------------------
+# Attach to the class
+# --------------------------------------------------------------------------
+ContextFreeFingerprint._per_site_max = _per_site_max
+ContextFreeFingerprint._motif_check = _motif_check
+ContextFreeFingerprint.per_site_max = _per_site_max
+ContextFreeFingerprint.motif_check = _motif_check
+ContextFreeFingerprint.verdict = _verdict
+
 __all__ = [
     "ContextFreeFingerprint",
     "DEFAULT_SCALES",
     "DEFAULT_WEIGHTS",
+    "MOTIFS",
+    "CONSERVATIVE_SUBSTITUTIONS",
+    "PER_SITE_THRESHOLD",
+    "motif_passes",
 ]

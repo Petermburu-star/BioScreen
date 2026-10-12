@@ -1,0 +1,74 @@
+{
+  "method": "motif_gate + per_site_max",
+  "threshold": 0.6,
+  "n_safe_proteins": 25,
+  "n_fingerprints": 13,
+  "n_failures": 0,
+  "per_fingerprint": {
+    "P00588": {
+      "n_windows": 301,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P02879": {
+      "n_windows": 242,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P04958": {
+      "n_windows": 78,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P09385": {
+      "n_windows": 251,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P0DPI0": {
+      "n_windows": 102,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P0DPI1": {
+      "n_windows": 98,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P10149": {
+      "n_windows": 237,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P10844": {
+      "n_windows": 102,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P11140": {
+      "n_windows": 249,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P11439": {
+      "n_windows": 321,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P15917": {
+      "n_windows": 248,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P33183": {
+      "n_windows": 249,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    },
+    "P40136": {
+      "n_windows": 64,
+      "n_fires": 0,
+      "safe_pass_rate": 0.0
+    }
+  }
+}
