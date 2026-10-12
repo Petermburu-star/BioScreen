@@ -1,0 +1,77 @@
+{
+  "experiment": "contextfree_specificity_60panel",
+  "date": "2026-10-12",
+  "n_safe_proteins": 60,
+  "n_fingerprints": 13,
+  "n_windows_tested": 8154,
+  "n_false_positives": 0,
+  "false_positive_rate": 0.0,
+  "fingerprints_with_failure": 0,
+  "per_toxin": {
+    "P00588": {
+      "name": "Diphtheria",
+      "tested": 905,
+      "fires": 0
+    },
+    "P02879": {
+      "name": "Ricin",
+      "tested": 743,
+      "fires": 0
+    },
+    "P04958": {
+      "name": "Tetanus",
+      "tested": 350,
+      "fires": 0
+    },
+    "P09385": {
+      "name": "Shiga 2A",
+      "tested": 733,
+      "fires": 0
+    },
+    "P0DPI0": {
+      "name": "Botulinum E",
+      "tested": 420,
+      "fires": 0
+    },
+    "P0DPI1": {
+      "name": "Botulinum A",
+      "tested": 409,
+      "fires": 0
+    },
+    "P10149": {
+      "name": "Shiga 1A",
+      "tested": 742,
+      "fires": 0
+    },
+    "P10844": {
+      "name": "Botulinum B",
+      "tested": 420,
+      "fires": 0
+    },
+    "P11140": {
+      "name": "Abrin",
+      "tested": 752,
+      "fires": 0
+    },
+    "P11439": {
+      "name": "Pseudomonas ExoA",
+      "tested": 885,
+      "fires": 0
+    },
+    "P15917": {
+      "name": "Anthrax LF",
+      "tested": 762,
+      "fires": 0
+    },
+    "P33183": {
+      "name": "Modeccin",
+      "tested": 752,
+      "fires": 0
+    },
+    "P40136": {
+      "name": "Anthrax EF",
+      "tested": 281,
+      "fires": 0
+    }
+  }
+}
