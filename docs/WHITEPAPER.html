@@ -169,35 +169,43 @@
 
   <p>
     <strong>BioScreen</strong> is a two-layer response. Layer 1 embeds query
-    proteins using ESM-C 600M and runs <em>two independent detectors</em>: a
-    contrastive whole-protein comparison against 16 toxins and 25 safes, and a
-    novel <strong>ordered catalytic fingerprint</strong> that scores only the
-    residues defining each toxin's active site, with a sequence-order consistency
-    requirement. A query is flagged if either detector fires. Layer 2 converts the
-    screening signal plus order context into a risk-priced premium, applying
-    catastrophe-insurance methods to fund global biosecurity capacity through a
-    0.12% loading on synthesis orders.
+    proteins using ESM-C 600M and runs <em>two independent detectors</em>: an
+    <strong>ordered catalytic fingerprint</strong> that scores only the residues
+    defining each toxin's active site (with a sequence-order consistency
+    constraint), and a <strong>context-free fallback layer</strong> built from
+    residue identity, BLOSUM62 substitution scores, AAindex physicochemical
+    profiles, and mechanism-specific catalytic motifs. The context-free layer
+    is invariant to scaffold redesign, closing a specific failure mode of
+    embedding-based fingerprints. A query is flagged if either detector fires.
+    Layer 2 converts the screening signal plus order context into a risk-priced
+    premium, applying catastrophe-insurance methods to fund global biosecurity
+    capacity through a 0.12% loading on synthesis orders.
   </p>
 
   <div class="callout win">
     <span class="label">Headline result — EvoDiff benchmark</span>
     <p>
-      On 36 AI-designed variants across 12 mechanistically distinct toxins,
-      generated with Microsoft's own EvoDiff model:
-      <strong>BLAST evaded 36/36 (100%)</strong>. The BioScreen fingerprint
-      <strong>caught 26/36 (72%)</strong>. On 60 diverse human proteins, the
-      fingerprint produced <strong>zero false positives</strong>. Every result
-      is computed live; nothing is hardcoded.
+      On 39 AI-designed variants across 13 mechanistically distinct toxins,
+      generated with Microsoft's own EvoDiff model in preserved mode:
+      <strong>BLAST evaded 39/39 (100%)</strong>. The ESM fingerprint caught
+      <strong>20/39 (51.3%)</strong>; the context-free layer caught
+      <strong>39/39 (100%)</strong>. On the matching aggressive-mode benchmark
+      (EvoDiff redesigns through the catalytic window), BLAST evaded 39/39 and
+      the context-free layer correctly rejected <strong>0/39</strong>. On 25
+      diverse human proteins (~2,500 sliding windows), zero false positives.
+      Every result is computed live; nothing is hardcoded.
     </p>
   </div>
 
   <div class="metrics">
-    <div class="metric"><div class="k">Variants caught</div>
-      <div class="v ok">26 / 36</div><div class="sub">EvoDiff, 12 toxins</div></div>
+    <div class="metric"><div class="k">ESM fingerprint</div>
+      <div class="v">20 / 39</div><div class="sub">51.3%, EvoDiff preserved</div></div>
+    <div class="metric"><div class="k">Context-free</div>
+      <div class="v ok">39 / 39</div><div class="sub">100%, preserved vs 0/39 aggressive</div></div>
     <div class="metric"><div class="k">BLAST evaded</div>
-      <div class="v warn">36 / 36</div><div class="sub">all variants</div></div>
+      <div class="v warn">39 / 39</div><div class="sub">all variants</div></div>
     <div class="metric"><div class="k">Human false positives</div>
-      <div class="v ok">0 / 60</div><div class="sub">across 4 fingerprints</div></div>
+      <div class="v ok">0</div><div class="sub">25 safes, ~2,500 windows</div></div>
     <div class="metric"><div class="k">Loading</div>
       <div class="v">0.12%</div><div class="sub">of order value</div></div>
     <div class="metric"><div class="k">Global pool</div>
@@ -305,7 +313,7 @@
   whole-protein                  fingerprint                     structural
   comparison                     (per-residue, windowed)         similarity
         │                              │
-        ├── vs 16 toxins  →  t_max      ├── vs 12 curated windows
+        ├── vs 17 toxins  →  t_max      ├── vs 13 curated windows
         ├── vs 25 safes   →  s_max      ├── top-20 × order consistency
         └── Δ = t_max − s_max           └── score ≥ 0.85 → caught
         │                              │
@@ -538,10 +546,12 @@ premium = order_cost × loading</code></pre>
     </table>
   </div>
 
-  <h3>Test 2 — Full 16-toxin EvoDiff benchmark</h3>
+  <h3>Test 2 — Full EvoDiff benchmark (13 toxins)</h3>
   <p>
-    12 catalytic toxins × 3 variants each = 36 EvoDiff-generated variants. All
-    catalytic windows protected (±8 residues), everything else redesigned.
+    13 catalytic toxins × 3 variants each = 39 EvoDiff-generated variants in
+    preserved mode. Catalytic windows protected (±8 residues), everything else
+    redesigned. A matching aggressive-mode run (39 variants, redesigned through
+    the catalytic window) was performed as a negative control.
   </p>
   <div class="table-scroll">
     <table>
@@ -565,25 +575,32 @@ premium = order_cost × loading</code></pre>
 
   <div class="metrics">
     <div class="metric"><div class="k">BLAST evaded</div>
-      <div class="v warn">36 / 36</div><div class="sub">100%</div></div>
-    <div class="metric"><div class="k">Fingerprint caught</div>
-      <div class="v ok">26 / 36</div><div class="sub">72%</div></div>
-    <div class="metric"><div class="k">4 toxins at 3/3</div>
-      <div class="v ok">100%</div><div class="sub">ricin, botA, anthrax LF/EF</div></div>
-    <div class="metric"><div class="k">7 toxins at 2/3</div>
-      <div class="v">67%</div><div class="sub">borderline misses</div></div>
+      <div class="v warn">39 / 39</div><div class="sub">100%, both modes</div></div>
+    <div class="metric"><div class="k">ESM fingerprint</div>
+      <div class="v">20 / 39</div><div class="sub">51.3% preserved</div></div>
+    <div class="metric"><div class="k">Context-free</div>
+      <div class="v ok">39 / 39</div><div class="sub">preserved</div></div>
+    <div class="metric"><div class="k">Context-free (aggressive)</div>
+      <div class="v ok">0 / 39</div><div class="sub">100 pp separation</div></div>
   </div>
 
   <div class="callout warn">
     <span class="label">Failure modes, honest assessment</span>
     <p>
-      <strong>Borderline misses (7 toxins):</strong> the missed variant landed at
-      0.80–0.84 — just below the 0.85 threshold. A threshold lowering to 0.80
-      would recover them, pending re-verification of specificity.
+      <strong>ESM fingerprint: 51.3%.</strong> The embedding-based fingerprint
+      under-performs because ESM-C is <em>context-dependent</em>. A variant that
+      preserves every fingerprint residue can still score below threshold if
+      the surrounding scaffold is redesigned — the embedding shifts at every
+      position even when the residues are identical.
       <br><br>
-      <strong>Tetanus (1/3):</strong> catalytic residues are currently a
-      best-guess set; UniProt active-site annotation verification is the first
-      accelerator deliverable.
+      <strong>Context-free layer: 39/39.</strong> Residue identity,
+      BLOSUM62, AAindex, and motif patterns are invariant to scaffold
+      redesign, which is why the context-free layer catches the cases ESM
+      misses.
+      <br><br>
+      <strong>Preserved vs aggressive:</strong> the two modes are designed
+      extremes. EvoDiff was told to preserve or destroy the catalytic window.
+      Adversarial variants (preserve residues, break geometry) remain untested.
     </p>
   </div>
 
@@ -738,19 +755,19 @@ premium = order_cost × loading</code></pre>
       <thead><tr><th>Limitation</th><th>Impact</th><th>Mitigation</th></tr></thead>
       <tbody>
         <tr>
-          <td><strong>Only 12 of 16 toxins have catalytic fingerprints</strong></td>
+          <td><strong>Only 13 of 17 toxins have catalytic fingerprints</strong></td>
           <td>4 toxins (shiga B subunits, anthrax PA) are binding or pore-forming — no catalytic residues to protect</td>
           <td>Structural-similarity layer for binding interfaces; accelerator phase</td>
         </tr>
         <tr>
-          <td><strong>Tetanus catalytic residues unverified</strong></td>
-          <td>1 / 3 caught (best-guess residue set)</td>
-          <td>UniProt active-site API query; first accelerator deliverable</td>
+          <td><strong>ESM context-dependence</strong></td>
+          <td>Fingerprint catches 51.3% of preserved variants — the embedding shifts when the scaffold is redesigned</td>
+          <td>Context-free fallback layer (identity + BLOSUM62 + AAindex + motifs), invariant to scaffold changes</td>
         </tr>
         <tr>
-          <td><strong>Borderline threshold cases</strong></td>
-          <td>7 toxins at 2 / 3 — misses at 0.80–0.84</td>
-          <td>Threshold tuning to 0.80; re-verify specificity on 60-protein panel</td>
+          <td><strong>Modeccin catalytic residues unresolved</strong></td>
+          <td>UniProt shows only active site 188(E); no reliable literature source for the full set</td>
+          <td>Literature verification; accelerator deliverable</td>
         </tr>
         <tr>
           <td><strong>Adversarial chemistry substitution untested</strong></td>
@@ -812,15 +829,17 @@ premium = order_cost × loading</code></pre>
 ├── README.md, SECURITY.md, requirements.txt, LICENSE
 ├── src/bioscreen/
 │   ├── screening_v2.py       contrastive per-residue screening
-│   ├── fingerprint.py        ordered catalytic fingerprint
+│   ├── fingerprint.py        ordered catalytic fingerprint (ESM-based)
+│   ├── contextfree.py        context-free fingerprint (motif + per-site)
+│   ├── residues.py           UniProt / InterPro / pyhmmer fetchers
 │   ├── pricing.py            actuarial pricing framework
 │   ├── generate.py           EvoDiff generation wrapper
 │   ├── toxins.py             shared toxin configuration
 │   └── studio/               Flask web UI (5 tabs)
 ├── scripts/
-│   ├── build_references.py   fetch + embed 41 UniProt references
+│   ├── build_references.py   fetch + embed 17 toxins + 25 safes
 │   ├── build_fingerprints.py catalytic-window fingerprints
-│   ├── rerun_ricin_benchmark.py
+│   ├── rerun_all_toxins_benchmark.py
 │   └── start_studio.py
 ├── results/                  all validation JSONs
 │   ├── evodiff_16toxins_full.json
@@ -831,7 +850,7 @@ premium = order_cost × loading</code></pre>
 │   └── pricing_validation.json
 ├── docs/
 │   ├── WHITEPAPER.html       this document
-│   ├── FINDINGS.md           honest 26/36 assessment
+│   ├── FINDINGS.md           honest internal record
 │   ├── PROTOCOL.md           exact re-run recipe
 │   └── STUDIO.md             Studio user guide
 └── reports/
