@@ -1,7 +1,7 @@
 """
 Build the reference embeddings pickle.
 
-Downloads the 16 controlled toxins and 25 safe reference proteins from
+Downloads the 17 controlled toxins and 25 safe reference proteins from
 UniProt, embeds each with ESM-C 600M, and writes:
 
     data/processed/per_residue_embeddings.pkl
@@ -49,6 +49,7 @@ TOXIN_ACCESSIONS = {
     "P15917": "Anthrax lethal factor",
     "P40136": "Anthrax edema factor",
     "P04958": "Tetanus toxin",
+    "P11439": "Pseudomonas exotoxin A",
 }
 
 SAFE_ACCESSIONS = {
@@ -79,7 +80,7 @@ SAFE_ACCESSIONS = {
     "P01343": "IGF-1 (human)",
     "P01344": "IGF-2 (human)",
     "P01275": "Glucagon (human)",
-    "P0DTC2": "Spike glycoprotein (SARS-CoV-2)",
+    "P01375": "Tumor necrosis factor (human)",
 }
 
 

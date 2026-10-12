@@ -79,8 +79,19 @@ TOXIN_CONFIG = {
     "P04958": {
         "name": "Tetanus",
         "region": (0, 450),
-        # Best-guess set; UniProt active-site verification pending
+        # Literature-verified: H233/E234/H237 (HExxH motif), E271 and Y375.
+        # See docs/PROTOCOL.md.
         "catalytic": [233, 234, 237, 271, 375],
         "mechanism": "Zinc protease",
+    },
+    "P11439": {
+        "name": "Pseudomonas ExoA",
+        "region": (430, 638),
+        # Catalytic domain III (UniProt 430-638).
+        # Literature (mature numbering) -> UniProt (+25 signal peptide):
+        #   H440 -> H465, Y470 -> Y495, Y481 -> Y506, E553 -> E578
+        # E578 is UniProt-annotated as "Active site".
+        "catalytic": [465, 495, 506, 578],
+        "mechanism": "ADP-ribosylation",
     },
 }
