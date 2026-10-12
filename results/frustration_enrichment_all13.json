@@ -1,0 +1,224 @@
+{
+  "experiment": "frustration_enrichment_all13",
+  "date": "2026-10-12",
+  "n_toxins": 13,
+  "n_catalytic_residues": 42,
+  "population_class0_rate": 0.03994957820226898,
+  "top5_expected": 2.1,
+  "top5_actual": 11,
+  "top5_enrichment": 5.238095238095238,
+  "class0_expected": 1.6778822844952972,
+  "class0_actual": 8,
+  "class0_enrichment": 4.7679149329634765,
+  "per_toxin": [
+    {
+      "accession": "P00588",
+      "name": "Diphtheria",
+      "n": 567,
+      "cat_positions": [
+        53,
+        180
+      ],
+      "n_cat": 2,
+      "in_top5": 1,
+      "in_class0": 1
+    },
+    {
+      "accession": "P02879",
+      "name": "Ricin",
+      "n": 576,
+      "cat_positions": [
+        115,
+        158,
+        212,
+        215
+      ],
+      "n_cat": 4,
+      "in_top5": 1,
+      "in_class0": 1
+    },
+    {
+      "accession": "P04958",
+      "name": "Tetanus",
+      "n": 1315,
+      "cat_positions": [
+        233,
+        234,
+        237,
+        271,
+        375
+      ],
+      "n_cat": 5,
+      "in_top5": 1,
+      "in_class0": 1
+    },
+    {
+      "accession": "P09385",
+      "name": "Shiga 2A",
+      "n": 319,
+      "cat_positions": [
+        189,
+        192
+      ],
+      "n_cat": 2,
+      "in_top5": 0,
+      "in_class0": 0
+    },
+    {
+      "accession": "P0DPI0",
+      "name": "Botulinum E",
+      "n": 1296,
+      "cat_positions": [
+        223,
+        224,
+        227
+      ],
+      "n_cat": 3,
+      "in_top5": 1,
+      "in_class0": 1
+    },
+    {
+      "accession": "P0DPI1",
+      "name": "Botulinum A",
+      "n": 1296,
+      "cat_positions": [
+        223,
+        224,
+        227
+      ],
+      "n_cat": 3,
+      "in_top5": 1,
+      "in_class0": 1
+    },
+    {
+      "accession": "P10149",
+      "name": "Shiga 1A",
+      "n": 315,
+      "cat_positions": [
+        189,
+        192
+      ],
+      "n_cat": 2,
+      "in_top5": 1,
+      "in_class0": 0
+    },
+    {
+      "accession": "P10844",
+      "name": "Botulinum B",
+      "n": 1291,
+      "cat_positions": [
+        230,
+        231,
+        234,
+        268
+      ],
+      "n_cat": 4,
+      "in_top5": 2,
+      "in_class0": 1
+    },
+    {
+      "accession": "P11140",
+      "name": "Abrin",
+      "n": 528,
+      "cat_positions": [
+        74,
+        113,
+        164,
+        167
+      ],
+      "n_cat": 4,
+      "in_top5": 1,
+      "in_class0": 0
+    },
+    {
+      "accession": "P11439",
+      "name": "Pseudomonas ExoA",
+      "n": 638,
+      "cat_positions": [
+        465,
+        495,
+        506,
+        578
+      ],
+      "n_cat": 4,
+      "in_top5": 1,
+      "in_class0": 1
+    },
+    {
+      "accession": "P15917",
+      "name": "Anthrax LF",
+      "n": 809,
+      "cat_positions": [
+        719,
+        720,
+        723,
+        768
+      ],
+      "n_cat": 4,
+      "in_top5": 1,
+      "in_class0": 1
+    },
+    {
+      "accession": "P33183",
+      "name": "Modeccin",
+      "n": 563,
+      "cat_positions": [
+        80,
+        123,
+        177,
+        180
+      ],
+      "n_cat": 4,
+      "in_top5": 0,
+      "in_class0": 0
+    },
+    {
+      "accession": "P40136",
+      "name": "Anthrax EF",
+      "n": 800,
+      "cat_positions": [
+        351
+      ],
+      "n_cat": 1,
+      "in_top5": 0,
+      "in_class0": 0
+    }
+  ],
+  "by_residue": {
+    "H": {
+      "total": 13,
+      "in_top5": 0,
+      "in_class0": 0
+    },
+    "E": {
+      "total": 14,
+      "in_top5": 11,
+      "in_class0": 8
+    },
+    "Y": {
+      "total": 7,
+      "in_top5": 0,
+      "in_class0": 0
+    },
+    "R": {
+      "total": 5,
+      "in_top5": 0,
+      "in_class0": 0
+    },
+    "V": {
+      "total": 1,
+      "in_top5": 0,
+      "in_class0": 0
+    },
+    "K": {
+      "total": 1,
+      "in_top5": 0,
+      "in_class0": 0
+    },
+    "L": {
+      "total": 1,
+      "in_top5": 0,
+      "in_class0": 0
+    }
+  }
+}
