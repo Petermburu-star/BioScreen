@@ -86,6 +86,31 @@ DEFAULT_WEIGHTS = {
 # --------------------------------------------------------------------------
 # Public class
 # --------------------------------------------------------------------------
+
+
+def identity_tolerance(native_aa: str, query_aa: str, blosum) -> float:
+    """Smooth identity: 1.0 for exact match, partial for conservative.
+
+    Y->F (BLOSUM ~3)  -> ~0.83
+    E->D (BLOSUM ~2)  -> ~0.67
+    R->K (BLOSUM ~2)  -> ~0.67
+    Y->S (BLOSUM ~-1) -> 0.0
+    Y->A (BLOSUM ~-2) -> 0.0
+
+    Conservative substitutions get partial credit; non-conservative
+    substitutions get zero. Consistent with the motif gate's
+    CONSERVATIVE_SUBSTITUTIONS table.
+    """
+    if native_aa == query_aa:
+        return 1.0
+    try:
+        b = blosum[native_aa][query_aa]
+    except (KeyError, IndexError):
+        return 0.0
+    # Map BLOSUM score [-2, +4] to [0, 1]
+    return max(0.0, min(1.0, (b + 2.0) / 6.0))
+
+
 class ContextFreeFingerprint:
     """Context-free fingerprint for one toxin's functional region.
 
@@ -198,11 +223,11 @@ class ContextFreeFingerprint:
     # Component scores
     # ------------------------------------------------------------------
     def _identity(self, q: str) -> float:
-        hits = sum(
-            1 for i, p in enumerate(self.cat_positions)
-            if q[p] == self.catalytic_residues[i]
-        )
-        return hits / len(self.cat_positions)
+        vals = [
+            identity_tolerance(self.catalytic_residues[i], q[p], self._blosum)
+            for i, p in enumerate(self.cat_positions)
+        ]
+        return float(np.mean(vals))
 
     def _blosum_norm(self, q: str) -> float:
         # BLOSUM62 identity scores are typically 4-8; conservative
@@ -315,7 +340,7 @@ def _per_site_max(self, query_region: str) -> float:
 
         native_res = self.region[cat_idx]
         query_res = q[cat_idx]
-        identity = 1.0 if query_res == native_res else 0.0
+        identity = identity_tolerance(native_res, query_res, self._blosum)
 
         blosum = self._blosum[native_res][query_res]
         bl_norm = max(0.0, min(1.0, (blosum + 3.0) / 11.0))
@@ -377,4 +402,5 @@ __all__ = [
     "CONSERVATIVE_SUBSTITUTIONS",
     "PER_SITE_THRESHOLD",
     "motif_passes",
+    "identity_tolerance",
 ]
