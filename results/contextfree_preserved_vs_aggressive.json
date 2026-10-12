@@ -1,0 +1,101 @@
+{
+  "experiment": "cf_preserved_vs_aggressive_separation",
+  "date": "2026-10-12",
+  "n_variants_per_class": 39,
+  "preserved_cf_caught": 39,
+  "aggressive_cf_caught": 0,
+  "separation_pp": 100.0,
+  "per_toxin": [
+    {
+      "accession": "P00588",
+      "name": "Diphtheria",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P02879",
+      "name": "Ricin",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P04958",
+      "name": "Tetanus",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P09385",
+      "name": "Shiga 2A",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P0DPI0",
+      "name": "Botulinum E",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P0DPI1",
+      "name": "Botulinum A",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P10149",
+      "name": "Shiga 1A",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P10844",
+      "name": "Botulinum B",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P11140",
+      "name": "Abrin",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P11439",
+      "name": "Pseudomonas ExoA",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P15917",
+      "name": "Anthrax LF",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P33183",
+      "name": "Modeccin",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    },
+    {
+      "accession": "P40136",
+      "name": "Anthrax EF",
+      "preserved_cf": 3,
+      "aggressive_cf": 0,
+      "n": 3
+    }
+  ]
+}
