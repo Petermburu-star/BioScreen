@@ -1,0 +1,26 @@
+{
+  "accession": "P11439",
+  "region": [
+    430,
+    638
+  ],
+  "residues_used": "literature-catalytic",
+  "catalytic_positions_uniprot": [
+    465,
+    495,
+    506,
+    578
+  ],
+  "fingerprint_size": 50,
+  "native_score": 0.9773,
+  "preserved_variants": [
+    0.9773,
+    0.9773,
+    0.9773
+  ],
+  "aggressive_catalytic": 0.4376,
+  "aggressive_fingerprint": 0.0527,
+  "random_sequence": 0.0516,
+  "safe_mean": 0.080725,
+  "safe_max": 0.2958
+}

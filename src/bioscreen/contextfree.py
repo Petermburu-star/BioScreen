@@ -1,0 +1,229 @@
+"""
+BioScreen — context-free fingerprint.
+
+A second detection layer that is independent of protein language models.
+Instead of comparing per-residue embeddings (which are context-dependent),
+this layer compares:
+
+    1. Residue identity at catalytic positions
+    2. BLOSUM62 substitution scores at catalytic positions
+    3. AAindex physicochemical profiles over the ±window fingerprint
+    4. Residue identity over the whole fingerprint window
+
+All four signals are computed per-residue and are independent of the
+surrounding sequence. They cannot shift when a scaffold is redesigned,
+which is the failure mode of the ESM-based fingerprint.
+
+See docs/HANDOFF.md session 4 for the P11439 case that motivated this:
+ESM scored 0.6748 on a variant that preserved 50/50 fingerprint residues
+verbatim. This layer scores the same variant at 0.9773.
+
+No PyTorch, no ESM, no network access. Pure Python + numpy + Bio.BLOSUM62.
+"""
+from __future__ import annotations
+
+from typing import Iterable, Optional
+
+import numpy as np
+from Bio.Align import substitution_matrices
+
+
+# --------------------------------------------------------------------------
+# AAindex physicochemical scales
+# --------------------------------------------------------------------------
+# Four well-characterised scales, taken from the AAindex1 database
+# (Kawashima et al., 2008). Values are verified against the published
+# papers, not parsed dynamically — a small, self-contained subset.
+
+HYDROPATHY = {  # KYTJ820101 — Kyte & Doolittle (1982)
+    "A": 1.8,  "R": -4.5, "N": -3.5, "D": -3.5, "C": 2.5,
+    "Q": -3.5, "E": -3.5, "G": -0.4, "H": -3.2, "I": 4.5,
+    "L": 3.8,  "K": -3.9, "M": 1.9,  "F": 2.8,  "P": -1.6,
+    "S": -0.8, "T": -0.7, "W": -0.9, "Y": -1.3, "V": 4.2,
+}
+
+POLARITY = {  # GRAR740102 — Grantham (1974)
+    "A": 8.1,  "R": 10.5, "N": 11.6, "D": 13.0, "C": 5.5,
+    "Q": 10.5, "E": 12.3, "G": 9.0,  "H": 10.4, "I": 5.2,
+    "L": 4.9,  "K": 11.3, "M": 5.7,  "F": 5.2,  "P": 8.0,
+    "S": 9.2,  "T": 8.6,  "W": 5.4,  "Y": 6.2,  "V": 5.9,
+}
+
+ISOELECTRIC = {  # ZIMJ680104 — Zimmerman et al. (1968)
+    "A": 6.00,  "R": 10.76, "N": 5.41, "D": 2.77, "C": 5.07,
+    "Q": 5.65,  "E": 3.22,  "G": 5.97, "H": 7.59, "I": 6.02,
+    "L": 5.98,  "K": 9.74,  "M": 5.74, "F": 5.48, "P": 6.30,
+    "S": 5.68,  "T": 5.60,  "W": 5.89, "Y": 5.66, "V": 5.96,
+}
+
+HELIX = {  # CHOP780101 — Chou & Fasman (1978)
+    "A": 1.42, "R": 0.98, "N": 0.67, "D": 1.01, "C": 0.70,
+    "Q": 1.11, "E": 1.51, "G": 0.57, "H": 1.00, "I": 1.08,
+    "L": 1.21, "K": 1.16, "M": 1.45, "F": 1.13, "P": 0.57,
+    "S": 0.77, "T": 0.83, "W": 1.08, "Y": 0.69, "V": 1.06,
+}
+
+DEFAULT_SCALES = {
+    "hydropathy":  HYDROPATHY,
+    "polarity":    POLARITY,
+    "isoelectric": ISOELECTRIC,
+    "helix":       HELIX,
+}
+
+# Component weights in the combined score. Heuristic — see module docstring
+# and docs/PROTOCOL.md. Calibration against a larger panel is accelerator
+# phase work; these values are documented as provisional.
+DEFAULT_WEIGHTS = {
+    "identity":    0.35,
+    "blosum":      0.20,
+    "aaindex":     0.20,
+    "fp_identity": 0.25,
+}
+
+
+# --------------------------------------------------------------------------
+# Public class
+# --------------------------------------------------------------------------
+class ContextFreeFingerprint:
+    """Context-free fingerprint for one toxin's functional region.
+
+    Parameters
+    ----------
+    region_sequence : str
+        The toxin's functional region (e.g. P11439 430-638).
+    catalytic_positions : list[int]
+        0-based indices into region_sequence where catalytic residues sit.
+
+        IMPORTANT — choose these deliberately. UniProt's "Binding site"
+        annotation includes many second-shell and cofactor contacts that
+        tolerate substitution (e.g. P11439 has 12 NAD+ contacts but only
+        4 literature-curated catalytic residues). Using the wider set
+        asks the wrong question: does the variant preserve positions
+        EvoDiff was never told to protect. Use the catalytic set from
+        TOXIN_CONFIG or an equivalent literature source.
+    window : int, default 6
+        Half-width of the fingerprint window. Matches the ESM fingerprint
+        definition (±6 residues around each catalytic position).
+    scales : dict[str, dict[str, float]], optional
+        Physicochemical scales. Defaults to the four AAindex scales above.
+    weights : dict[str, float], optional
+        Component weights for the combined score.
+
+    Attributes
+    ----------
+    fingerprint_indices : list[int]
+        Sorted, deduplicated 0-based indices of the fingerprint window.
+    catalytic_residues : list[str]
+        Single-letter codes of the catalytic residues in the native region.
+    """
+
+    def __init__(
+        self,
+        region_sequence: str,
+        catalytic_positions: Iterable[int],
+        window: int = 6,
+        scales: Optional[dict] = None,
+        weights: Optional[dict] = None,
+    ) -> None:
+        self.region = region_sequence.upper()
+        self.cat_positions = sorted(set(int(p) for p in catalytic_positions))
+        self.window = int(window)
+        self.scales = scales if scales is not None else DEFAULT_SCALES
+        self.weights = weights if weights is not None else DEFAULT_WEIGHTS
+
+        L = len(self.region)
+        fp = set()
+        for p in self.cat_positions:
+            for off in range(-self.window, self.window + 1):
+                q = p + off
+                if 0 <= q < L:
+                    fp.add(q)
+        self.fingerprint_indices = sorted(fp)
+        self.catalytic_residues = [self.region[p] for p in self.cat_positions]
+
+        self._blosum = substitution_matrices.load("BLOSUM62")
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+    def score(self, query_region: str) -> dict:
+        """Score a query region against the fingerprint.
+
+        Parameters
+        ----------
+        query_region : str
+            Same length as the native region (no alignment step).
+
+        Returns
+        -------
+        dict
+            Component scores and the combined score.
+        """
+        q = query_region.upper()
+        if len(q) != len(self.region):
+            raise ValueError(
+                f"query length {len(q)} != region length {len(self.region)}"
+            )
+
+        identity      = self._identity(q)
+        blosum_norm   = self._blosum_norm(q)
+        aaindex_corr  = self._aaindex_corr(q)
+        fp_identity   = self._fp_identity(q)
+
+        combined = (
+            self.weights["identity"]    * identity
+            + self.weights["blosum"]    * blosum_norm
+            + self.weights["aaindex"]   * aaindex_corr
+            + self.weights["fp_identity"] * fp_identity
+        )
+
+        return {
+            "identity":    round(float(identity), 4),
+            "blosum":      round(float(blosum_norm), 4),
+            "aaindex":     round(float(aaindex_corr), 4),
+            "fp_identity": round(float(fp_identity), 4),
+            "combined":    round(float(combined), 4),
+        }
+
+    # ------------------------------------------------------------------
+    # Component scores
+    # ------------------------------------------------------------------
+    def _identity(self, q: str) -> float:
+        hits = sum(
+            1 for i, p in enumerate(self.cat_positions)
+            if q[p] == self.catalytic_residues[i]
+        )
+        return hits / len(self.cat_positions)
+
+    def _blosum_norm(self, q: str) -> float:
+        # BLOSUM62 identity scores are typically 4-8; conservative
+        # substitutions 1-3; radical substitutions negative. We map
+        # [-3, +8] -> [0, 1], capped.
+        scores = [
+            self._blosum[self.catalytic_residues[i]][q[p]]
+            for i, p in enumerate(self.cat_positions)
+        ]
+        mean = float(np.mean(scores))
+        return max(0.0, min(1.0, (mean + 3.0) / 11.0))
+
+    def _aaindex_corr(self, q: str) -> float:
+        corrs = []
+        for scale in self.scales.values():
+            n = np.array([scale[self.region[i]] for i in self.fingerprint_indices])
+            v = np.array([scale[q[i]]          for i in self.fingerprint_indices])
+            if n.std() > 1e-9 and v.std() > 1e-9:
+                corrs.append(float(np.corrcoef(n, v)[0, 1]))
+        if not corrs:
+            return 0.0
+        return max(0.0, float(np.mean(corrs)))
+
+    def _fp_identity(self, q: str) -> float:
+        hits = sum(1 for i in self.fingerprint_indices if q[i] == self.region[i])
+        return hits / len(self.fingerprint_indices)
+
+
+__all__ = [
+    "ContextFreeFingerprint",
+    "DEFAULT_SCALES",
+    "DEFAULT_WEIGHTS",
+]
