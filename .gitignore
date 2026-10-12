@@ -36,3 +36,9 @@ docs/HANDOFF.md
 docs/HANDOFF.local.md
 **/HANDOFF.md
 **/.handoff/
+
+# Editor/script backups
+*.bak
+*.bak2
+*.bak3
+*.bak4
