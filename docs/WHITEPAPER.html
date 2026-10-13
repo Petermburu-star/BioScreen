@@ -170,23 +170,26 @@
   <p>
     <strong>BioScreen</strong> is a two-layer response. Layer 1 embeds query
     proteins using ESM-C 600M and runs <em>two independent detectors</em>: an
-    <strong>ordered catalytic fingerprint</strong> that scores only the residues
-    defining each toxin's active site (with a sequence-order consistency
-    constraint), and a <strong>context-free fallback layer</strong> built from
-    residue identity, BLOSUM62 substitution scores, AAindex physicochemical
-    profiles, and mechanism-specific catalytic motifs. The context-free layer
-    is invariant to scaffold redesign, closing a specific failure mode of
-    embedding-based fingerprints. A query is flagged if either detector fires.
-    Layer 2 converts the screening signal plus order context into a risk-priced
-    premium, applying catastrophe-insurance methods to fund global biosecurity
-    capacity through a 0.12% loading on synthesis orders.
+    <strong>ordered functional fingerprint</strong> that scores only the
+    residues defining each toxin's functional site (with a sequence-order
+    consistency constraint), and a <strong>context-free fallback layer</strong>
+    built from residue identity, BLOSUM62 substitution scores, AAindex
+    physicochemical profiles, and class-specific functional motifs. The same
+    fingerprint algorithm applies across <strong>four functional classes</strong>:
+    enzymatic (catalytic residues), superantigen (TCR/MHC binding interface),
+    pore-forming (membrane-inserting motif), and binding-only (receptor pocket).
+    The context-free layer is invariant to scaffold redesign, closing a specific
+    failure mode of embedding-based fingerprints. A query is flagged if either
+    detector fires. Layer 2 converts the screening signal plus order context into
+    a risk-priced premium, applying catastrophe-insurance methods to fund global
+    biosecurity capacity through a 0.12% loading on synthesis orders.
   </p>
 
   <div class="callout win">
     <span class="label">Headline result — EvoDiff benchmark</span>
     <p>
-      On 39 AI-designed variants across 13 mechanistically distinct toxins,
-      generated with Microsoft's own EvoDiff model in preserved mode:
+      On 39 AI-designed variants across 13 enzymatic toxins, generated with
+      Microsoft's own EvoDiff model in preserved mode:
       <strong>BLAST evaded 39/39 (100%)</strong>. The ESM fingerprint caught
       <strong>20/39 (51.3%)</strong>; the context-free layer caught
       <strong>39/39 (100%)</strong>. On the matching aggressive-mode benchmark
@@ -394,18 +397,55 @@ Layer 2 — Actuarial Pricing
     </table>
   </div>
 
-  <h4>Non-catalytic toxins (no fingerprint — binding/pore only)</h4>
-  <ul class="clean">
-    <li>P69179 — Shiga-like toxin 1B (binding subunit)</li>
-    <li>P09386 — Shiga-like toxin 2B (binding subunit)</li>
-    <li>Q8X531 — Shiga toxin 2B variant (binding subunit)</li>
-    <li>P13423 — Anthrax protective antigen (pore-forming)</li>
-  </ul>
+  <h4>Extended reference set — all 4 functional classes</h4>
   <p>
-    These four toxins perform no chemistry. A catalytic fingerprint would be
-    arbitrary. They require a different approach — structural similarity to the
-    binding interface — which is an accelerator-phase deliverable.
+    The 13 enzymatic toxins above use catalytic residues as their
+    functional fingerprint. The reference set now includes three
+    additional functional classes, each with its own functional residue
+    library discovered by unsupervised conservation across the aligned
+    family:
   </p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Class</th><th>Count</th><th>Fingerprint method</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Enzymatic</strong></td><td>13</td>
+          <td>Catalytic residues (literature + UniProt)</td>
+          <td>Ricin, botulinum, tetanus, diphtheria, anthrax LF/EF</td></tr>
+        <tr><td><strong>Superantigen</strong></td><td>12</td>
+          <td>Binding interface (unsupervised conservation, 14 positions)</td>
+          <td>SEA–SEI, TSST-1, SPEA/SPEG/SPEJ</td></tr>
+        <tr><td><strong>Pore-forming</strong></td><td>16</td>
+          <td>Membrane-inserting motif + conserved surface</td>
+          <td>CDC family (SLO, PFO, LLO), α-hemolysin family (Hla, LukF/S)</td></tr>
+        <tr><td><strong>Binding-only</strong></td><td>7</td>
+          <td>Receptor-binding pocket (unsupervised conservation)</td>
+          <td>Shiga toxin B subunits</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <strong>Total: 48 toxins across 4 functional classes.</strong> The same
+    fingerprint algorithm applies to each. Only the functional residue
+    library differs.
+  </p>
+  <p>
+    <strong>Unsupervised discovery methodology.</strong> For each new family:
+    fetch members from UniProt, extract mature chains via chain features,
+    align with Clustal Omega, filter to positions with &ge;90% occupancy
+    and &ge;80% residue dominance, classify by chemistry, keep
+    surface-accessible positions. The method found three published
+    functional features without being told they existed:
+  </p>
+  <ul class="clean">
+    <li><strong>CDC undecapeptide</strong> <code>ECTGLAWEWWR</code> —
+      the membrane-inserting motif — at 11/11 identity across 7 of 8 members.</li>
+    <li><strong>Shiga B receptor-binding pocket</strong> —
+      7 of 8 literature residues (D18, T21, E28, W34, N35, G60, E65).</li>
+    <li><strong>Alpha-hemolysin subfamily split</strong> —
+      Hla (homomeric pores) vs the bicomponent leukocidins automatically
+      distinguished by their conserved patterns.</li>
+  </ul>
 
   <h3>The contrastive layer</h3>
   <p>
@@ -756,9 +796,9 @@ premium = order_cost × loading</code></pre>
       <thead><tr><th>Limitation</th><th>Impact</th><th>Mitigation</th></tr></thead>
       <tbody>
         <tr>
-          <td><strong>Only 13 of 17 toxins have catalytic fingerprints</strong></td>
-          <td>4 toxins (shiga B subunits, anthrax PA) are binding or pore-forming — no catalytic residues to protect</td>
-          <td>Structural-similarity layer for binding interfaces; accelerator phase</td>
+          <td><strong>Cross-genus detection at &lt;40% identity</strong></td>
+          <td>Positional fingerprints require aligned functional positions; three alignment methods fail at 25% identity</td>
+          <td>Documented boundary in PROTOCOL.md §10; use profile-based methods for cross-genus</td>
         </tr>
         <tr>
           <td><strong>ESM context-dependence</strong></td>
