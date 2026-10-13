@@ -374,5 +374,93 @@ TOXIN_CONFIG = {
         "functional_class": "pore_forming",
         "source": "unsupervised-conservation",
     },
+    "P09616": {
+        "name": "Hla",
+        "region": (26, 319),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: TDKYF
+        "catalytic": [47, 49, 61, 65, 67, 69, 70, 71, 73, 75, 76, 81, 84, 88, 105, 109, 110, 126, 128, 129, 130, 140, 142, 143, 146, 147, 158, 163, 168, 173, 175, 178, 186, 188, 192, 193, 221, 235, 242, 247, 249, 250, 251, 253, 258, 259, 274, 276, 279, 307, 311, 317],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "P31715": {
+        "name": "LukF",
+        "region": (25, 323),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: KTQFF
+        "catalytic": [45, 47, 59, 63, 65, 67, 68, 69, 71, 73, 74, 79, 82, 86, 103, 107, 108, 124, 126, 127, 128, 138, 140, 141, 144, 145, 156, 159, 164, 169, 171, 174, 182, 184, 188, 189, 216, 230, 237, 242, 244, 245, 246, 248, 253, 254, 268, 270, 273, 301, 305, 311],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "P31716": {
+        "name": "LukS",
+        "region": (29, 315),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: KTQFF
+        "catalytic": [45, 47, 59, 63, 65, 67, 68, 69, 71, 73, 74, 79, 82, 86, 104, 108, 109, 124, 126, 127, 128, 138, 140, 141, 144, 145, 154, 157, 162, 167, 169, 172, 180, 182, 186, 187, 208, 222, 229, 234, 236, 237, 238, 240, 245, 246, 260, 262, 265, 299, 303, 309],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "O54082": {
+        "name": "LukD",
+        "region": (26, 327),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: KTQFF
+        "catalytic": [45, 47, 59, 63, 65, 67, 68, 69, 71, 73, 74, 79, 82, 86, 103, 107, 108, 124, 126, 127, 128, 138, 140, 141, 144, 145, 156, 159, 164, 169, 171, 174, 183, 185, 189, 190, 218, 232, 239, 244, 246, 247, 248, 250, 255, 256, 270, 272, 275, 303, 307, 313],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "O54081": {
+        "name": "LukE",
+        "region": (28, 314),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: KTQFF
+        "catalytic": [42, 44, 56, 60, 62, 64, 65, 66, 68, 70, 71, 76, 79, 83, 103, 107, 108, 123, 127, 128, 129, 139, 141, 142, 145, 146, 155, 158, 163, 168, 170, 173, 181, 183, 187, 188, 209, 224, 231, 236, 238, 239, 240, 242, 247, 248, 263, 265, 268, 298, 302, 308],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "P0A074": {
+        "name": "HlgA",
+        "region": (29, 309),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: KTQFF
+        "catalytic": [43, 45, 57, 61, 63, 65, 66, 67, 69, 71, 72, 77, 80, 84, 102, 106, 107, 122, 124, 125, 126, 136, 138, 139, 142, 143, 152, 155, 160, 165, 167, 170, 178, 180, 184, 185, 206, 219, 226, 231, 233, 234, 235, 237, 242, 243, 257, 259, 262, 291, 295, 301],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "Q2FVK1": {
+        "name": "HlgB",
+        "region": (26, 325),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: KTQFF
+        "catalytic": [45, 47, 59, 63, 65, 67, 68, 69, 71, 73, 74, 79, 82, 86, 103, 107, 108, 124, 126, 127, 128, 138, 140, 141, 144, 145, 156, 159, 164, 169, 171, 174, 183, 185, 189, 190, 218, 232, 239, 244, 246, 247, 248, 250, 255, 256, 270, 272, 275, 303, 307, 313],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "Q07227": {
+        "name": "HlgC",
+        "region": (29, 315),
+        # alpha-hemolysin family (beta-PFT). Functional positions from
+        # unsupervised conservation across 8 members.
+        # 52 positions, first 5 residues: KTQFF
+        "catalytic": [45, 47, 59, 63, 65, 67, 68, 69, 71, 73, 74, 79, 82, 86, 104, 108, 109, 124, 126, 127, 128, 138, 140, 141, 144, 145, 154, 157, 162, 167, 169, 172, 180, 182, 186, 187, 208, 222, 229, 234, 236, 237, 238, 240, 245, 246, 260, 262, 265, 299, 303, 309],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
 }
 
