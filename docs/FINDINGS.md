@@ -185,6 +185,88 @@ Verified correct: tetanus, botulinum A/E, abrin, P11439, anthrax EF.
 
 ---
 
+## Session 7 — 4 functional classes, 48 toxins
+
+CF now handles every functional class of protein toxin. Same algorithm,
+new functional residue library per family.
+
+### Class distribution
+
+| Class | Count | Families | Discovery method |
+|---|---|---|---|
+| Enzymatic | 13 | A-B catalytic toxins | Literature + UniProt active sites |
+| Superantigen | 12 | Staphylococcal + streptococcal enterotoxins | Unsupervised conservation, 14 positions |
+| Pore-forming | 16 | CDC (8) + alpha-hemolysin (8) | Unsupervised conservation, 47-52 positions |
+| Binding-only | 7 | Shiga B subunits | Unsupervised conservation, 26 positions |
+
+### Unsupervised discovery method
+
+For each new family:
+1. Fetch family members from UniProt by name
+2. Extract mature chains via UniProt Chain features
+3. Align via Clustal Omega
+4. Filter to positions with >=90% occupancy + >=80% residue dominance
+5. Classify by chemistry -- keep surface-accessible positions
+6. Store as fingerprint positions per member
+
+### Literature validations (method found these without being told)
+
+**CDC undecapeptide ECTGLAWEWWR** -- membrane-inserting motif.
+Found at 11/11 identity across 7 of 8 CDC members.
+
+**Shiga B receptor-binding pocket** -- 7 of 8 literature residues
+(D18, T21, E28, W34, N35, G60, E65).
+
+**Alpha-hemolysin subfamily split** -- Hla (TDKYF) vs bicomponent
+leukocidins (KTQFF) automatically distinguished.
+
+### Validation results
+
+| Test | Result |
+|---|---|
+| Native fires (all 48 toxins) | 48/48 |
+| Length-unbiased specificity (26 fingerprints, 150-aa) | 0 / 9,984 |
+| CDC panel | 0 / 717 |
+| Alpha-hemolysin panel | 0 / 2,019 |
+| Shiga B panel | 0 / 3,815 |
+| Cross-class off-diagonal | 0 / 6 |
+
+### Adversarial A1-A4 (ricin + SEB)
+
+| Variant | ricin | SEB |
+|---|---|---|
+| A1 (func preserved, window scrambled) | REJECTED | REJECTED |
+| A2 (window preserved, rest scrambled) | FIRES | FIRES |
+| A3 (only func preserved) | REJECTED | REJECTED |
+| A4 (conservative substitutions) | FIRES | FIRES |
+
+A1/A3 prove CF requires the full fingerprint window, not just residue
+identity. A2 proves CF fires on window preservation alone.
+
+### Documented boundary: cross-genus detection
+
+CF does NOT reliably detect cross-genus variants at <40% identity.
+Tested SEB -> SPEG (25% identity) via three methods, all failed:
+pairwise alignment, custom MSA HMM (pyhmmer), Pfam HMM (PF02876).
+Fundamental limit of positional fingerprinting, not a bug. Documented
+in PROTOCOL.md section 10.
+
+### Dropped entries
+
+- SPEC (P0C0I3) -- UniProt fusion, wrong chain length.
+- Q6DWM0 (shiga B) -- no signal peptide annotation, region offset
+  wrong, produced 1 false positive on tubulin.
+
+Both dropped rather than papered over.
+
+### EvoDiff benchmark for new classes
+
+Running: 28 targets (12 superantigen + 16 pore-forming), 2 modes,
+3 variants each. Uses generate_variants_custom to bypass the
+toxin_references.csv limitation.
+
+Result: pending.
+
 ## What we cannot claim
 
 - **Not "functional screening."** The context-free layer scores
