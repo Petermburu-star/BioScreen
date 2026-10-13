@@ -138,7 +138,7 @@ TOXIN_CONFIG = {
     },
     "P01552": {
         "name": "SEB",
-        "region": (0, 266),
+        "region": (27, 266),
         # Functional positions discovered by unsupervised conservation
         # across 13 superantigen sequences (Clustal Omega alignment +
         # surface-residue classification). Literature cross-check:
@@ -151,7 +151,7 @@ TOXIN_CONFIG = {
     },
     "P06886": {
         "name": "TSST-1",
-        "region": (0, 234),
+        "region": (40, 234),
         # Functional positions discovered by unsupervised conservation
         # across 13 superantigen sequences (Clustal Omega alignment +
         # surface-residue classification). Literature cross-check:
@@ -164,7 +164,7 @@ TOXIN_CONFIG = {
     },
     "P0A0L5": {
         "name": "SEC3",
-        "region": (0, 266),
+        "region": (27, 266),
         # Functional positions discovered by unsupervised conservation
         # across 13 superantigen sequences (Clustal Omega alignment +
         # surface-residue classification). Literature cross-check:
@@ -177,13 +177,103 @@ TOXIN_CONFIG = {
     },
     "P0C0I5": {
         "name": "SPEA",
-        "region": (0, 235),
+        "region": (27, 235),
         # Functional positions discovered by unsupervised conservation
         # across 13 superantigen sequences (Clustal Omega alignment +
         # surface-residue classification). Literature cross-check:
         # TSST-1 Y144 (literature) = position 144 (matches).
         # Residue pattern (mature numbering): Y-D-D-T-K-T-Q-E-D-R-Y-D-Y-N
         "catalytic": [44, 93, 97, 118, 151, 155, 157, 158, 160, 164, 174, 198, 215, 218],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0A0L2": {
+        "name": "SEA",
+        "region": (24, 257),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YGDTKTQEDRYDYN
+        "catalytic": [54, 106, 110, 136, 171, 175, 177, 178, 180, 184, 194, 221, 237, 240],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0A0L3": {
+        "name": "SED",
+        "region": (27, 266),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YDDTKTQEDRYDYN
+        "catalytic": [55, 106, 110, 143, 178, 182, 184, 185, 187, 191, 201, 226, 244, 247],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0A0L4": {
+        "name": "SEE",
+        "region": (27, 266),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YDDTKTQEDRYDYN
+        "catalytic": [55, 106, 110, 143, 178, 182, 184, 185, 187, 191, 201, 226, 244, 247],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0A0L6": {
+        "name": "SEG",
+        "region": (25, 258),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YDDTKTQEDRYDYN
+        "catalytic": [54, 102, 106, 139, 171, 175, 177, 178, 180, 184, 194, 219, 238, 241],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0A0L7": {
+        "name": "SEH",
+        "region": (25, 258),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YDDTKTQEDRYDYN
+        "catalytic": [54, 102, 106, 139, 171, 175, 177, 178, 180, 184, 194, 219, 238, 241],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0A0L8": {
+        "name": "SEI",
+        "region": (25, 258),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YDDTKTQEDRYDYN
+        "catalytic": [54, 102, 106, 139, 171, 175, 177, 178, 180, 184, 194, 219, 238, 241],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0C0I3": {
+        "name": "SPEC",
+        "region": (33, 571),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: LDIGDTKEDIFENN
+        "catalytic": [116, 162, 166, 210, 317, 321, 323, 324, 408, 412, 422, 478, 519, 522],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0C0I6": {
+        "name": "SPEG",
+        "region": (32, 236),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YDDTKTQEDRYDYN
+        "catalytic": [47, 95, 99, 123, 154, 158, 160, 161, 163, 167, 177, 202, 218, 221],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0C0I7": {
+        "name": "SPEJ",
+        "region": (32, 236),
+        # Functional positions from unsupervised conservation across
+        # 13 superantigen sequences. Residues: YDDTKTQEDRYDYN
+        "catalytic": [47, 95, 99, 123, 154, 158, 160, 161, 163, 167, 177, 202, 218, 221],
         "mechanism": "superantigen-binding",
         "functional_class": "superantigen",
         "source": "unsupervised-conservation",

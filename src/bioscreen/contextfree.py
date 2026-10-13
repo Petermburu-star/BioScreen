@@ -186,11 +186,7 @@ class ContextFreeFingerprint:
         dict
             Component scores and the combined score.
         """
-        q = query_region.upper()
-        if len(q) != len(self.region):
-            raise ValueError(
-                f"query length {len(q)} != region length {len(self.region)}"
-            )
+        q = self._align_query(query_region)
 
         identity      = self._identity(q)
         blosum_norm   = self._blosum_norm(q)
@@ -223,28 +219,38 @@ class ContextFreeFingerprint:
     # Component scores
     # ------------------------------------------------------------------
     def _identity(self, q: str) -> float:
-        vals = [
-            identity_tolerance(self.catalytic_residues[i], q[p], self._blosum)
-            for i, p in enumerate(self.cat_positions)
-        ]
-        return float(np.mean(vals))
+        q = self._align_query(q)
+        vals = []
+        for i, p in enumerate(self.cat_positions):
+            if q[p] == "-":
+                vals.append(0.0)
+                continue
+            vals.append(
+                identity_tolerance(self.catalytic_residues[i], q[p], self._blosum)
+            )
+        return float(np.mean(vals)) if vals else 0.0
 
     def _blosum_norm(self, q: str) -> float:
-        # BLOSUM62 identity scores are typically 4-8; conservative
-        # substitutions 1-3; radical substitutions negative. We map
-        # [-3, +8] -> [0, 1], capped.
-        scores = [
-            self._blosum[self.catalytic_residues[i]][q[p]]
-            for i, p in enumerate(self.cat_positions)
-        ]
+        q = self._align_query(q)
+        scores = []
+        for i, p in enumerate(self.cat_positions):
+            if q[p] == "-":
+                continue
+            scores.append(self._blosum[self.catalytic_residues[i]][q[p]])
+        if not scores:
+            return 0.0
         mean = float(np.mean(scores))
         return max(0.0, min(1.0, (mean + 3.0) / 11.0))
 
     def _aaindex_corr(self, q: str) -> float:
+        q = self._align_query(q)
+        idx = [i for i in self.fingerprint_indices if q[i] != "-"]
+        if len(idx) < 5:
+            return 0.0
         corrs = []
         for scale in self.scales.values():
-            n = np.array([scale[self.region[i]] for i in self.fingerprint_indices])
-            v = np.array([scale[q[i]]          for i in self.fingerprint_indices])
+            n = np.array([scale[self.region[i]] for i in idx])
+            v = np.array([scale[q[i]]          for i in idx])
             if n.std() > 1e-9 and v.std() > 1e-9:
                 corrs.append(float(np.corrcoef(n, v)[0, 1]))
         if not corrs:
@@ -252,9 +258,155 @@ class ContextFreeFingerprint:
         return max(0.0, float(np.mean(corrs)))
 
     def _fp_identity(self, q: str) -> float:
-        hits = sum(1 for i in self.fingerprint_indices if q[i] == self.region[i])
-        return hits / len(self.fingerprint_indices)
+        q = self._align_query(q)
+        hits, total = 0, 0
+        for i in self.fingerprint_indices:
+            if q[i] == "-":
+                continue
+            total += 1
+            if q[i] == self.region[i]:
+                hits += 1
+        return hits / total if total else 0.0
 
+
+
+
+# --------------------------------------------------------------------------
+# Alignment — makes CF robust to length differences
+# --------------------------------------------------------------------------
+def _pattern_anchor(self, query: str):
+    """Find the offset mapping reference positions to query positions.
+
+    Returns a shift `k` such that reference position p maps to
+    query position (p - k) — i.e. query[p - k] aligns with
+    self.region[p] for every functional position p.
+
+    Handles both directions:
+      - query longer than reference: query is an extended version
+        (k >= 0 means leading residues in query are dropped)
+      - query shorter than reference: reference is longer
+        (k < 0 means leading reference residues have no counterpart)
+
+    Uses BLOSUM62-tolerant matching — a position matches if the
+    BLOSUM62 score against the reference residue is >= 0.
+    """
+    if not self.cat_positions:
+        return None
+
+    ref_len = len(self.region)
+    q_len = len(query)
+
+    # For each candidate shift k, every functional position p
+    # in reference should map to query index p - k
+    ref_positions = self.cat_positions
+    ref_residues = [self.region[p] for p in ref_positions]
+
+    best_k = None
+    best_score = -1
+
+    # k range: p - k must be in [0, q_len) for all functional p.
+    #   k <= p            (so p - k >= 0) → k <= min(ref_positions)
+    #   k >= p - q_len + 1  (so p - k < q_len) → k >= max(ref_positions) - q_len + 1
+    min_k = max(ref_positions) - q_len + 1
+    max_k = min(ref_positions)
+
+    for k in range(min_k, max_k + 1):
+        score = 0
+        ok = True
+        for p, ref_aa in zip(ref_positions, ref_residues):
+            q_idx = p - k
+            if q_idx < 0 or q_idx >= q_len:
+                ok = False
+                break
+            q_aa = query[q_idx]
+            if q_aa == "X":
+                ok = False
+                break
+            try:
+                bl = self._blosum[ref_aa][q_aa]
+            except KeyError:
+                ok = False
+                break
+            if bl < 0:
+                ok = False
+                break
+            if bl > 0:
+                score += bl
+        if ok:
+            if score > best_score:
+                best_score = score
+                best_k = k
+
+    return best_k
+
+
+def _align_query(self, query_region: str) -> str:
+    """Align query to self.region, return a region-length string.
+
+    Order of strategies:
+      1. Fast path — if lengths match, return query unchanged.
+      2. Pattern anchor — slide query so its functional pattern
+         aligns with the reference's functional positions.
+      3. Global alignment — fallback via Bio.Align.PairwiseAligner.
+
+    Positions in the reference with no counterpart in the query
+    are marked '-'. Insertions in the query are dropped.
+    """
+    q = query_region.upper()
+
+    if len(q) == len(self.region):
+        return q
+
+    cache = getattr(self, "_align_cache", None)
+    if cache is None:
+        cache = {}
+        object.__setattr__(self, "_align_cache", cache)
+    if q in cache:
+        return cache[q]
+
+    # ---- Strategy 2: pattern anchor ----
+    k = self._pattern_anchor(q)
+    if k is not None:
+        # Reference position p maps to query position (p - k).
+        # Build a region-length string where position p holds the
+        # corresponding query residue, or '-' if out of range.
+        out = []
+        for p in range(len(self.region)):
+            q_idx = p - k
+            if 0 <= q_idx < len(q):
+                out.append(q[q_idx])
+            else:
+                out.append("-")
+        result = "".join(out)
+        cache[q] = result
+        return result
+
+    # ---- Strategy 3: global alignment fallback ----
+    try:
+        from Bio.Align import PairwiseAligner, substitution_matrices
+        aligner = PairwiseAligner()
+        aligner.substitution_matrix = substitution_matrices.load("BLOSUM62")
+        aligner.open_gap_score = -10
+        aligner.extend_gap_score = -0.5
+        aligner.mode = "local"
+        aln = aligner.align(self.region, q)[0]
+    except Exception:
+        result = "-" * len(self.region)
+        cache[q] = result
+        return result
+
+    out = []
+    for ref_c, q_c in zip(str(aln[0]), str(aln[1])):
+        if ref_c == "-":
+            continue
+        out.append(q_c if q_c != "-" else "-")
+
+    while len(out) < len(self.region):
+        out.append("-")
+
+    result = "".join(out[:len(self.region)])
+    cache[q] = result
+    return result
 
 
 # --------------------------------------------------------------------------
@@ -333,15 +485,18 @@ def _per_site_max(self, query_region: str) -> float:
     NOT require every site to be preserved — a variant that keeps any
     one functional site fires.
     """
-    q = query_region.upper()
-    if len(q) != len(self.region):
-        return 0.0
+    q = self._align_query(query_region)
 
     scores = []
     for cat_idx in self.cat_positions:
+        if q[cat_idx] == "-":
+            continue
+
         lo = max(0, cat_idx - self.window)
         hi = min(len(self.region), cat_idx + self.window + 1)
-        idx = list(range(lo, hi))
+        idx = [i for i in range(lo, hi) if q[i] != "-"]
+        if len(idx) < 3:
+            continue
 
         native_res = self.region[cat_idx]
         query_res = q[cat_idx]
@@ -366,8 +521,9 @@ def _per_site_max(self, query_region: str) -> float:
 
 def _motif_check(self, query_region: str, mechanism: str
                  ) -> tuple[bool, str]:
-    """Convenience wrapper — calls motif_passes with self's region."""
-    return motif_passes(query_region, self.region, self.cat_positions, mechanism)
+    """Alignment-aware motif check."""
+    q = self._align_query(query_region)
+    return motif_passes(q, self.region, self.cat_positions, mechanism)
 
 
 def _verdict(self, query_region: str, mechanism: str) -> dict:
@@ -393,6 +549,8 @@ def _verdict(self, query_region: str, mechanism: str) -> dict:
 # --------------------------------------------------------------------------
 # Attach to the class
 # --------------------------------------------------------------------------
+ContextFreeFingerprint._pattern_anchor = _pattern_anchor
+ContextFreeFingerprint._align_query = _align_query
 ContextFreeFingerprint._per_site_max = _per_site_max
 ContextFreeFingerprint._motif_check = _motif_check
 ContextFreeFingerprint.per_site_max = _per_site_max
@@ -408,4 +566,5 @@ __all__ = [
     "PER_SITE_THRESHOLD",
     "motif_passes",
     "identity_tolerance",
+    "_align_query",
 ]

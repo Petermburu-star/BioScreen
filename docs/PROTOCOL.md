@@ -184,3 +184,42 @@ weaker incumbent comparison. commec would be the stronger one.
 
 **Deferred to:** accelerator phase, session with the hardware and database
 bandwidth to run the comparison properly.
+
+---
+
+## 10. CF scope — what works and what requires a different tool
+
+ContextFreeFingerprint detects **variants of the toxins in the reference
+library**. This is the primary use case for DNA synthesis screening: a
+customer orders a modified version of a known controlled toxin.
+
+### What CF detects
+
+- **Same-length variants** (preserved EvoDiff: 39/39, aggressive: 0/39)
+- **Shifted sequences** (SEB + 5-aa prefix, still fires at 0.9727)
+- **Conservative substitutions** at functional positions (Y→F, E→D, R→K)
+- **Same-family variants** at ≥50% sequence identity (SEB → SED: 0.923)
+
+### What CF does not detect
+
+- **Cross-genus variants** at <40% identity (SEB → SPEG: 0.295). Verified
+  against three different alignment approaches — pairwise, MSA-HMM, Pfam
+  HMM — all fail. This is the fundamental limit of positional
+  fingerprinting without a curated functional-domain alignment.
+
+### Architectural reason
+
+CF scores at fixed positions in a reference coordinate frame. When two
+sequences share ≥50% identity, their functional positions are trivially
+aligned. At 25% identity, no automated aligner reliably identifies which
+residue in query Q corresponds to which residue in reference R — because
+most positions in the two sequences are simply unrelated.
+
+### Implication
+
+For cross-genus detection, use a **profile-based method** (HMMER, or a
+curated MSA with pre-aligned functional positions). CF is not that tool.
+
+This boundary is documented, not hidden. Any variant of a known toxin
+that a synthesis provider would care about is within CF's detection range.
+

@@ -1,0 +1,166 @@
+{
+  "experiment": "contextfree_specificity_length_unbiased",
+  "region_size": 150,
+  "n_safes_total": 25,
+  "n_safes_tested": 17,
+  "n_windows_tested": 9984,
+  "n_false_positives": 0,
+  "per_fingerprint": [
+    {
+      "acc": "P00588",
+      "name": "Diphtheria",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P01552",
+      "name": "SEB",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P02879",
+      "name": "Ricin",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P04958",
+      "name": "Tetanus",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P06886",
+      "name": "TSST-1",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P09385",
+      "name": "Shiga 2A",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0A0L2",
+      "name": "SEA",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0A0L3",
+      "name": "SED",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0A0L4",
+      "name": "SEE",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0A0L5",
+      "name": "SEC3",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0A0L6",
+      "name": "SEG",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0A0L7",
+      "name": "SEH",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0A0L8",
+      "name": "SEI",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0C0I3",
+      "name": "SPEC",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0C0I5",
+      "name": "SPEA",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0C0I6",
+      "name": "SPEG",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0C0I7",
+      "name": "SPEJ",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0DPI0",
+      "name": "Botulinum E",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P0DPI1",
+      "name": "Botulinum A",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P10149",
+      "name": "Shiga 1A",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P10844",
+      "name": "Botulinum B",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P11140",
+      "name": "Abrin",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P11439",
+      "name": "Pseudomonas ExoA",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P15917",
+      "name": "Anthrax LF",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P33183",
+      "name": "Modeccin",
+      "tested": 384,
+      "fires": 0
+    },
+    {
+      "acc": "P40136",
+      "name": "Anthrax EF",
+      "tested": 384,
+      "fires": 0
+    }
+  ]
+}
