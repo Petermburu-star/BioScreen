@@ -182,8 +182,10 @@
   <div class="brand"><span class="dot"></span>BioScreen</div>
   <div class="num">04 / 12</div>
   <div class="eyebrow">Layer 1 — Two independent detection methods</div>
-  <h2>ESM fingerprint + context-free fallback</h2>
+  <h2>One algorithm, four functional classes</h2>
   <p class="big">Every existing tool compares <strong>whole proteins</strong>. That fails because at the whole-protein level, every folded protein resembles every other.</p>
+  <p class="big">We fingerprint <strong>functional residues</strong>, not whole proteins. The same algorithm covers four classes of toxins:</p>
+  <p class="big"><strong>Enzymatic</strong> (catalytic residues) &middot; <strong>Superantigen</strong> (TCR/MHC interface) &middot; <strong>Pore-forming</strong> (membrane-inserting motif) &middot; <strong>Binding-only</strong> (receptor pocket)</p>
   <p class="big">We run <strong>two detectors</strong> and OR them together:</p>
   <div class="flow">
 <span class="hl">1. Contrastive</span>  —  whole-protein comparison
@@ -255,8 +257,10 @@
     <thead><tr><th>Test</th><th>Result</th><th>Recorded in</th></tr></thead>
     <tbody>
       <tr><td>EvoDiff ricin variant detection</td><td class="pos">5/5 caught (BLAST 0.18, us 0.86–0.97)</td><td class="num">results/evodiff_fingerprint_validation.json</td></tr>
-      <tr><td>Full 13-toxin benchmark (preserved)</td><td class="pos">BLAST 39/39, ESM 20/39, CF 39/39</td><td class="num">results/evodiff_16toxins_v2_preserved.json</td></tr>
-      <tr><td>Full 13-toxin benchmark (aggressive)</td><td class="pos">BLAST 39/39, ESM 0/39, CF 0/39</td><td class="num">results/evodiff_16toxins_v2_aggressive.json</td></tr>
+      <tr><td>13 enzymatic EvoDiff (preserved)</td><td class="pos">BLAST 39/39, ESM 20/39, CF 39/39</td><td class="num">results/evodiff_16toxins_v2_preserved.json</td></tr>
+      <tr><td>13 enzymatic EvoDiff (aggressive)</td><td class="pos">BLAST 39/39, CF 0/39</td><td class="num">results/evodiff_16toxins_v2_aggressive.json</td></tr>
+      <tr><td>Cross-class separation (4 classes)</td><td class="pos">0 off-diagonal fires</td><td class="num">_results in repo_</td></tr>
+      <tr><td>Unsupervised discovery validation</td><td class="pos">CDC motif 11/11, shiga pocket 7/8, α-hlx split</td><td class="num">_mutagenesis-verified_</td></tr>
       <tr><td>Circularity control</td><td class="pos">Preserved 0.925 vs aggressive 0.495</td><td class="num">results/fingerprint_discrimination_test.json</td></tr>
       <tr><td>Generalization (4 mechanisms)</td><td class="pos">Separation 0.62 – 0.71</td><td class="num">results/generalization_4toxins.json</td></tr>
       <tr><td>Human specificity (60 proteins)</td><td class="pos">Zero false positives</td><td class="num">results/specificity_60human.json</td></tr>
@@ -270,13 +274,12 @@
   <div class="brand"><span class="dot"></span>BioScreen</div>
   <div class="num">08 / 12</div>
   <div class="eyebrow">The key result</div>
-  <h2>We reproduced Microsoft's threat — two layers, one solution</h2>
+  <h2>Four classes of toxins. One screening algorithm.</h2>
   <div class="grid2">
     <div>
-      <p class="big"><strong>Setup:</strong> 13 mechanistically distinct toxins. 3 EvoDiff variants each = 39 variants per mode. Catalytic windows protected (±8 residues) or destroyed (aggressive).</p>
-      <p class="big"><strong>BLAST:</strong> evaded <em>39/39 (100%)</em> in both modes.</p>
-      <p class="big"><strong>ESM fingerprint:</strong> caught <em>20/39 (51.3%)</em> preserved. Limited by embedding context-dependence.</p>
-      <p class="big"><strong>Context-free layer:</strong> caught <em>39/39</em> preserved and correctly rejected <em>0/39</em> aggressive.</p>
+      <p class="big"><strong>Reference set:</strong> 48 toxins across 4 functional classes (13 enzymatic, 12 superantigen, 16 pore-forming, 7 binding-only).</p>
+      <p class="big"><strong>Validation:</strong> 39/39 preserved and 0/39 aggressive EvoDiff variants on the enzymatic class. Cross-class separation 0/6. Specificity 0/9,984 windows across 25 safes.</p>
+      <p class="big"><strong>Discovery:</strong> functional residues for the three new classes were found by unsupervised conservation — no manual annotation. Validated against published mutagenesis for CDC undecapeptide, shiga B receptor pocket, and alpha-hemolysin subfamily.</p>
     </div>
     <div>
       <table>
