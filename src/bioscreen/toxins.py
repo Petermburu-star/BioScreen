@@ -278,5 +278,101 @@ TOXIN_CONFIG = {
         "functional_class": "superantigen",
         "source": "unsupervised-conservation",
     },
+    "P0C0I3": {
+        "name": "SLO",
+        "region": (33, 571),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 47 positions, residues GEKDYPENWYYSQFGKQYTGEPYGRKTSSF...
+        "catalytic": [138, 149, 152, 161, 173, 174, 186, 187, 235, 239, 251, 258, 261, 281, 287, 297, 298, 301, 320, 328, 332, 334, 343, 344, 345, 350, 353, 355, 357, 364, 385, 394, 395, 426, 432, 433, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "P0C2E9": {
+        "name": "PFO",
+        "region": (28, 500),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 47 positions, residues GEKDYPENWYYSQFNKQYTGEPYGRKTSSF...
+        "catalytic": [67, 78, 81, 90, 102, 103, 115, 116, 164, 168, 180, 187, 190, 210, 216, 226, 227, 230, 249, 257, 261, 263, 272, 273, 274, 279, 282, 284, 286, 293, 314, 323, 324, 355, 361, 362, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "P13128": {
+        "name": "LLO",
+        "region": (24, 529),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 47 positions, residues GEKDYPENWYYSQFGKQYTGEPYGRKTSSF...
+        "catalytic": [90, 101, 104, 113, 125, 126, 138, 139, 188, 192, 205, 212, 215, 235, 241, 251, 252, 255, 274, 282, 286, 288, 297, 298, 299, 304, 307, 309, 311, 318, 339, 348, 349, 380, 386, 387, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "Q04IN8": {
+        "name": "Pneumolysin",
+        "region": (1, 471),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 47 positions, residues GEKDYPENWYYSQFGKQYTGEPYGRKTSSF...
+        "catalytic": [35, 46, 49, 58, 70, 71, 83, 84, 133, 137, 149, 156, 159, 179, 185, 195, 196, 199, 218, 226, 230, 232, 241, 242, 243, 248, 251, 253, 255, 262, 283, 292, 293, 324, 330, 331, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "P0C2J9": {
+        "name": "Pneumolysin-v",
+        "region": (1, 471),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 47 positions, residues GEKDYPENWYYSQFGKQYTGEPYGRKTSSF...
+        "catalytic": [35, 46, 49, 58, 70, 71, 83, 84, 133, 137, 149, 156, 159, 179, 185, 195, 196, 199, 218, 226, 230, 232, 241, 242, 243, 248, 251, 253, 255, 262, 283, 292, 293, 324, 330, 331, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "Q8P2T7": {
+        "name": "SLO-M18",
+        "region": (33, 571),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 47 positions, residues GEKDYPENWYYSQFGKQYTGEPYGRKTSSF...
+        "catalytic": [138, 149, 152, 161, 173, 174, 186, 187, 235, 239, 251, 258, 261, 281, 287, 297, 298, 301, 320, 328, 332, 334, 343, 344, 345, 350, 353, 355, 357, 364, 385, 394, 395, 426, 432, 433, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "C1KYD5": {
+        "name": "LLO-4b",
+        "region": (24, 529),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 47 positions, residues GEKDYPENWYYSQFGKQYTGEPYGRKTSSF...
+        "catalytic": [90, 101, 104, 113, 125, 126, 138, 139, 188, 192, 205, 212, 215, 235, 241, 251, 252, 255, 274, 282, 286, 288, 297, 298, 299, 304, 307, 309, 311, 318, 339, 348, 349, 380, 386, 387, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
+    "P19265": {
+        "name": "ILY",
+        "region": (0, 298),
+        # CDC pore-forming family. Functional positions from unsupervised
+        # conservation across 8 CDC members (7/8 for undecapeptide).
+        # Undecapeptide: ECTGLAWEWWR (membrane-inserting motif).
+        # 36 positions, residues GEHRGPADWQILDVGEEPLGGPYGRDGSSY...
+        "catalytic": [50, 61, 64, 73, 86, 87, 99, 100, 116, 120, 129, 136, 140, 163, 170, 181, 182, 185, 187, 195, 199, 201, 206, 207, 208, 213, 216, 237, 239, 246, 258, 267, 268, 291, 295, 296],
+        "mechanism": "pore-formation",
+        "functional_class": "pore_forming",
+        "source": "unsupervised-conservation",
+    },
 }
 
