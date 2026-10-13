@@ -462,5 +462,82 @@ TOXIN_CONFIG = {
         "functional_class": "pore_forming",
         "source": "unsupervised-conservation",
     },
+    "P69179": {
+        "name": "Stx1B",
+        "region": (20, 85),
+        # Shiga toxin B subunit — binding-only (no catalytic activity).
+        # Functional positions = receptor-binding pocket + conserved surface.
+        # 35 positions, residues KKDCGKEKYNDTFTK...
+        "catalytic": [21, 22, 42, 43, 46, 47, 49, 52, 53, 54, 57, 58, 59, 60, 62, 66, 67, 70, 72, 73, 74, 76, 81, 83, 85, 86, 88, 90, 92, 96, 99, 101, 102, 104, 107],
+        "mechanism": "receptor-binding",
+        "functional_class": "binding_only",
+        "source": "unsupervised-conservation",
+    },
+    "P09386": {
+        "name": "Stx2B",
+        "region": (19, 84),
+        # Shiga toxin B subunit — binding-only (no catalytic activity).
+        # Functional positions = receptor-binding pocket + conserved surface.
+        # 35 positions, residues KKDCGKEKYNDTFTK...
+        "catalytic": [20, 21, 39, 40, 43, 44, 46, 49, 50, 51, 54, 55, 56, 57, 59, 63, 64, 67, 69, 70, 71, 73, 78, 80, 82, 83, 85, 87, 89, 93, 96, 98, 99, 101, 104],
+        "mechanism": "receptor-binding",
+        "functional_class": "binding_only",
+        "source": "unsupervised-conservation",
+    },
+    "P69178": {
+        "name": "Stx1B-H30",
+        "region": (20, 85),
+        # Shiga toxin B subunit — binding-only (no catalytic activity).
+        # Functional positions = receptor-binding pocket + conserved surface.
+        # 35 positions, residues KKDCGKEKYNDTFTK...
+        "catalytic": [21, 22, 42, 43, 46, 47, 49, 52, 53, 54, 57, 58, 59, 60, 62, 66, 67, 70, 72, 73, 74, 76, 81, 83, 85, 86, 88, 90, 92, 96, 99, 101, 102, 104, 107],
+        "mechanism": "receptor-binding",
+        "functional_class": "binding_only",
+        "source": "unsupervised-conservation",
+    },
+    "A7UQX3": {
+        "name": "Stx2B-O157",
+        "region": (19, 84),
+        # Shiga toxin B subunit — binding-only (no catalytic activity).
+        # Functional positions = receptor-binding pocket + conserved surface.
+        # 35 positions, residues KKDCGKEKYNDTFTK...
+        "catalytic": [20, 21, 39, 40, 43, 44, 46, 49, 50, 51, 54, 55, 56, 57, 59, 63, 64, 67, 69, 70, 71, 73, 78, 80, 82, 83, 85, 87, 89, 93, 96, 98, 99, 101, 104],
+        "mechanism": "receptor-binding",
+        "functional_class": "binding_only",
+        "source": "unsupervised-conservation",
+    },
+    "Q83XK2": {
+        "name": "StxB-ec1",
+        "region": (20, 85),
+        # Shiga toxin B subunit — binding-only (no catalytic activity).
+        # Functional positions = receptor-binding pocket + conserved surface.
+        # 35 positions, residues KKDCGKEKYNDTFTK...
+        "catalytic": [21, 22, 42, 43, 46, 47, 49, 52, 53, 54, 57, 58, 59, 60, 62, 66, 67, 70, 72, 73, 74, 76, 81, 83, 85, 86, 88, 90, 92, 96, 99, 101, 102, 104, 107],
+        "mechanism": "receptor-binding",
+        "functional_class": "binding_only",
+        "source": "unsupervised-conservation",
+    },
+    "Q47644": {
+        "name": "StxB-ec2",
+        "region": (19, 84),
+        # Shiga toxin B subunit — binding-only (no catalytic activity).
+        # Functional positions = receptor-binding pocket + conserved surface.
+        # 35 positions, residues KKDCGKEKYNNTFTK...
+        "catalytic": [20, 21, 39, 40, 43, 44, 46, 49, 50, 51, 54, 55, 56, 57, 59, 63, 64, 67, 69, 70, 71, 73, 78, 80, 82, 83, 85, 87, 89, 93, 96, 98, 99, 101, 104],
+        "mechanism": "receptor-binding",
+        "functional_class": "binding_only",
+        "source": "unsupervised-conservation",
+    },
+    "Q07871": {
+        "name": "StxB-ec3",
+        "region": (19, 84),
+        # Shiga toxin B subunit — binding-only (no catalytic activity).
+        # Functional positions = receptor-binding pocket + conserved surface.
+        # 35 positions, residues KKDCGKEKYNDTFTK...
+        "catalytic": [20, 21, 39, 40, 43, 44, 46, 49, 50, 51, 54, 55, 56, 57, 59, 63, 64, 67, 69, 70, 71, 73, 78, 80, 82, 83, 85, 87, 89, 93, 96, 98, 99, 101, 104],
+        "mechanism": "receptor-binding",
+        "functional_class": "binding_only",
+        "source": "unsupervised-conservation",
+    },
 }
 
