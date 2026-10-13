@@ -122,12 +122,20 @@ def _region_seq(accession: str) -> str:
 # ----------------------------------------------------------------------
 # Chunk builder
 # ----------------------------------------------------------------------
-def _build_chunks(L: int, cat_rel: list, mode: str) -> list:
+def _build_chunks(L: int, cat_rel: list, mode: str, window: int = 8) -> list:
+    """Partition region into redesign chunks.
+
+    window: half-width of protection around each catalytic position.
+      8 (default) -> protects ±8, matches enzymatic benchmarks
+      6           -> protects ±6, matches fingerprint definition exactly
+      2 or 0      -> protects less, leaves more room for EvoDiff redesign
+                     on broad fingerprints (superantigen, pore-forming)
+    """
     if mode == "aggressive":
         return [(5, L - 5)] if L > 15 else []
     protected = set()
     for p in cat_rel:
-        for off in range(-8, 9):
+        for off in range(-window, window + 1):
             if 0 <= p + off < L:
                 protected.add(p + off)
     chunks = []
@@ -225,7 +233,7 @@ def generate_variants(
     cat_rel = [c - lo for c in cfg["catalytic"] if lo <= c < hi]
 
     if mode == "preserved":
-        chunks = _build_chunks(L, cat_rel, "preserved")
+        chunks = _build_chunks(L, cat_rel, "preserved", window=protection_window)
     else:
         chunks = _build_chunks(L, cat_rel, "aggressive")
 
@@ -303,6 +311,7 @@ def generate_variants_custom(
     embed_fn: Optional[Callable] = None,
     safe_pool: Optional[np.ndarray] = None,
     progress_cb: Optional[Callable[[str, float], None]] = None,
+    protection_window: int = 8,
 ) -> dict:
     """Generate variants of an arbitrary user-supplied protein."""
     seq = (sequence or "").strip().upper().replace(" ", "").replace("\n", "")
@@ -354,7 +363,7 @@ def generate_variants_custom(
         )
 
     if mode == "preserved":
-        chunks = _build_chunks(L, cat_rel, "preserved")
+        chunks = _build_chunks(L, cat_rel, "preserved", window=protection_window)
     else:
         chunks = _build_chunks(L, cat_rel, "aggressive")
 
