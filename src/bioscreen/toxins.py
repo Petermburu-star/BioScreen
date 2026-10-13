@@ -17,6 +17,7 @@ TOXIN_CONFIG = {
         # UniProt active site: 180(E). Verified session 5.
         "catalytic": [53, 180],
         "mechanism": "ADP-ribosylation",
+        "functional_class": "enzymatic",
     },
     "P02879": {
         "name": "Ricin",
@@ -25,6 +26,7 @@ TOXIN_CONFIG = {
         # UniProt active sites: 115, 158, 212, 215. Verified session 5.
         "catalytic": [115, 158, 212, 215],
         "mechanism": "N-glycosidase",
+        "functional_class": "enzymatic",
     },
     "P04958": {
         "name": "Tetanus",
@@ -33,6 +35,7 @@ TOXIN_CONFIG = {
         # UniProt: active site 234(E), binding 233(H), 237(H). Verified session 5.
         "catalytic": [233, 234, 237, 271, 375],
         "mechanism": "Zinc protease",
+        "functional_class": "enzymatic",
     },
     "P09385": {
         "name": "Shiga 2A",
@@ -41,6 +44,7 @@ TOXIN_CONFIG = {
         # UniProt active site: 189(E). Verified session 5.
         "catalytic": [189, 192],
         "mechanism": "rRNA depurination",
+        "functional_class": "enzymatic",
     },
     "P0DPI0": {
         "name": "Botulinum E",
@@ -49,6 +53,7 @@ TOXIN_CONFIG = {
         # UniProt: active site 224(E), binding 223(H), 227(H). Verified session 5.
         "catalytic": [223, 224, 227],
         "mechanism": "Zinc protease",
+        "functional_class": "enzymatic",
     },
     "P0DPI1": {
         "name": "Botulinum A",
@@ -56,6 +61,7 @@ TOXIN_CONFIG = {
         # Same HExxH positions as Botulinum E. Verified session 5.
         "catalytic": [223, 224, 227],
         "mechanism": "Zinc protease",
+        "functional_class": "enzymatic",
     },
     "P10149": {
         "name": "Shiga 1A",
@@ -64,6 +70,7 @@ TOXIN_CONFIG = {
         # UniProt active site: 189(E). Verified session 5.
         "catalytic": [189, 192],
         "mechanism": "rRNA depurination",
+        "functional_class": "enzymatic",
     },
     "P10844": {
         "name": "Botulinum B",
@@ -74,6 +81,7 @@ TOXIN_CONFIG = {
         # Verified session 5.
         "catalytic": [230, 231, 234, 268],
         "mechanism": "Zinc protease",
+        "functional_class": "enzymatic",
     },
     "P11140": {
         "name": "Abrin",
@@ -82,6 +90,7 @@ TOXIN_CONFIG = {
         # Config was already correct. Verified session 5.
         "catalytic": [74, 113, 164, 167],
         "mechanism": "N-glycosidase",
+        "functional_class": "enzymatic",
     },
     "P11439": {
         "name": "Pseudomonas ExoA",
@@ -91,6 +100,7 @@ TOXIN_CONFIG = {
         # E578 is UniProt-annotated as active site.
         "catalytic": [465, 495, 506, 578],
         "mechanism": "ADP-ribosylation",
+        "functional_class": "enzymatic",
     },
     "P15917": {
         "name": "Anthrax LF",
@@ -101,6 +111,7 @@ TOXIN_CONFIG = {
         # Verified session 5.
         "catalytic": [719, 720, 723, 768],
         "mechanism": "Zinc protease",
+        "functional_class": "enzymatic",
     },
     "P33183": {
         "name": "Modeccin",
@@ -113,6 +124,7 @@ TOXIN_CONFIG = {
         # glutamate-arginine. Do not guess without verification.
         "catalytic": [80, 123, 177, 180],
         "mechanism": "N-glycosidase",
+        "functional_class": "enzymatic",
         "unresolved": True,
     },
     "P40136": {
@@ -122,6 +134,59 @@ TOXIN_CONFIG = {
         # Verified session 5.
         "catalytic": [351],
         "mechanism": "Adenylate cyclase",
+        "functional_class": "enzymatic",
+    },
+    "P01552": {
+        "name": "SEB",
+        "region": (0, 266),
+        # Functional positions discovered by unsupervised conservation
+        # across 13 superantigen sequences (Clustal Omega alignment +
+        # surface-residue classification). Literature cross-check:
+        # TSST-1 Y144 (literature) = position 144 (matches).
+        # Residue pattern (mature numbering): Y-D-D-T-K-T-Q-E-D-R-Y-D-Y-N
+        "catalytic": [55, 106, 110, 146, 179, 183, 185, 186, 188, 192, 202, 226, 244, 247],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P06886": {
+        "name": "TSST-1",
+        "region": (0, 234),
+        # Functional positions discovered by unsupervised conservation
+        # across 13 superantigen sequences (Clustal Omega alignment +
+        # surface-residue classification). Literature cross-check:
+        # TSST-1 Y144 (literature) = position 144 (matches).
+        # Residue pattern (mature numbering): Y-D-D-T-K-T-Q-E-D-R-Y-D-Y-N
+        "catalytic": [53, 81, 85, 127, 161, 165, 167, 168, 170, 174, 184, 207, 215, 218],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0A0L5": {
+        "name": "SEC3",
+        "region": (0, 266),
+        # Functional positions discovered by unsupervised conservation
+        # across 13 superantigen sequences (Clustal Omega alignment +
+        # surface-residue classification). Literature cross-check:
+        # TSST-1 Y144 (literature) = position 144 (matches).
+        # Residue pattern (mature numbering): Y-D-D-T-K-T-Q-E-D-R-Y-D-Y-N
+        "catalytic": [55, 106, 110, 143, 178, 182, 184, 185, 187, 191, 201, 226, 244, 247],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
+    },
+    "P0C0I5": {
+        "name": "SPEA",
+        "region": (0, 235),
+        # Functional positions discovered by unsupervised conservation
+        # across 13 superantigen sequences (Clustal Omega alignment +
+        # surface-residue classification). Literature cross-check:
+        # TSST-1 Y144 (literature) = position 144 (matches).
+        # Residue pattern (mature numbering): Y-D-D-T-K-T-Q-E-D-R-Y-D-Y-N
+        "catalytic": [44, 93, 97, 118, 151, 155, 157, 158, 160, 164, 174, 198, 215, 218],
+        "mechanism": "superantigen-binding",
+        "functional_class": "superantigen",
+        "source": "unsupervised-conservation",
     },
 }
 

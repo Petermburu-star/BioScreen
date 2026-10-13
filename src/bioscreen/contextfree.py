@@ -266,11 +266,16 @@ class ContextFreeFingerprint:
 # Conservative substitutions are permitted (Y<->F, E<->D, R<->K, H<->K/R).
 
 MOTIFS = {
-    "N-glycosidase":     {"required": ["Y", "Y", "E", "R"]},
-    "Zinc protease":     {"required": ["H", "E", "H"]},
-    "rRNA depurination": {"required": ["E", "R"]},
-    "Adenylate cyclase": {"required": ["H"]},
-    "ADP-ribosylation":  {"required": None},   # variable active-site chemistry
+    # Enzymatic — catalytic residue patterns
+    "N-glycosidase":      {"required": ["Y", "Y", "E", "R"]},
+    "Zinc protease":      {"required": ["H", "E", "H"]},
+    "rRNA depurination":  {"required": ["E", "R"]},
+    "Adenylate cyclase":  {"required": ["H"]},
+    "ADP-ribosylation":   {"required": None},   # variable active-site chemistry
+    # Superantigen — binding interface. The functional positions ARE the
+    # signature; no additional motif gate needed. The per-site identity
+    # check (with BLOSUM tolerance) handles discrimination.
+    "superantigen-binding": {"required": None},
 }
 
 CONSERVATIVE_SUBSTITUTIONS = {
