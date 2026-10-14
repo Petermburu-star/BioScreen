@@ -1,0 +1,35 @@
+{
+  "accession": "P02879",
+  "seed": 31415,
+  "rows": [
+    {
+      "tag": "preserved#0",
+      "sha": "13ca91cb143ccc03",
+      "status": "CLEAR",
+      "expect": "FLAGGED",
+      "score": 0.3918,
+      "dec": {
+        "identity": 0.1667,
+        "blosum": 0.1818,
+        "aaindex": 0.0384,
+        "fp_identity": 0.0476,
+        "combined": 0.0143
+      }
+    },
+    {
+      "tag": "aggressive#0",
+      "sha": "eb96ca3424102e03",
+      "status": "CLEAR",
+      "expect": "CLEAR",
+      "score": 0.3777,
+      "dec": {
+        "identity": 0.25,
+        "blosum": 0.2045,
+        "aaindex": 0.0,
+        "fp_identity": 0.0476,
+        "combined": 0.0213
+      }
+    }
+  ],
+  "controls_valid": false
+}

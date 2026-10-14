@@ -1,0 +1,14 @@
+{
+  "kernel": "1.0.1",
+  "db": "1.0.0",
+  "attribution_gate": 0.6,
+  "demo_bank": 10,
+  "t1_diagnosis": "see stdout section A",
+  "verified_real_variants": 36,
+  "rejected_candidates": [
+    "$.results.P33183.result.variants[0].sequence",
+    "$.results.P33183.result.variants[1].sequence",
+    "$.results.P33183.result.variants[2].sequence"
+  ],
+  "smoke_all_green": true
+}

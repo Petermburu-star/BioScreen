@@ -1,0 +1,97 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>BioScreen — Offline Biosecurity Screening</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Segoe UI,system-ui,sans-serif;background:#0f1420;color:#e8ecf3;padding:24px}
+.wrap{max-width:980px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+h1{font-size:22px}h1 span{color:#4da3ff}
+.badge{font-size:12px;color:#9fb0c8;border:1px solid #2a3а50;border-radius:12px;padding:3px 10px}
+.sub{color:#8a99b0;font-size:13px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:16px}
+button.demo{background:#1a2334;border:1px solid #2c3a55;color:#d7e1f2;padding:9px 11px;
+ border-radius:8px;cursor:pointer;font-size:12.5px;text-align:left}
+button.demo:hover{border-color:#4da3ff}
+textarea{width:100%;height:110px;background:#0b101c;border:1px solid #2c3a55;border-radius:8px;
+ color:#e8ecf3;padding:10px;font-family:Consolas,monospace;font-size:12px;resize:vertical}
+.row{display:flex;gap:10px;margin-top:10px;align-items:center}
+.btn{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:10px 22px;
+ font-size:14px;cursor:pointer;font-weight:600}
+.btn:disabled{opacity:.5}
+#err{color:#ff8080;font-size:13px;min-height:18px}
+.card{margin-top:18px;border-radius:12px;padding:18px;display:none}
+.card.F{background:#2a1215;border:1px solid #7f1d1d}
+.card.C{background:#0f2417;border:1px solid #14532d}
+.vstatus{font-size:26px;font-weight:800;letter-spacing:1px}
+.card.F .vstatus{color:#ff6b6b}.card.C .vstatus{color:#4ade80}
+.vmeta{color:#9fb0c8;font-size:13px;margin:4px 0 12px}
+.attrib{background:#00000033;border-radius:8px;padding:10px 12px;font-size:13.5px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #223049}
+th{color:#8a99b0;font-weight:600}
+.ev{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.ev div{background:#141c2e;border:1px solid #24314d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#9fb0c8}
+.ev b{display:block;color:#e8ecf3;font-size:17px;margin-bottom:2px}
+details{margin-top:16px;color:#9fb0c8;font-size:13px}
+details summary{cursor:pointer;color:#c9d4e5}
+details li{margin:6px 0 6px 18px}
+</style></head><body><div class="wrap">
+<header><h1>Bio<span>Screen</span></h1><div class="badge">OFFLINE · db <span id="dbv"></span></div></header>
+<div class="sub">Functional biosecurity screening · detects toxin motifs under AI redesign · runs entirely on this laptop, no internet</div>
+<div id="demos" class="grid"></div>
+<textarea id="seq" placeholder="Paste a protein sequence (amino acids, min 50 residues) — or click a demo button above"></textarea>
+<div class="row"><button class="btn" id="go" onclick="run()">Screen sequence</button>
+<span id="err"></span></div>
+<div id="card" class="card">
+ <div class="vstatus" id="vstatus"></div>
+ <div class="vmeta" id="vmeta"></div>
+ <div class="attrib" id="attrib"></div>
+ <table><thead><tr><th>Top fingerprint matches</th><th>Class</th><th>Score</th></tr></thead>
+ <tbody id="top5"></tbody></table>
+</div>
+<div class="ev">
+ <div><b>36 / 36</b>real AI-designed variants caught (motif preserved, scaffold redesigned)</div>
+ <div><b>0 FP</b>false positives across ~15,000 safe-protein windows</div>
+ <div><b>56 / 62</b>single catalytic substitutions caught (exact adversarial map)</div>
+ <div><b>&lt; 0.1 s</b>per screen · 47 fingerprints · 4 toxin classes</div>
+</div>
+<details><summary>Scope &amp; limitations (measured, not asserted)</summary><ul>
+<li>Sequence-level detection: fold-blind by design — appropriate for DNA-synthesis screening, not functional confirmation.</li>
+<li>Documented evasion boundary: full conservative substitution of the catalytic core (typically catalysis-breaking). Single-substitution map included in evidence.</li>
+<li>Cross-genus variants &lt; 40% identity: out of scope (positional fingerprinting limit).</li>
+<li>Modeccin excluded — catalytic config could not be literature-verified.</li>
+<li>Not wet-lab validated; not regulatory-grade. Enzymatic layer verified against UniProt feature annotations.</li>
+</ul></details>
+</div>
+<script>
+let BANK=[];
+fetch('/api/demo').then(r=>r.json()).then(d=>{BANK=d;
+ const g=document.getElementById('demos');
+ d.forEach(b=>{const el=document.createElement('button');el.className='demo';
+  el.textContent=b.label+(b.expected==='FLAGGED'?'  ⚑':'  ✓');
+  el.onclick=()=>{document.getElementById('seq').value='__demo__:'+b.id;
+   document.getElementById('err').textContent='';run();};g.appendChild(el);});});
+fetch('/api/meta').then(r=>r.json()).then(m=>document.getElementById('dbv').textContent=m.db_version);
+async function run(){
+ const err=document.getElementById('err'),card=document.getElementById('card');
+ err.textContent='';const raw=document.getElementById('seq').value.trim();
+ if(!raw){err.textContent='Paste a sequence or pick a demo button.';return;}
+ const body=raw.startsWith('__demo__:')?{demo_id:raw.slice(9)}:{sequence:raw};
+ document.getElementById('go').disabled=true;
+ try{const r=await fetch('/api/screen',{method:'POST',
+  headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const v=await r.json();
+  if(!r.ok){err.textContent=v.error||'error';card.style.display='none';return;}
+  card.style.display='block';card.className='card '+(v.status==='FLAGGED'?'F':'C');
+  document.getElementById('vstatus').textContent=
+   v.status==='FLAGGED'?'⚑ FLAGGED':'✓ CLEAR';
+  document.getElementById('vmeta').textContent=
+   `top score ${v.top_score} · threshold ${v.threshold} · ${v.query_len} aa · ${v.seconds}s · ${v.n_scanned} fingerprints scanned`;
+  const a=document.getElementById('attrib');
+  a.textContent=v.best_match?
+   `Matched: ${v.best_match.names.join(' / ')} (${v.best_match.accession}) — ${v.best_match.class} · catalytic identity ${v.best_match.catalytic_identity}, window identity ${v.best_match.window_identity} · ${v.best_match.verification}`:
+   'No catalytic-consistent match above the attribution gate — no toxin family claimed.';
+  document.getElementById('top5').innerHTML=v.top5.map(t=>
+   `<tr><td>${t.name} <span style="color:#667">(${t.accession})</span></td><td>${t.class}</td><td>${t.score}</td></tr>`).join('');
+ }catch(e){err.textContent='network error: '+e;}
+ document.getElementById('go').disabled=false;}
+</script></body></html>

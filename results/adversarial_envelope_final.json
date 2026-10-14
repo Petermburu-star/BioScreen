@@ -1,0 +1,716 @@
+{
+  "threshold": 0.6,
+  "draws": 25,
+  "seed": 20261013,
+  "axisA_window_only": {
+    "P00588": {
+      "pool": 23,
+      "k90": 14,
+      "k50": 14,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 1.0,
+        "12": 1.0,
+        "13": 1.0,
+        "14": 1.0
+      }
+    },
+    "P02879": {
+      "pool": 37,
+      "k90": 14,
+      "k50": 14,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 1.0,
+        "12": 1.0,
+        "13": 1.0,
+        "14": 1.0
+      }
+    },
+    "P04958": {
+      "pool": 36,
+      "k90": 14,
+      "k50": 14,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 1.0,
+        "12": 1.0,
+        "13": 1.0,
+        "14": 1.0
+      }
+    },
+    "P09385": {
+      "pool": 14,
+      "k90": 8,
+      "k50": 8,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 0.24,
+        "10": 0.0,
+        "11": 0.0,
+        "12": 0.0,
+        "13": 0.0,
+        "14": 0.0
+      }
+    },
+    "P0DPI0": {
+      "pool": 13,
+      "k90": 10,
+      "k50": 10,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 0.16,
+        "12": 0.0,
+        "13": 0.0
+      }
+    },
+    "P0DPI1": {
+      "pool": 13,
+      "k90": 10,
+      "k50": 10,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 0.04,
+        "12": 0.0,
+        "13": 0.0
+      }
+    },
+    "P10149": {
+      "pool": 14,
+      "k90": 8,
+      "k50": 8,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 0.28,
+        "10": 0.0,
+        "11": 0.0,
+        "12": 0.0,
+        "13": 0.0,
+        "14": 0.0
+      }
+    },
+    "P10844": {
+      "pool": 25,
+      "k90": 14,
+      "k50": 14,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 1.0,
+        "12": 1.0,
+        "13": 1.0,
+        "14": 1.0
+      }
+    },
+    "P11140": {
+      "pool": 37,
+      "k90": 14,
+      "k50": 14,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 1.0,
+        "12": 1.0,
+        "13": 1.0,
+        "14": 1.0
+      }
+    },
+    "P11439": {
+      "pool": 43,
+      "k90": 14,
+      "k50": 14,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 1.0,
+        "12": 1.0,
+        "13": 1.0,
+        "14": 1.0
+      }
+    },
+    "P15917": {
+      "pool": 26,
+      "k90": 14,
+      "k50": 14,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "11": 1.0,
+        "12": 1.0,
+        "13": 1.0,
+        "14": 1.0
+      }
+    },
+    "P40136": {
+      "pool": 12,
+      "k90": 8,
+      "k50": 9,
+      "curve": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 0.52,
+        "10": 0.0,
+        "11": 0.0,
+        "12": 0.0
+      }
+    }
+  },
+  "axisB_single_catalytic_exact": {
+    "P00588": [
+      {
+        "pos_1based": 52,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.4754,
+        "flagged": false
+      },
+      {
+        "pos_1based": 52,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.5514,
+        "flagged": false
+      },
+      {
+        "pos_1based": 179,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.747,
+        "flagged": true
+      }
+    ],
+    "P02879": [
+      {
+        "pos_1based": 114,
+        "wild": "Y",
+        "mut": "F",
+        "combined": 0.8662,
+        "flagged": true
+      },
+      {
+        "pos_1based": 114,
+        "wild": "Y",
+        "mut": "W",
+        "combined": 0.8235,
+        "flagged": true
+      },
+      {
+        "pos_1based": 157,
+        "wild": "Y",
+        "mut": "F",
+        "combined": 0.8662,
+        "flagged": true
+      },
+      {
+        "pos_1based": 157,
+        "wild": "Y",
+        "mut": "W",
+        "combined": 0.8235,
+        "flagged": true
+      },
+      {
+        "pos_1based": 211,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.8353,
+        "flagged": true
+      },
+      {
+        "pos_1based": 214,
+        "wild": "R",
+        "mut": "K",
+        "combined": 0.8366,
+        "flagged": true
+      },
+      {
+        "pos_1based": 214,
+        "wild": "R",
+        "mut": "H",
+        "combined": 0.7477,
+        "flagged": true
+      }
+    ],
+    "P04958": [
+      {
+        "pos_1based": 232,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.7497,
+        "flagged": true
+      },
+      {
+        "pos_1based": 232,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.7835,
+        "flagged": true
+      },
+      {
+        "pos_1based": 233,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.8698,
+        "flagged": true
+      },
+      {
+        "pos_1based": 236,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.7497,
+        "flagged": true
+      },
+      {
+        "pos_1based": 236,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.7835,
+        "flagged": true
+      },
+      {
+        "pos_1based": 270,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.8698,
+        "flagged": true
+      },
+      {
+        "pos_1based": 374,
+        "wild": "Y",
+        "mut": "F",
+        "combined": 0.895,
+        "flagged": true
+      },
+      {
+        "pos_1based": 374,
+        "wild": "Y",
+        "mut": "W",
+        "combined": 0.8603,
+        "flagged": true
+      }
+    ],
+    "P09385": [
+      {
+        "pos_1based": 188,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.6955,
+        "flagged": true
+      },
+      {
+        "pos_1based": 191,
+        "wild": "R",
+        "mut": "K",
+        "combined": 0.7035,
+        "flagged": true
+      },
+      {
+        "pos_1based": 191,
+        "wild": "R",
+        "mut": "H",
+        "combined": 0.5435,
+        "flagged": false
+      }
+    ],
+    "P0DPI0": [
+      {
+        "pos_1based": 222,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.62,
+        "flagged": true
+      },
+      {
+        "pos_1based": 222,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.6735,
+        "flagged": true
+      },
+      {
+        "pos_1based": 223,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.81,
+        "flagged": true
+      },
+      {
+        "pos_1based": 226,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.62,
+        "flagged": true
+      },
+      {
+        "pos_1based": 226,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.6735,
+        "flagged": true
+      }
+    ],
+    "P0DPI1": [
+      {
+        "pos_1based": 222,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.62,
+        "flagged": true
+      },
+      {
+        "pos_1based": 222,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.6735,
+        "flagged": true
+      },
+      {
+        "pos_1based": 223,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.81,
+        "flagged": true
+      },
+      {
+        "pos_1based": 226,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.62,
+        "flagged": true
+      },
+      {
+        "pos_1based": 226,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.6735,
+        "flagged": true
+      }
+    ],
+    "P10149": [
+      {
+        "pos_1based": 188,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.6955,
+        "flagged": true
+      },
+      {
+        "pos_1based": 191,
+        "wild": "R",
+        "mut": "K",
+        "combined": 0.7035,
+        "flagged": true
+      },
+      {
+        "pos_1based": 191,
+        "wild": "R",
+        "mut": "H",
+        "combined": 0.5435,
+        "flagged": false
+      }
+    ],
+    "P10844": [
+      {
+        "pos_1based": 229,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.6956,
+        "flagged": true
+      },
+      {
+        "pos_1based": 229,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.7367,
+        "flagged": true
+      },
+      {
+        "pos_1based": 230,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.8428,
+        "flagged": true
+      },
+      {
+        "pos_1based": 233,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.6956,
+        "flagged": true
+      },
+      {
+        "pos_1based": 233,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.7367,
+        "flagged": true
+      },
+      {
+        "pos_1based": 267,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.8428,
+        "flagged": true
+      }
+    ],
+    "P11140": [
+      {
+        "pos_1based": 73,
+        "wild": "Y",
+        "mut": "F",
+        "combined": 0.866,
+        "flagged": true
+      },
+      {
+        "pos_1based": 73,
+        "wild": "Y",
+        "mut": "W",
+        "combined": 0.8234,
+        "flagged": true
+      },
+      {
+        "pos_1based": 112,
+        "wild": "Y",
+        "mut": "F",
+        "combined": 0.866,
+        "flagged": true
+      },
+      {
+        "pos_1based": 112,
+        "wild": "Y",
+        "mut": "W",
+        "combined": 0.8234,
+        "flagged": true
+      },
+      {
+        "pos_1based": 163,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.8352,
+        "flagged": true
+      },
+      {
+        "pos_1based": 166,
+        "wild": "R",
+        "mut": "K",
+        "combined": 0.8366,
+        "flagged": true
+      },
+      {
+        "pos_1based": 166,
+        "wild": "R",
+        "mut": "H",
+        "combined": 0.7479,
+        "flagged": true
+      }
+    ],
+    "P11439": [
+      {
+        "pos_1based": 464,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.7073,
+        "flagged": true
+      },
+      {
+        "pos_1based": 464,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.7495,
+        "flagged": true
+      },
+      {
+        "pos_1based": 494,
+        "wild": "Y",
+        "mut": "F",
+        "combined": 0.8879,
+        "flagged": true
+      },
+      {
+        "pos_1based": 494,
+        "wild": "Y",
+        "mut": "W",
+        "combined": 0.8443,
+        "flagged": true
+      },
+      {
+        "pos_1based": 505,
+        "wild": "Y",
+        "mut": "F",
+        "combined": 0.8879,
+        "flagged": true
+      },
+      {
+        "pos_1based": 505,
+        "wild": "Y",
+        "mut": "W",
+        "combined": 0.8443,
+        "flagged": true
+      },
+      {
+        "pos_1based": 577,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.8563,
+        "flagged": true
+      }
+    ],
+    "P15917": [
+      {
+        "pos_1based": 718,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.6964,
+        "flagged": true
+      },
+      {
+        "pos_1based": 718,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.738,
+        "flagged": true
+      },
+      {
+        "pos_1based": 719,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.843,
+        "flagged": true
+      },
+      {
+        "pos_1based": 722,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.6964,
+        "flagged": true
+      },
+      {
+        "pos_1based": 722,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.738,
+        "flagged": true
+      },
+      {
+        "pos_1based": 767,
+        "wild": "E",
+        "mut": "D",
+        "combined": 0.843,
+        "flagged": true
+      }
+    ],
+    "P40136": [
+      {
+        "pos_1based": 350,
+        "wild": "H",
+        "mut": "K",
+        "combined": 0.1188,
+        "flagged": false
+      },
+      {
+        "pos_1based": 350,
+        "wild": "H",
+        "mut": "R",
+        "combined": 0.2463,
+        "flagged": false
+      }
+    ]
+  },
+  "prior_result": "full-core conservative substitution: 0/12 detected (Cell 6)"
+}
