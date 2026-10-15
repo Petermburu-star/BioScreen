@@ -8,6 +8,13 @@ from flask import Flask, request, jsonify, render_template_string
 from bioscreen.kernel import screen_sequence, load_db
 
 BANK = json.loads((ROOT / "data/product_db/demo_bank.json").read_text())
+_local = ROOT / "data/local_archive/demo_bank_sequences_local.json"
+if _local.exists():
+    _seqs = json.loads(_local.read_text())
+    for _b in BANK:
+        if _b.get("sequence") is None and _b["id"] in _seqs:
+            _b["sequence"] = _seqs[_b["id"]]
+
 HTML = (ROOT / "src/bioscreen/product_ui/index.html").read_text(encoding="utf-8")
 app = Flask(__name__)
 

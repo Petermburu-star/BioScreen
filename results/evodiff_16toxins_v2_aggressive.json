@@ -1,0 +1,3954 @@
+{
+ "experiment": "evodiff_full_benchmark_v2",
+ "date": "2026-10-12",
+ "mode": "aggressive",
+ "n_toxins": 13,
+ "n_variants": 39,
+ "blast_evaded": 39,
+ "fingerprint_caught": 0,
+ "note": "Computed with corrected TOXIN_CONFIG (session 5, commit 927154c). Supersedes evodiff_16toxins_full.json.",
+ "results": {
+  "P00588": {
+   "accession": "P00588",
+   "name": "Diphtheria",
+   "elapsed_seconds": 89.5,
+   "result": {
+    "source": "curated",
+    "accession": "P00588",
+    "name": "Diphtheria",
+    "mode": "aggressive",
+    "region_length": 193,
+    "n_catalytic": 2,
+    "chunks": [
+     [
+      5,
+      188
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:45417123b4d41ae9",
+      "length": 193,
+      "identity": 0.1554,
+      "blast": 0.0253,
+      "blast_evaded": true,
+      "fingerprint": 0.3061,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.49303472538789117
+       ],
+       [
+        "P33183",
+        0.4820906214597749
+       ],
+       [
+        "P11140",
+        0.47534825743698494
+       ],
+       [
+        "P09385",
+        0.4422516187032064
+       ],
+       [
+        "P10149",
+        0.418368665377299
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:321fb915d3de809e",
+      "length": 193,
+      "identity": 0.2332,
+      "blast": 0.0314,
+      "blast_evaded": true,
+      "fingerprint": 0.3971,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.6031618515650431
+       ],
+       [
+        "P10149",
+        0.5417067289352416
+       ],
+       [
+        "P33183",
+        0.5018798025642953
+       ],
+       [
+        "P04958",
+        0.4496811429659526
+       ],
+       [
+        "P11439",
+        0.4373290100876166
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:60eb71e23df0e573",
+      "length": 193,
+      "identity": 0.2021,
+      "blast": 0.0273,
+      "blast_evaded": true,
+      "fingerprint": 0.3382,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.5510625679318498
+       ],
+       [
+        "P09385",
+        0.537594723701477
+       ],
+       [
+        "P40136",
+        0.519826685388883
+       ],
+       [
+        "P02879",
+        0.4722992167240236
+       ],
+       [
+        "P33183",
+        0.47160220436933564
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 2502.61,
+      "input": "P00588",
+      "output": "",
+      "details": {
+       "region_length": 193,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 2 catalytic residues",
+      "output": "1 chunks: [(5, 188)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        53,
+        180
+       ],
+       "chunks": [
+        [
+         5,
+         188
+        ]
+       ],
+       "total_redesign_residues": 183
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 1798.26,
+      "input": "193 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        193,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "26 residues",
+      "output": "shape (26, 1152)",
+      "details": {
+       "n_fingerprint_residues": 26
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 26846.34,
+      "input": "redesign [5:188]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 188,
+       "chunk_length": 183,
+       "output_length": 193
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 1757.44,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 15.54,
+       "blast": 0.0253,
+       "fingerprint": 0.3061,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.025, FP=0.306",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 25877.67,
+      "input": "redesign [5:188]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 188,
+       "chunk_length": 183,
+       "output_length": 193
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 1734.4,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 23.32,
+       "blast": 0.0314,
+       "fingerprint": 0.3971,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.031, FP=0.397",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 27204.42,
+      "input": "redesign [5:188]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 188,
+       "chunk_length": 183,
+       "output_length": 193
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 1789.2,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 20.21,
+       "blast": 0.0273,
+       "fingerprint": 0.3382,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.027, FP=0.338",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P02879": {
+   "accession": "P02879",
+   "name": "Ricin",
+   "elapsed_seconds": 177.1,
+   "result": {
+    "source": "curated",
+    "accession": "P02879",
+    "name": "Ricin",
+    "mode": "aggressive",
+    "region_length": 267,
+    "n_catalytic": 4,
+    "chunks": [
+     [
+      5,
+      262
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:06df42b0c42208da",
+      "length": 267,
+      "identity": 0.0262,
+      "blast": 0.0219,
+      "blast_evaded": true,
+      "fingerprint": 0.4431,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.5265378137914145
+       ],
+       [
+        "P33183",
+        0.5161155927471999
+       ],
+       [
+        "P09385",
+        0.45105533599853515
+       ],
+       [
+        "P02879",
+        0.44313750615934044
+       ],
+       [
+        "P10844",
+        0.4221107219827586
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:dca01236e4a48853",
+      "length": 267,
+      "identity": 0.03,
+      "blast": 0.0306,
+      "blast_evaded": true,
+      "fingerprint": 0.4151,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.4408000409603119
+       ],
+       [
+        "P11439",
+        0.42540330667884985
+       ],
+       [
+        "P02879",
+        0.41509779633545296
+       ],
+       [
+        "P10149",
+        0.40579995314280193
+       ],
+       [
+        "P11140",
+        0.3855778822084753
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:7e42241f10c97881",
+      "length": 267,
+      "identity": 0.0337,
+      "blast": 0.027,
+      "blast_evaded": true,
+      "fingerprint": 0.4126,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.4747524465002665
+       ],
+       [
+        "P10149",
+        0.4658607482910156
+       ],
+       [
+        "P09385",
+        0.4489847183227539
+       ],
+       [
+        "P11439",
+        0.418367794581822
+       ],
+       [
+        "P02879",
+        0.4126448544060312
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 2.2,
+      "input": "P02879",
+      "output": "",
+      "details": {
+       "region_length": 267,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 4 catalytic residues",
+      "output": "1 chunks: [(5, 262)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        80,
+        123,
+        177,
+        180
+       ],
+       "chunks": [
+        [
+         5,
+         262
+        ]
+       ],
+       "total_redesign_residues": 257
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 2069.67,
+      "input": "267 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        267,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "42 residues",
+      "output": "shape (42, 1152)",
+      "details": {
+       "n_fingerprint_residues": 42
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 57514.37,
+      "input": "redesign [5:262]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 262,
+       "chunk_length": 257,
+       "output_length": 267
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 2493.78,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.62,
+       "blast": 0.0219,
+       "fingerprint": 0.4431,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.022, FP=0.443",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 58693.57,
+      "input": "redesign [5:262]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 262,
+       "chunk_length": 257,
+       "output_length": 267
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3440.82,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.0,
+       "blast": 0.0306,
+       "fingerprint": 0.4151,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.031, FP=0.415",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 50557.36,
+      "input": "redesign [5:262]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 262,
+       "chunk_length": 257,
+       "output_length": 267
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 2369.52,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.37,
+       "blast": 0.027,
+       "fingerprint": 0.4126,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.027, FP=0.413",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P04958": {
+   "accession": "P04958",
+   "name": "Tetanus",
+   "elapsed_seconds": 478.0,
+   "result": {
+    "source": "curated",
+    "accession": "P04958",
+    "name": "Tetanus",
+    "mode": "aggressive",
+    "region_length": 450,
+    "n_catalytic": 5,
+    "chunks": [
+     [
+      5,
+      445
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:bf71f251c040b225",
+      "length": 450,
+      "identity": 0.0222,
+      "blast": 0.0164,
+      "blast_evaded": true,
+      "fingerprint": 0.445,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.606602390607198
+       ],
+       [
+        "P11140",
+        0.5623584113469938
+       ],
+       [
+        "P33183",
+        0.4917946734079501
+       ],
+       [
+        "P10149",
+        0.4846753120422363
+       ],
+       [
+        "P11439",
+        0.4837034429822649
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:0eafad46ce70ce3f",
+      "length": 450,
+      "identity": 0.0267,
+      "blast": 0.0143,
+      "blast_evaded": true,
+      "fingerprint": 0.3726,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.5298486103614172
+       ],
+       [
+        "P02879",
+        0.5150389627712529
+       ],
+       [
+        "P33183",
+        0.45614893843487997
+       ],
+       [
+        "P11140",
+        0.4426309539050591
+       ],
+       [
+        "P10149",
+        0.4156421899795532
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:3bf867dd2db2e364",
+      "length": 450,
+      "identity": 0.0244,
+      "blast": 0.016,
+      "blast_evaded": true,
+      "fingerprint": 0.403,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P33183",
+        0.5930702366480013
+       ],
+       [
+        "P02879",
+        0.5218654769222911
+       ],
+       [
+        "P11140",
+        0.40373295690955185
+       ],
+       [
+        "P04958",
+        0.40302804538181847
+       ],
+       [
+        "P10844",
+        0.4014448359094817
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 1.74,
+      "input": "P04958",
+      "output": "",
+      "details": {
+       "region_length": 450,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 5 catalytic residues",
+      "output": "1 chunks: [(5, 445)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        233,
+        234,
+        237,
+        271,
+        375
+       ],
+       "chunks": [
+        [
+         5,
+         445
+        ]
+       ],
+       "total_redesign_residues": 440
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 4261.94,
+      "input": "450 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        450,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "43 residues",
+      "output": "shape (43, 1152)",
+      "details": {
+       "n_fingerprint_residues": 43
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 133658.3,
+      "input": "redesign [5:445]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 445,
+       "chunk_length": 440,
+       "output_length": 450
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4642.78,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.22,
+       "blast": 0.0164,
+       "fingerprint": 0.445,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.016, FP=0.445",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 161916.07,
+      "input": "redesign [5:445]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 445,
+       "chunk_length": 440,
+       "output_length": 450
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4635.87,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.67,
+       "blast": 0.0143,
+       "fingerprint": 0.3726,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.014, FP=0.373",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 163958.62,
+      "input": "redesign [5:445]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 445,
+       "chunk_length": 440,
+       "output_length": 450
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4928.07,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.44,
+       "blast": 0.016,
+       "fingerprint": 0.403,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.016, FP=0.403",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P09385": {
+   "accession": "P09385",
+   "name": "Shiga 2A",
+   "elapsed_seconds": 250.9,
+   "result": {
+    "source": "curated",
+    "accession": "P09385",
+    "name": "Shiga 2A",
+    "mode": "aggressive",
+    "region_length": 319,
+    "n_catalytic": 2,
+    "chunks": [
+     [
+      5,
+      314
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:23156e9f180971e8",
+      "length": 319,
+      "identity": 0.0313,
+      "blast": 0.0283,
+      "blast_evaded": true,
+      "fingerprint": 0.3359,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.5412983397642772
+       ],
+       [
+        "P02879",
+        0.4412880757959877
+       ],
+       [
+        "P33183",
+        0.42419129028552915
+       ],
+       [
+        "P11140",
+        0.41634480400783264
+       ],
+       [
+        "P00588",
+        0.4080987548828125
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:abec43d82b84a2ee",
+      "length": 319,
+      "identity": 0.0251,
+      "blast": 0.0228,
+      "blast_evaded": true,
+      "fingerprint": 0.3346,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P10149",
+        0.5308502912521362
+       ],
+       [
+        "P40136",
+        0.5181797295808792
+       ],
+       [
+        "P11140",
+        0.4800818344441856
+       ],
+       [
+        "P02879",
+        0.41491333885890685
+       ],
+       [
+        "P11439",
+        0.41368655404266047
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:5cb89b5dffe7235b",
+      "length": 319,
+      "identity": 0.0282,
+      "blast": 0.0203,
+      "blast_evaded": true,
+      "fingerprint": 0.4484,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.613407293955485
+       ],
+       [
+        "P00588",
+        0.4722074747085571
+       ],
+       [
+        "P02879",
+        0.4641762797425433
+       ],
+       [
+        "P09385",
+        0.44843419392903644
+       ],
+       [
+        "P33183",
+        0.4451749382949457
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 3.31,
+      "input": "P09385",
+      "output": "",
+      "details": {
+       "region_length": 319,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 2 catalytic residues",
+      "output": "1 chunks: [(5, 314)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        189,
+        192
+       ],
+       "chunks": [
+        [
+         5,
+         314
+        ]
+       ],
+       "total_redesign_residues": 309
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 2908.78,
+      "input": "319 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        319,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "16 residues",
+      "output": "shape (16, 1152)",
+      "details": {
+       "n_fingerprint_residues": 16
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 73397.65,
+      "input": "redesign [5:314]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 314,
+       "chunk_length": 309,
+       "output_length": 319
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3207.94,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.13,
+       "blast": 0.0283,
+       "fingerprint": 0.3359,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.028, FP=0.336",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 74691.63,
+      "input": "redesign [5:314]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 314,
+       "chunk_length": 309,
+       "output_length": 319
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3941.64,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.51,
+       "blast": 0.0228,
+       "fingerprint": 0.3346,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.023, FP=0.335",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 87907.89,
+      "input": "redesign [5:314]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 314,
+       "chunk_length": 309,
+       "output_length": 319
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4802.45,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.82,
+       "blast": 0.0203,
+       "fingerprint": 0.4484,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.020, FP=0.448",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P0DPI0": {
+   "accession": "P0DPI0",
+   "name": "Botulinum E",
+   "elapsed_seconds": 456.9,
+   "result": {
+    "source": "curated",
+    "accession": "P0DPI0",
+    "name": "Botulinum E",
+    "mode": "aggressive",
+    "region_length": 435,
+    "n_catalytic": 3,
+    "chunks": [
+     [
+      5,
+      430
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:116bdb7628c2a60a",
+      "length": 435,
+      "identity": 0.023,
+      "blast": 0.0201,
+      "blast_evaded": true,
+      "fingerprint": 0.3519,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P09385",
+        0.5287021994590759
+       ],
+       [
+        "P02879",
+        0.4945850604917945
+       ],
+       [
+        "P11439",
+        0.4879726341792515
+       ],
+       [
+        "P11140",
+        0.46824771601979326
+       ],
+       [
+        "P10844",
+        0.4477026051488416
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:0c332557d88d4490",
+      "length": 435,
+      "identity": 0.023,
+      "blast": 0.0149,
+      "blast_evaded": true,
+      "fingerprint": 0.3293,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P02879",
+        0.5184730509432351
+       ],
+       [
+        "P09385",
+        0.5151623725891114
+       ],
+       [
+        "P11140",
+        0.5149817190519194
+       ],
+       [
+        "P11439",
+        0.4217506038899324
+       ],
+       [
+        "P33183",
+        0.38580996815751234
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:cf50d9c3e62c6886",
+      "length": 435,
+      "identity": 0.0253,
+      "blast": 0.0149,
+      "blast_evaded": true,
+      "fingerprint": 0.2644,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.5375786060240211
+       ],
+       [
+        "P11439",
+        0.5231555250226235
+       ],
+       [
+        "P02879",
+        0.49529354746748766
+       ],
+       [
+        "P10149",
+        0.47664432525634765
+       ],
+       [
+        "P00588",
+        0.4636770486831665
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 4.18,
+      "input": "P0DPI0",
+      "output": "",
+      "details": {
+       "region_length": 435,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 3 catalytic residues",
+      "output": "1 chunks: [(5, 430)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        223,
+        224,
+        227
+       ],
+       "chunks": [
+        [
+         5,
+         430
+        ]
+       ],
+       "total_redesign_residues": 425
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 5135.73,
+      "input": "435 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        435,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "17 residues",
+      "output": "shape (17, 1152)",
+      "details": {
+       "n_fingerprint_residues": 17
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 158483.2,
+      "input": "redesign [5:430]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 430,
+       "chunk_length": 425,
+       "output_length": 435
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 6871.02,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.3,
+       "blast": 0.0201,
+       "fingerprint": 0.3519,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.020, FP=0.352",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 125948.94,
+      "input": "redesign [5:430]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 430,
+       "chunk_length": 425,
+       "output_length": 435
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4731.66,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.3,
+       "blast": 0.0149,
+       "fingerprint": 0.3293,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.015, FP=0.329",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 148791.21,
+      "input": "redesign [5:430]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 430,
+       "chunk_length": 425,
+       "output_length": 435
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 6944.86,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.53,
+       "blast": 0.0149,
+       "fingerprint": 0.2644,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.015, FP=0.264",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P0DPI1": {
+   "accession": "P0DPI1",
+   "name": "Botulinum A",
+   "elapsed_seconds": 442.8,
+   "result": {
+    "source": "curated",
+    "accession": "P0DPI1",
+    "name": "Botulinum A",
+    "mode": "aggressive",
+    "region_length": 437,
+    "n_catalytic": 3,
+    "chunks": [
+     [
+      5,
+      432
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:3ce7bd7c85e53d3e",
+      "length": 437,
+      "identity": 0.0206,
+      "blast": 0.0152,
+      "blast_evaded": true,
+      "fingerprint": 0.2353,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.6188650925954182
+       ],
+       [
+        "P33183",
+        0.5884087521855424
+       ],
+       [
+        "P00588",
+        0.4741681337356567
+       ],
+       [
+        "P09385",
+        0.4641105651855469
+       ],
+       [
+        "P02879",
+        0.4477117701274593
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:2f42ceed84b43e71",
+      "length": 437,
+      "identity": 0.0183,
+      "blast": 0.0161,
+      "blast_evaded": true,
+      "fingerprint": 0.2746,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.541302685936292
+       ],
+       [
+        "P09385",
+        0.5319411635398864
+       ],
+       [
+        "P00588",
+        0.5121178054809571
+       ],
+       [
+        "P33183",
+        0.47289566586657267
+       ],
+       [
+        "P02879",
+        0.47227457965292585
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:ef706dca433818d2",
+      "length": 437,
+      "identity": 0.0206,
+      "blast": 0.02,
+      "blast_evaded": true,
+      "fingerprint": 0.2286,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.6835041046142578
+       ],
+       [
+        "P00588",
+        0.47323189973831176
+       ],
+       [
+        "P33183",
+        0.4437203814343708
+       ],
+       [
+        "P10149",
+        0.4130939563115438
+       ],
+       [
+        "P02879",
+        0.37305021576765107
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 5.06,
+      "input": "P0DPI1",
+      "output": "",
+      "details": {
+       "region_length": 437,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 3 catalytic residues",
+      "output": "1 chunks: [(5, 432)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        223,
+        224,
+        227
+       ],
+       "chunks": [
+        [
+         5,
+         432
+        ]
+       ],
+       "total_redesign_residues": 427
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 5066.44,
+      "input": "437 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        437,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "17 residues",
+      "output": "shape (17, 1152)",
+      "details": {
+       "n_fingerprint_residues": 17
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 158427.26,
+      "input": "redesign [5:432]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 432,
+       "chunk_length": 427,
+       "output_length": 437
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4643.33,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.06,
+       "blast": 0.0152,
+       "fingerprint": 0.2353,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.015, FP=0.235",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 129924.49,
+      "input": "redesign [5:432]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 432,
+       "chunk_length": 427,
+       "output_length": 437
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4510.08,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 1.83,
+       "blast": 0.0161,
+       "fingerprint": 0.2746,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.016, FP=0.275",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 135372.43,
+      "input": "redesign [5:432]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 432,
+       "chunk_length": 427,
+       "output_length": 437
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4817.65,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.06,
+       "blast": 0.02,
+       "fingerprint": 0.2286,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.020, FP=0.229",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P10149": {
+   "accession": "P10149",
+   "name": "Shiga 1A",
+   "elapsed_seconds": 275.7,
+   "result": {
+    "source": "curated",
+    "accession": "P10149",
+    "name": "Shiga 1A",
+    "mode": "aggressive",
+    "region_length": 315,
+    "n_catalytic": 2,
+    "chunks": [
+     [
+      5,
+      310
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:5d83eec6e729a781",
+      "length": 315,
+      "identity": 0.0254,
+      "blast": 0.022,
+      "blast_evaded": true,
+      "fingerprint": 0.4648,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.48172476815014353
+       ],
+       [
+        "P10149",
+        0.4647581736246745
+       ],
+       [
+        "P09385",
+        0.46211401621500653
+       ],
+       [
+        "P11439",
+        0.4616274687708641
+       ],
+       [
+        "P40136",
+        0.43115583062171936
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:6d8af62b25260b4d",
+      "length": 315,
+      "identity": 0.0349,
+      "blast": 0.0302,
+      "blast_evaded": true,
+      "fingerprint": 0.4674,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P33183",
+        0.5367610163804961
+       ],
+       [
+        "P04958",
+        0.46933497985204065
+       ],
+       [
+        "P10149",
+        0.46735699971516925
+       ],
+       [
+        "P11140",
+        0.45861935324785186
+       ],
+       [
+        "P09385",
+        0.45106945037841795
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:91ab3238e0ce5827",
+      "length": 315,
+      "identity": 0.0317,
+      "blast": 0.0208,
+      "blast_evaded": true,
+      "fingerprint": 0.402,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P09385",
+        0.5169276237487793
+       ],
+       [
+        "P02879",
+        0.506466682364301
+       ],
+       [
+        "P33183",
+        0.4653837709892087
+       ],
+       [
+        "P11140",
+        0.41649735846170566
+       ],
+       [
+        "P11439",
+        0.4051607287659937
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 3.07,
+      "input": "P10149",
+      "output": "",
+      "details": {
+       "region_length": 315,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 2 catalytic residues",
+      "output": "1 chunks: [(5, 310)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        189,
+        192
+       ],
+       "chunks": [
+        [
+         5,
+         310
+        ]
+       ],
+       "total_redesign_residues": 305
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 3158.98,
+      "input": "315 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        315,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "16 residues",
+      "output": "shape (16, 1152)",
+      "details": {
+       "n_fingerprint_residues": 16
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 84076.05,
+      "input": "redesign [5:310]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 310,
+       "chunk_length": 305,
+       "output_length": 315
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4029.74,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.54,
+       "blast": 0.022,
+       "fingerprint": 0.4648,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.022, FP=0.465",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 86807.13,
+      "input": "redesign [5:310]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 310,
+       "chunk_length": 305,
+       "output_length": 315
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3450.15,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.49,
+       "blast": 0.0302,
+       "fingerprint": 0.4674,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.030, FP=0.467",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 89895.78,
+      "input": "redesign [5:310]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 310,
+       "chunk_length": 305,
+       "output_length": 315
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4282.11,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.17,
+       "blast": 0.0208,
+       "fingerprint": 0.402,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.021, FP=0.402",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P10844": {
+   "accession": "P10844",
+   "name": "Botulinum B",
+   "elapsed_seconds": 531.1,
+   "result": {
+    "source": "curated",
+    "accession": "P10844",
+    "name": "Botulinum B",
+    "mode": "aggressive",
+    "region_length": 435,
+    "n_catalytic": 4,
+    "chunks": [
+     [
+      5,
+      430
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:cc15770e3114ec95",
+      "length": 435,
+      "identity": 0.0207,
+      "blast": 0.014,
+      "blast_evaded": true,
+      "fingerprint": 0.347,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.5586110237168103
+       ],
+       [
+        "P02879",
+        0.5414556061349264
+       ],
+       [
+        "P40136",
+        0.5227419237295787
+       ],
+       [
+        "P04958",
+        0.42031392455101013
+       ],
+       [
+        "P33183",
+        0.40415206188108865
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:29d4f06f2e7b7472",
+      "length": 435,
+      "identity": 0.0253,
+      "blast": 0.0175,
+      "blast_evaded": true,
+      "fingerprint": 0.4069,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.513740780876904
+       ],
+       [
+        "P00588",
+        0.5052501678466796
+       ],
+       [
+        "P33183",
+        0.49153577118385133
+       ],
+       [
+        "P02879",
+        0.4912887026623982
+       ],
+       [
+        "P10149",
+        0.4763743082682292
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:d635b8c7eb35030b",
+      "length": 435,
+      "identity": 0.0345,
+      "blast": 0.0192,
+      "blast_evaded": true,
+      "fingerprint": 0.3592,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P33183",
+        0.49941730499267584
+       ],
+       [
+        "P02879",
+        0.49694866668887255
+       ],
+       [
+        "P11140",
+        0.4875366193492238
+       ],
+       [
+        "P09385",
+        0.4711063702901204
+       ],
+       [
+        "P40136",
+        0.4536990523338318
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 3.38,
+      "input": "P10844",
+      "output": "",
+      "details": {
+       "region_length": 435,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 4 catalytic residues",
+      "output": "1 chunks: [(5, 430)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        230,
+        231,
+        234,
+        268
+       ],
+       "chunks": [
+        [
+         5,
+         430
+        ]
+       ],
+       "total_redesign_residues": 425
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 5139.76,
+      "input": "435 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        435,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "30 residues",
+      "output": "shape (30, 1152)",
+      "details": {
+       "n_fingerprint_residues": 30
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 167701.85,
+      "input": "redesign [5:430]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 430,
+       "chunk_length": 425,
+       "output_length": 435
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 5237.18,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.07,
+       "blast": 0.014,
+       "fingerprint": 0.347,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.014, FP=0.347",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 191205.65,
+      "input": "redesign [5:430]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 430,
+       "chunk_length": 425,
+       "output_length": 435
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 5205.83,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.53,
+       "blast": 0.0175,
+       "fingerprint": 0.4069,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.017, FP=0.407",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 152206.97,
+      "input": "redesign [5:430]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 430,
+       "chunk_length": 425,
+       "output_length": 435
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4389.4,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.45,
+       "blast": 0.0192,
+       "fingerprint": 0.3592,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.019, FP=0.359",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P11140": {
+   "accession": "P11140",
+   "name": "Abrin",
+   "elapsed_seconds": 195.7,
+   "result": {
+    "source": "curated",
+    "accession": "P11140",
+    "name": "Abrin",
+    "mode": "aggressive",
+    "region_length": 260,
+    "n_catalytic": 4,
+    "chunks": [
+     [
+      5,
+      255
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:5bc5493c07069016",
+      "length": 260,
+      "identity": 0.0231,
+      "blast": 0.021,
+      "blast_evaded": true,
+      "fingerprint": 0.3893,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.4062555134296417
+       ],
+       [
+        "P10149",
+        0.4018100420633952
+       ],
+       [
+        "P02879",
+        0.39558303501547837
+       ],
+       [
+        "P11140",
+        0.3893383290709519
+       ],
+       [
+        "P11439",
+        0.3729529964680574
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:d9e7ae48f13bfbf7",
+      "length": 260,
+      "identity": 0.0231,
+      "blast": 0.0316,
+      "blast_evaded": true,
+      "fingerprint": 0.5337,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11140",
+        0.5337077117547756
+       ],
+       [
+        "P10149",
+        0.5290879011154175
+       ],
+       [
+        "P09385",
+        0.5212039232254028
+       ],
+       [
+        "P11439",
+        0.5021086420331682
+       ],
+       [
+        "P33183",
+        0.47142501284436483
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:7f811811009e858f",
+      "length": 260,
+      "identity": 0.0231,
+      "blast": 0.027,
+      "blast_evaded": true,
+      "fingerprint": 0.4402,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11439",
+        0.4665991712589653
+       ],
+       [
+        "P02879",
+        0.4583487423454843
+       ],
+       [
+        "P33183",
+        0.45522093336756636
+       ],
+       [
+        "P11140",
+        0.4402200187124857
+       ],
+       [
+        "P00588",
+        0.4196707963943481
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 2.5,
+      "input": "P11140",
+      "output": "",
+      "details": {
+       "region_length": 260,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 4 catalytic residues",
+      "output": "1 chunks: [(5, 255)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        74,
+        113,
+        164,
+        167
+       ],
+       "chunks": [
+        [
+         5,
+         255
+        ]
+       ],
+       "total_redesign_residues": 250
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 2280.13,
+      "input": "260 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        260,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "42 residues",
+      "output": "shape (42, 1152)",
+      "details": {
+       "n_fingerprint_residues": 42
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 58936.46,
+      "input": "redesign [5:255]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 255,
+       "chunk_length": 250,
+       "output_length": 260
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 2920.07,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.31,
+       "blast": 0.021,
+       "fingerprint": 0.3893,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.021, FP=0.389",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 57093.53,
+      "input": "redesign [5:255]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 255,
+       "chunk_length": 250,
+       "output_length": 260
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 2659.53,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.31,
+       "blast": 0.0316,
+       "fingerprint": 0.5337,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.032, FP=0.534",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 68324.03,
+      "input": "redesign [5:255]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 255,
+       "chunk_length": 250,
+       "output_length": 260
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3517.73,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.31,
+       "blast": 0.027,
+       "fingerprint": 0.4402,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.027, FP=0.440",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P11439": {
+   "accession": "P11439",
+   "name": "Pseudomonas ExoA",
+   "elapsed_seconds": 130.3,
+   "result": {
+    "source": "curated",
+    "accession": "P11439",
+    "name": "Pseudomonas ExoA",
+    "mode": "aggressive",
+    "region_length": 208,
+    "n_catalytic": 4,
+    "chunks": [
+     [
+      5,
+      203
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:83c7e91b7d0fb9f2",
+      "length": 208,
+      "identity": 0.0577,
+      "blast": 0.0258,
+      "blast_evaded": true,
+      "fingerprint": 0.4153,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P02879",
+        0.541262347523759
+       ],
+       [
+        "P11140",
+        0.5126324862968631
+       ],
+       [
+        "P10149",
+        0.47629000345865885
+       ],
+       [
+        "P09385",
+        0.4691382090250651
+       ],
+       [
+        "P33183",
+        0.4506506570955602
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:6f8c6cfddf553878",
+      "length": 208,
+      "identity": 0.0433,
+      "blast": 0.0267,
+      "blast_evaded": true,
+      "fingerprint": 0.45,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P11439",
+        0.4500174984640005
+       ],
+       [
+        "P10844",
+        0.41971719676050645
+       ],
+       [
+        "P02879",
+        0.4088567088289959
+       ],
+       [
+        "P10149",
+        0.4044910113016764
+       ],
+       [
+        "P09385",
+        0.3921881039937337
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:e21b9dce7940ed7d",
+      "length": 208,
+      "identity": 0.0385,
+      "blast": 0.023,
+      "blast_evaded": true,
+      "fingerprint": 0.4069,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P09385",
+        0.5137233138084412
+       ],
+       [
+        "P11140",
+        0.4779282604775778
+       ],
+       [
+        "P33183",
+        0.4760825226946575
+       ],
+       [
+        "P02879",
+        0.45508059059701317
+       ],
+       [
+        "P40136",
+        0.44532251358032227
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 8.01,
+      "input": "P11439",
+      "output": "",
+      "details": {
+       "region_length": 208,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 4 catalytic residues",
+      "output": "1 chunks: [(5, 203)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        35,
+        65,
+        76,
+        148
+       ],
+       "chunks": [
+        [
+         5,
+         203
+        ]
+       ],
+       "total_redesign_residues": 198
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 2202.26,
+      "input": "208 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        208,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "50 residues",
+      "output": "shape (50, 1152)",
+      "details": {
+       "n_fingerprint_residues": 50
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 40572.92,
+      "input": "redesign [5:203]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 203,
+       "chunk_length": 198,
+       "output_length": 208
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3299.83,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 5.77,
+       "blast": 0.0258,
+       "fingerprint": 0.4153,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.026, FP=0.415",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 46223.74,
+      "input": "redesign [5:203]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 203,
+       "chunk_length": 198,
+       "output_length": 208
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 2403.1,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 4.33,
+       "blast": 0.0267,
+       "fingerprint": 0.45,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.027, FP=0.450",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 32498.04,
+      "input": "redesign [5:203]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 203,
+       "chunk_length": 198,
+       "output_length": 208
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3096.79,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.85,
+       "blast": 0.023,
+       "fingerprint": 0.4069,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.023, FP=0.407",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P15917": {
+   "accession": "P15917",
+   "name": "Anthrax LF",
+   "elapsed_seconds": 275.7,
+   "result": {
+    "source": "curated",
+    "accession": "P15917",
+    "name": "Anthrax LF",
+    "mode": "aggressive",
+    "region_length": 309,
+    "n_catalytic": 4,
+    "chunks": [
+     [
+      5,
+      304
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:0953e5afcaa6988e",
+      "length": 309,
+      "identity": 0.0291,
+      "blast": 0.0219,
+      "blast_evaded": true,
+      "fingerprint": 0.2978,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P33183",
+        0.5091392150739344
+       ],
+       [
+        "P10149",
+        0.4694562594095866
+       ],
+       [
+        "P04958",
+        0.4375786979993185
+       ],
+       [
+        "P02879",
+        0.4351768551803217
+       ],
+       [
+        "P11140",
+        0.4282317801219661
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:d36acc49f76d8efc",
+      "length": 309,
+      "identity": 0.0291,
+      "blast": 0.0338,
+      "blast_evaded": true,
+      "fingerprint": 0.2702,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.5238377849260967
+       ],
+       [
+        "P09385",
+        0.5135753273963928
+       ],
+       [
+        "P11140",
+        0.4679712871225869
+       ],
+       [
+        "P33183",
+        0.4125948868146757
+       ],
+       [
+        "P11439",
+        0.3924533201723683
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:0f6b220075c5e30c",
+      "length": 309,
+      "identity": 0.0356,
+      "blast": 0.0225,
+      "blast_evaded": true,
+      "fingerprint": 0.288,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.6113789478937784
+       ],
+       [
+        "P33183",
+        0.5324786930549436
+       ],
+       [
+        "P04958",
+        0.5124857383114951
+       ],
+       [
+        "P02879",
+        0.4656831709350028
+       ],
+       [
+        "P10844",
+        0.43805674848885373
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 6.06,
+      "input": "P15917",
+      "output": "",
+      "details": {
+       "region_length": 309,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 4 catalytic residues",
+      "output": "1 chunks: [(5, 304)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        219,
+        220,
+        223,
+        268
+       ],
+       "chunks": [
+        [
+         5,
+         304
+        ]
+       ],
+       "total_redesign_residues": 299
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 3574.41,
+      "input": "309 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        309,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "30 residues",
+      "output": "shape (30, 1152)",
+      "details": {
+       "n_fingerprint_residues": 30
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 79919.92,
+      "input": "redesign [5:304]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 304,
+       "chunk_length": 299,
+       "output_length": 309
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4295.67,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.91,
+       "blast": 0.0219,
+       "fingerprint": 0.2978,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.022, FP=0.298",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 73136.77,
+      "input": "redesign [5:304]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 304,
+       "chunk_length": 299,
+       "output_length": 309
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4259.0,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.91,
+       "blast": 0.0338,
+       "fingerprint": 0.2702,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.034, FP=0.270",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 105944.26,
+      "input": "redesign [5:304]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 304,
+       "chunk_length": 299,
+       "output_length": 309
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 4583.61,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.56,
+       "blast": 0.0225,
+       "fingerprint": 0.288,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.022, FP=0.288",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P33183": {
+   "accession": "P33183",
+   "name": "Modeccin",
+   "elapsed_seconds": 216.1,
+   "result": {
+    "source": "curated",
+    "accession": "P33183",
+    "name": "Modeccin",
+    "mode": "aggressive",
+    "region_length": 260,
+    "n_catalytic": 4,
+    "chunks": [
+     [
+      5,
+      255
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:f8b2c4a7bf953909",
+      "length": 260,
+      "identity": 0.0308,
+      "blast": 0.0229,
+      "blast_evaded": true,
+      "fingerprint": 0.4222,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P09385",
+        0.5873459974924723
+       ],
+       [
+        "P11140",
+        0.48338820294636053
+       ],
+       [
+        "P10149",
+        0.46776180267333983
+       ],
+       [
+        "P02879",
+        0.4663742606232806
+       ],
+       [
+        "P11439",
+        0.4240457500730242
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:763b6085ab896a58",
+      "length": 260,
+      "identity": 0.05,
+      "blast": 0.026,
+      "blast_evaded": true,
+      "fingerprint": 0.4702,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P02879",
+        0.49447375972096513
+       ],
+       [
+        "P11439",
+        0.4802798823434479
+       ],
+       [
+        "P10149",
+        0.4749728838602702
+       ],
+       [
+        "P33183",
+        0.4701683695723371
+       ],
+       [
+        "P09385",
+        0.40921046733856203
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:d11f718e9fb2667f",
+      "length": 260,
+      "identity": 0.0308,
+      "blast": 0.026,
+      "blast_evaded": true,
+      "fingerprint": 0.4272,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P10149",
+        0.6046859423319498
+       ],
+       [
+        "P40136",
+        0.5989070733388264
+       ],
+       [
+        "P02879",
+        0.5196043834453676
+       ],
+       [
+        "P04958",
+        0.44303830464680993
+       ],
+       [
+        "P11140",
+        0.42855255778242907
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 3.13,
+      "input": "P33183",
+      "output": "",
+      "details": {
+       "region_length": 260,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 4 catalytic residues",
+      "output": "1 chunks: [(5, 255)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        80,
+        123,
+        177,
+        180
+       ],
+       "chunks": [
+        [
+         5,
+         255
+        ]
+       ],
+       "total_redesign_residues": 250
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 3092.16,
+      "input": "260 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        260,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "42 residues",
+      "output": "shape (42, 1152)",
+      "details": {
+       "n_fingerprint_residues": 42
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 67378.38,
+      "input": "redesign [5:255]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 255,
+       "chunk_length": 250,
+       "output_length": 260
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3481.87,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.08,
+       "blast": 0.0229,
+       "fingerprint": 0.4222,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.023, FP=0.422",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 66279.41,
+      "input": "redesign [5:255]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 255,
+       "chunk_length": 250,
+       "output_length": 260
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3596.5,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 5.0,
+       "blast": 0.026,
+       "fingerprint": 0.4702,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.026, FP=0.470",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 68425.92,
+      "input": "redesign [5:255]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 255,
+       "chunk_length": 250,
+       "output_length": 260
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 3788.59,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 3.08,
+       "blast": 0.026,
+       "fingerprint": 0.4272,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.026, FP=0.427",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  },
+  "P40136": {
+   "accession": "P40136",
+   "name": "Anthrax EF",
+   "elapsed_seconds": 895.8,
+   "result": {
+    "source": "curated",
+    "accession": "P40136",
+    "name": "Anthrax EF",
+    "mode": "aggressive",
+    "region_length": 500,
+    "n_catalytic": 1,
+    "chunks": [
+     [
+      5,
+      495
+     ]
+    ],
+    "variants": [
+     {
+      "idx": 0,
+      "sequence": "SHA256:e633cfe3262980af",
+      "length": 500,
+      "identity": 0.018,
+      "blast": 0.0114,
+      "blast_evaded": true,
+      "fingerprint": 0.4445,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P02879",
+        0.4883343708224413
+       ],
+       [
+        "P11439",
+        0.4685203773634774
+       ],
+       [
+        "P11140",
+        0.46477022549001185
+       ],
+       [
+        "P33183",
+        0.448150634765625
+       ],
+       [
+        "P10844",
+        0.44457235007450496
+       ]
+      ]
+     },
+     {
+      "idx": 1,
+      "sequence": "SHA256:025dd91412b96790",
+      "length": 500,
+      "identity": 0.022,
+      "blast": 0.0153,
+      "blast_evaded": true,
+      "fingerprint": 0.5312,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P09385",
+        0.5921618541081746
+       ],
+       [
+        "P40136",
+        0.5311966886123022
+       ],
+       [
+        "P11140",
+        0.5109576393918294
+       ],
+       [
+        "P02879",
+        0.4965384849687902
+       ],
+       [
+        "P33183",
+        0.47617349537407483
+       ]
+      ]
+     },
+     {
+      "idx": 2,
+      "sequence": "SHA256:1d54ae7fc666125e",
+      "length": 500,
+      "identity": 0.02,
+      "blast": 0.0189,
+      "blast_evaded": true,
+      "fingerprint": 0.5424,
+      "fingerprint_caught": false,
+      "cross_ranking": [
+       [
+        "P40136",
+        0.5423822055260341
+       ],
+       [
+        "P02879",
+        0.542033777004335
+       ],
+       [
+        "P33183",
+        0.47867337959568673
+       ],
+       [
+        "P10149",
+        0.47861741383870443
+       ],
+       [
+        "P00588",
+        0.47424967288970943
+       ]
+      ]
+     }
+    ],
+    "trace": [
+     {
+      "step": 1,
+      "phase": "setup",
+      "variant": null,
+      "name": "Load EvoDiff model + region sequence",
+      "elapsed_ms": 6.4,
+      "input": "P40136",
+      "output": "",
+      "details": {
+       "region_length": 500,
+       "model": "OA_DM_38M"
+      }
+     },
+     {
+      "step": 2,
+      "phase": "setup",
+      "variant": null,
+      "name": "Configure redesign chunks",
+      "elapsed_ms": 0.0,
+      "input": "mode=aggressive, 1 catalytic residues",
+      "output": "1 chunks: [(5, 495)]",
+      "details": {
+       "mode": "aggressive",
+       "catalytic_residues_relative": [
+        351
+       ],
+       "chunks": [
+        [
+         5,
+         495
+        ]
+       ],
+       "total_redesign_residues": 490
+      }
+     },
+     {
+      "step": 3,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Embed region for fingerprint extraction",
+      "elapsed_ms": 6758.28,
+      "input": "500 residues",
+      "output": "",
+      "details": {
+       "embedding_shape": [
+        500,
+        1152
+       ]
+      }
+     },
+     {
+      "step": 4,
+      "phase": "fingerprint",
+      "variant": null,
+      "name": "Extract fingerprint from catalytic windows",
+      "elapsed_ms": 0.0,
+      "input": "13 residues",
+      "output": "shape (13, 1152)",
+      "details": {
+       "n_fingerprint_residues": 13
+      }
+     },
+     {
+      "step": 5,
+      "phase": "evodiff",
+      "variant": 0,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 291718.77,
+      "input": "redesign [5:495]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 495,
+       "chunk_length": 490,
+       "output_length": 500
+      }
+     },
+     {
+      "step": 6,
+      "phase": "score",
+      "variant": 0,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 7877.64,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 1.8,
+       "blast": 0.0114,
+       "fingerprint": 0.4445,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 7,
+      "phase": "verdict",
+      "variant": 0,
+      "name": "Variant v0 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.011, FP=0.445",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 8,
+      "phase": "evodiff",
+      "variant": 1,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 303927.01,
+      "input": "redesign [5:495]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 495,
+       "chunk_length": 490,
+       "output_length": 500
+      }
+     },
+     {
+      "step": 9,
+      "phase": "score",
+      "variant": 1,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 6706.25,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.2,
+       "blast": 0.0153,
+       "fingerprint": 0.5312,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 10,
+      "phase": "verdict",
+      "variant": 1,
+      "name": "Variant v1 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.015, FP=0.531",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     },
+     {
+      "step": 11,
+      "phase": "evodiff",
+      "variant": 2,
+      "name": "EvoDiff inpaint \u2014 chunk 1/1",
+      "elapsed_ms": 269809.4,
+      "input": "redesign [5:495]",
+      "output": "",
+      "details": {
+       "chunk_start": 5,
+       "chunk_end": 495,
+       "chunk_length": 490,
+       "output_length": 500
+      }
+     },
+     {
+      "step": 12,
+      "phase": "score",
+      "variant": 2,
+      "name": "Identity + BLAST + fingerprint + cross-match",
+      "elapsed_ms": 9033.97,
+      "input": "variant vs parent + all fingerprints",
+      "output": "",
+      "details": {
+       "identity_pct": 2.0,
+       "blast": 0.0189,
+       "fingerprint": 0.5424,
+       "n_cross_matches": 5
+      }
+     },
+     {
+      "step": 13,
+      "phase": "verdict",
+      "variant": 2,
+      "name": "Variant v2 verdict",
+      "elapsed_ms": 0.0,
+      "input": "BLAST=0.019, FP=0.542",
+      "output": "EVADED by BLAST / clear by fingerprint",
+      "details": {}
+     }
+    ]
+   }
+  }
+ }
+}

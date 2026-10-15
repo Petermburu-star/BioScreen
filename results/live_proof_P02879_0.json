@@ -1,0 +1,36 @@
+{
+  "accession": "P02879",
+  "seed": 0,
+  "generator": "bioscreen.generate.generate_variants_custom",
+  "rows": [
+    {
+      "tag": "preserved#0",
+      "sha": "74ed2626ee7c92a5",
+      "status": "FLAGGED",
+      "expect": "FLAGGED",
+      "score": 0.9455,
+      "dec": {
+        "identity": 1.0,
+        "blosum": 0.8182,
+        "aaindex": 1.0,
+        "fp_identity": 1.0,
+        "combined": 0.9455
+      }
+    },
+    {
+      "tag": "aggressive#0",
+      "sha": "eb96ca3424102e03",
+      "status": "CLEAR",
+      "expect": "CLEAR",
+      "score": 0.3777,
+      "dec": {
+        "identity": 0.25,
+        "blosum": 0.2045,
+        "aaindex": 0.0,
+        "fp_identity": 0.0476,
+        "combined": 0.0213
+      }
+    }
+  ],
+  "controls_valid": true
+}

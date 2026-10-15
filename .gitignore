@@ -45,3 +45,5 @@ docs/HANDOFF.local.md
 
 # Reference downloads (AAindex, Pfam HMMs, Stockholm alignments) — regenerable
 data/reference/
+
+data/local_archive/

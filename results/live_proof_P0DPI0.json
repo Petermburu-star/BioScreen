@@ -1,0 +1,92 @@
+{
+  "accession": "P0DPI0",
+  "generator": "bioscreen.generate.generate_variants_custom",
+  "deterministic": true,
+  "rows": [
+    {
+      "tag": "preserved#0",
+      "sha": "c836612059289406",
+      "status": "FLAGGED",
+      "expect": "FLAGGED",
+      "score": 0.9727,
+      "dec": {
+        "identity": 1.0,
+        "blosum": 0.9091,
+        "aaindex": 1.0,
+        "fp_identity": 1.0,
+        "combined": 0.9727
+      }
+    },
+    {
+      "tag": "preserved#1",
+      "sha": "02297e4d988b76cb",
+      "status": "FLAGGED",
+      "expect": "FLAGGED",
+      "score": 0.9727,
+      "dec": {
+        "identity": 1.0,
+        "blosum": 0.9091,
+        "aaindex": 1.0,
+        "fp_identity": 1.0,
+        "combined": 0.9727
+      }
+    },
+    {
+      "tag": "preserved#2",
+      "sha": "f59b4aebdb2d6ceb",
+      "status": "FLAGGED",
+      "expect": "FLAGGED",
+      "score": 0.9727,
+      "dec": {
+        "identity": 1.0,
+        "blosum": 0.9091,
+        "aaindex": 1.0,
+        "fp_identity": 1.0,
+        "combined": 0.9727
+      }
+    },
+    {
+      "tag": "aggressive#0",
+      "sha": "4d749bfeee5109ce",
+      "status": "CLEAR",
+      "expect": "CLEAR",
+      "score": 0.3541,
+      "dec": {
+        "identity": 0.3889,
+        "blosum": 0.303,
+        "aaindex": 0.2089,
+        "fp_identity": 0.0588,
+        "combined": 0.063
+      }
+    },
+    {
+      "tag": "aggressive#1",
+      "sha": "102033a62150ab83",
+      "status": "CLEAR",
+      "expect": "CLEAR",
+      "score": 0.3769,
+      "dec": {
+        "identity": 0.1667,
+        "blosum": 0.1515,
+        "aaindex": 0.1404,
+        "fp_identity": 0.1176,
+        "combined": 0.0221
+      }
+    },
+    {
+      "tag": "aggressive#2",
+      "sha": "42d973f7a5546ade",
+      "status": "CLEAR",
+      "expect": "CLEAR",
+      "score": 0.4671,
+      "dec": {
+        "identity": 0.0556,
+        "blosum": 0.1212,
+        "aaindex": 0.0161,
+        "fp_identity": 0.0,
+        "combined": 0.0022
+      }
+    }
+  ],
+  "controls_valid": true
+}

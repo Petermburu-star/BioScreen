@@ -1,0 +1,82 @@
+[
+ {
+  "id": "ai_real_0",
+  "label": "Real EvoDiff AI variant \u2014 Diphtheria (motif preserved, scaffold redesigned)",
+  "source": "results/evodiff_16toxins_v2_preserved.json",
+  "expected": "FLAGGED",
+  "sequence": null,
+  "sequence_sha256": "cc3d4d3375a8ee81",
+  "note": "full AI-designed sequence not distributed; regenerate via scripts/live_proof.py"
+ },
+ {
+  "id": "ai_real_1",
+  "label": "Real EvoDiff AI variant \u2014 Diphtheria (motif preserved, scaffold redesigned)",
+  "source": "results/evodiff_16toxins_v2_preserved.json",
+  "expected": "FLAGGED",
+  "sequence": null,
+  "sequence_sha256": "3a9be66e192977a1",
+  "note": "full AI-designed sequence not distributed; regenerate via scripts/live_proof.py"
+ },
+ {
+  "id": "ai_real_2",
+  "label": "Real EvoDiff AI variant \u2014 Diphtheria (motif preserved, scaffold redesigned)",
+  "source": "results/evodiff_16toxins_v2_preserved.json",
+  "expected": "FLAGGED",
+  "sequence": null,
+  "sequence_sha256": "fa03e1bdcf81f530",
+  "note": "full AI-designed sequence not distributed; regenerate via scripts/live_proof.py"
+ },
+ {
+  "id": "ai_singlecodon",
+  "label": "Adversary: ricin single codon change Y>F",
+  "source": "Axis-B exact map (0.8662)",
+  "expected": "FLAGGED",
+  "sequence": "IFPKQYPIINFTTAGATVQSYTNFIRAVRGRLTTGADVRHEIPVLPNRVGLPINQRFILVELSNHAELSVTLALDVTNAFVVGYRAGNSAYFFHPDNQEDAEAITHLFTDVQNRYTFAFGGNYDRLEQLAGNLRENIELGNGPLEEAISALYYYSTGGTQLPTLARSFIICIQMISEAARFQYIEGEMRTRIRYNRRSAPDPSVITLENSWGRLSTAIQESNQGAFASPIQLQRRNGSKFSVYDVSILIPIIALMVYRCAPPPSSQF"
+ },
+ {
+  "id": "adv_boundary",
+  "label": "RED TEAM: diphtheria catalytic H>K (known evasion boundary)",
+  "source": "Axis-B exact map (0.4754) \u2014 documented limit",
+  "expected": "CLEAR",
+  "sequence": "MLVRGYVVSRKLFASILIGALLGIGAPPSAHAGADDVVDSSKSFVMENFSSYKGTKPGYVDSIQKGIQKPKSGTQGNYDDDWKGFYSTDNKYDAAGYSVDNENPLSGKAGGVVKVTYPGLTKVLALKVDNAETIKKELGLSLTEPLMEQVGTEEFIKRFGDGASRVVLSLPFAEGSSSVEYINNWEQAKALSV"
+ },
+ {
+  "id": "native_P0DPI1",
+  "label": "Native Botulinum A",
+  "source": "UniProt",
+  "expected": "FLAGGED",
+  "sequence": "MPFVNKQFNYKDPVNGVDIAYIKIPNAGQMQPVKAFKIHNKIWVIPERDTFTNPEEGDLNPPPEAKQVPVSYYDSTYLSTDNEKDNYLKGVTKLFERIYSTDLGRMLLTSIVRGIPFWGGSTIDTELKVIDTNCINVIQPDGSYRSEELNLVIIGPSADIIQFECKSFGHEVLNLTRNGYGSTQYIRFSPDFTFGFEESLEVDTNPLLGAGKFATDPAVTLAHELIHAGHRLYGIAINPNRVFKVNTNAYYEMSGLEVSFEELRTFGGHDAKFIDSLQENEFRLYYYNKFKDIASTLNKAKSIVGTTASLQYMKNVFKEKYLLSEDTSGKFSVDKLKFDKLYKMLTEIYTEDNFVKFFKVLNRKTYLNFDKAVFKINIVPKVNYTIYDGFNLRNTNLAANFNGQNTEINNMNFTKLKNFTGLFEFYKLLCVRGIITS"
+ },
+ {
+  "id": "safe_P01375",
+  "label": "Human TNF-alpha",
+  "source": "UniProt",
+  "expected": "CLEAR",
+  "sequence": "MSTESMIRDVELAEEALPKKTGGPQGSRRCLFLSLFSFLIVAGATTLFCLLHFGVIGPQREEFPRDLSLISPLAQAVRSSSRTPSDKPVAHVVANPQAEGQLQWLNRRANALLANGVELRDNQLVVPSEGLYLIYSQVLFKGQGCPSTHVLLTHTISRIAVSYQTKVNLLSAIKSPCQRETPEGAEAKPWYEPIYLGGVFQLEKGDRLSAEINRPDYLDFAESGQVYFGIIAL"
+ },
+ {
+  "id": "safe_P02768",
+  "label": "Human serum albumin",
+  "source": "UniProt",
+  "expected": "CLEAR",
+  "sequence": "MKWVTFISLLFLFSSAYSRGVFRRDAHKSEVAHRFKDLGEENFKALVLIAFAQYLQQCPFEDHVKLVNEVTEFAKTCVADESAENCDKSLHTLFGDKLCTVATLRETYGEMADCCAKQEPERNECFLQHKDDNPNLPRLVRPEVDVMCTAFHDNEETFLKKYLYEIARRHPYFYAPELLFFAKRYKAAFTECCQAADKAACLLPKLDELRDEGKASSAKQRLKCASLQKFGERAFKAWAVARLSQRFPKAEFAEVSKLVTDLTKVHTECCHGDLLECADDRADLAKYICENQDSISSKLKECCEKPLLEKSHCIAEVENDEMPADLPSLAADFVESKDVCKNYAEAKDVFLGMFLYEYARRHPDYSVVLLLRLAKTYETTLEKCCAAADPHECYAKVFDEFKPLVEEPQNLIKQNCELFEQLGEYKFQNALLVRYTKKVPQVSTPTLVEVSRNLGKVGSKCCKHPEAKRMPCAEDYLSVVLNQLCVLHEKTPVSDRVTKCCTESLVNRRPCFSALEVDETYVPKEFNAETFTFHADICTLSEKERQIKKQTALVELVKHKPKATKEQLKAVMDDFAAFVEKCCKADDKETCFAEEGKKLVAASQAALGL"
+ },
+ {
+  "id": "aggr_0",
+  "label": "AI variant \u2014 ricin, catalytic window destroyed (negative control)",
+  "source": "results/custom_generation_test.json",
+  "expected": "CLEAR",
+  "sequence": null,
+  "sequence_sha256": "ab286b32e541aa1f",
+  "note": "full AI-designed sequence not distributed; regenerate via scripts/live_proof.py"
+ },
+ {
+  "id": "aggr_1",
+  "label": "AI variant \u2014 ricin, catalytic window destroyed (negative control)",
+  "source": "results/custom_generation_test.json",
+  "expected": "CLEAR",
+  "sequence": null,
+  "sequence_sha256": "96c29f2dcfce758e",
+  "note": "full AI-designed sequence not distributed; regenerate via scripts/live_proof.py"
+ }
+]
